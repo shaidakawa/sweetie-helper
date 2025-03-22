@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MessageCircle } from 'lucide-react';
 import { products, getRelatedProducts } from '../data/products';
 import { Product } from '../types';
@@ -12,6 +11,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [purchaseFormVisible, setPurchaseFormVisible] = useState(false);
+  const navigate = useNavigate();
   const [purchaseForm, setPurchaseForm] = useState({
     location: '',
     fibId: '',
@@ -41,6 +41,16 @@ const ProductDetail = () => {
   
   const handleBuyClick = () => {
     setPurchaseFormVisible(true);
+  };
+  
+  const handleMessageClick = () => {
+    if (product) {
+      navigate('/messages');
+      toast({
+        title: "Chat initialized!",
+        description: `You can now chat with the seller about "${product.title}"`,
+      });
+    }
   };
   
   const handlePurchaseSubmit = (e: React.FormEvent) => {
@@ -107,7 +117,12 @@ const ProductDetail = () => {
                 <button onClick={handleBuyClick} className="btn-black py-3 px-10">
                   Buy
                 </button>
-                <button className="bg-oldie-gray text-white rounded-full p-3">
+                <button 
+                  onClick={handleMessageClick} 
+                  className="bg-oldie-gray text-white rounded-full p-3 flex items-center justify-center"
+                  aria-label="Message seller"
+                  title="Chat with seller"
+                >
                   <MessageCircle className="w-6 h-6" />
                 </button>
               </div>
