@@ -91,10 +91,6 @@ const Login = () => {
                   Log In
                 </button>
               </div>
-              
-              <div className="text-center text-sm mt-2">
-                <p>Admin demo: admin@oldie.com / admin123</p>
-              </div>
             </form>
             
             <p className="mt-8">
