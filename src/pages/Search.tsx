@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Search, Filter } from 'lucide-react';
+import { Search as SearchIcon, Filter } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { products } from '../data/products';
 import { 
@@ -59,7 +59,7 @@ const Search = () => {
         <div className="flex items-center gap-4 mb-8">
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-              <Search className="w-5 h-5 text-gray-400" />
+              <SearchIcon className="w-5 h-5 text-gray-400" />
             </div>
             <input 
               type="text"
