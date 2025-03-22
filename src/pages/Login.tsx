@@ -2,9 +2,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     password: ''
@@ -21,13 +23,22 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Mock login (would connect to backend in a real app)
     if (formData.username && formData.password) {
+      // Call the login function from AuthContext
+      login(formData.username, formData.password);
+      
+      // Show login success toast
       toast({
         title: "Logged in successfully!",
         description: "Welcome back to OLDIE.",
       });
-      navigate('/');
+      
+      // Admin login redirect
+      if (formData.username === 'admin@oldie.com' && formData.password === 'admin123') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/');
+      }
     } else {
       toast({
         title: "Login failed",
@@ -79,6 +90,10 @@ const Login = () => {
                 <button type="submit" className="btn-black w-full py-3">
                   Log In
                 </button>
+              </div>
+              
+              <div className="text-center text-sm mt-2">
+                <p>Admin demo: admin@oldie.com / admin123</p>
               </div>
             </form>
             

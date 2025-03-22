@@ -1,10 +1,12 @@
 
 import { Link } from 'react-router-dom';
-import { Search, Plus, MessageCircle, User } from 'lucide-react';
+import { Search, Plus, MessageCircle, User, LayoutDashboard } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const { isAuthenticated, isAdmin } = useAuth();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +32,12 @@ const Navbar = () => {
           <Link to="/" className="nav-link text-white hover:text-white/90">Home</Link>
           <Link to="/about" className="nav-link text-white hover:text-white/90">About</Link>
           <Link to="/categories" className="nav-link text-white hover:text-white/90">Categories</Link>
+          {isAdmin && (
+            <Link to="/admin/dashboard" className="nav-link text-white hover:text-white/90 flex items-center gap-1">
+              <LayoutDashboard className="w-4 h-4" />
+              Admin
+            </Link>
+          )}
         </div>
         
         <div className="flex items-center space-x-4">
@@ -42,7 +50,7 @@ const Navbar = () => {
           <Link to="/messages" className="text-white hover:text-white/80 transition-colors">
             <MessageCircle className="w-5 h-5" />
           </Link>
-          <Link to="/login" className="text-white hover:text-white/80 transition-colors">
+          <Link to={isAuthenticated ? "/account" : "/login"} className="text-white hover:text-white/80 transition-colors">
             <User className="w-5 h-5" />
           </Link>
         </div>
