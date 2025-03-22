@@ -16,6 +16,8 @@ import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import AddItem from "./pages/AddItem";
 import NotFound from "./pages/NotFound";
+import Search from "./pages/Search";
+import Messages from "./pages/Messages";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +35,8 @@ const App = () => (
             <Route path="/categories/:category" element={<CategoryDetail />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/all-items" element={<AllItems />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/messages" element={<Messages />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
