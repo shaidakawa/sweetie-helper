@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Search as SearchIcon, Filter } from 'lucide-react';
@@ -113,10 +114,11 @@ const Search = () => {
           </Drawer>
         </div>
         
+        {/* Filter chips */}
         {selectedFilters.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
             {selectedFilters.map(filter => (
-              <div key={filter} className="bg-oldie-lightgray rounded-full px-3 py-1 text-sm flex items-center">
+              <div key={filter} className="bg-white/30 backdrop-blur-sm rounded-full px-3 py-1 text-sm flex items-center">
                 {filter}
                 <button 
                   onClick={() => toggleFilter(filter)}

@@ -11,30 +11,40 @@ const Home = () => {
   return (
     <div className="animate-slide-in">
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden" style={{ background: 'radial-gradient(100.93% 55.95% at 50.02% 44.05%, rgba(201, 201, 199, 0.3) 0%, rgba(99, 99, 98, 0.5) 100%)' }}>
-        <div className="container mx-auto px-4 relative z-10 text-center">
+      <section className="relative flex flex-col items-center justify-center overflow-hidden pb-20 pt-10">
+        <div className="container mx-auto px-4 relative z-10 text-center mb-20">
           <h1 className="text-5xl md:text-7xl font-playfair font-bold mb-6 tracking-wide leading-tight">
             ReWear. ReLove. ReStyle
           </h1>
           <p className="text-2xl mb-4 italic">Sutainable fashion, timelesss style.</p>
-          <p className="text-xl mb-12">Shop pre-loved, look great, and waste lesss!</p>
+          <p className="text-xl mb-8">Shop pre-loved, look great, and waste lesss!</p>
         </div>
         
-        {/* Product images - positioned lower to avoid overlapping with text */}
-        <div className="absolute inset-x-0 bottom-4 flex items-center justify-center">
-          <div className="container px-4 flex items-end justify-between mt-24">
-            <div className="w-1/3 flex items-center justify-end">
-              {/* Left image - vintage shoes */}
-              <img src="/lovable-uploads/14135fb0-35e2-4127-9013-74bd241d6182.png" alt="Product" className="h-64 object-contain" />
-            </div>
-            <div className="w-1/3 flex items-center justify-center">
-              {/* Center image - vintage dress */}
-              <img src="/lovable-uploads/4fba6377-92cb-4d75-aef5-f835ee67b750.png" alt="Product" className="h-72 object-contain" />
-            </div>
-            <div className="w-1/3 flex items-center justify-start">
-              {/* Right image - vintage bag */}
-              <img src="/lovable-uploads/8a0eda7d-131b-4967-b704-43f6627119b5.png" alt="Product" className="h-64 object-contain" />
-            </div>
+        {/* Product images - positioned below text content */}
+        <div className="container px-4 flex items-end justify-between mt-10">
+          <div className="w-1/3 flex items-center justify-end">
+            {/* Left image - vintage shoes */}
+            <img 
+              src="/lovable-uploads/14135fb0-35e2-4127-9013-74bd241d6182.png" 
+              alt="Product" 
+              className="h-64 object-contain" 
+            />
+          </div>
+          <div className="w-1/3 flex items-center justify-center">
+            {/* Center image - vintage dress */}
+            <img 
+              src="/lovable-uploads/4fba6377-92cb-4d75-aef5-f835ee67b750.png" 
+              alt="Product" 
+              className="h-72 object-contain" 
+            />
+          </div>
+          <div className="w-1/3 flex items-center justify-start">
+            {/* Right image - vintage bag */}
+            <img 
+              src="/lovable-uploads/8a0eda7d-131b-4967-b704-43f6627119b5.png" 
+              alt="Product" 
+              className="h-64 object-contain" 
+            />
           </div>
         </div>
       </section>
