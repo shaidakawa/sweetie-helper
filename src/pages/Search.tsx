@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Search as SearchIcon, Filter } from 'lucide-react';
@@ -35,17 +34,18 @@ const Search = () => {
   };
   
   const filteredProducts = products.filter(product => {
+    const searchLower = searchTerm.toLowerCase();
     const matchesSearch = 
       searchTerm === '' || 
-      product.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      (product.brand && product.brand.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      product.category.toLowerCase().includes(searchTerm.toLowerCase());
+      product.title.toLowerCase().includes(searchLower) || 
+      (product.brand && product.brand.toLowerCase().includes(searchLower)) ||
+      product.category.toLowerCase().includes(searchLower) ||
+      (product.description && product.description.toLowerCase().includes(searchLower));
     
     const matchesFilters = 
       selectedFilters.length === 0 || 
       selectedFilters.some(filter => 
-        product.category.toLowerCase().includes(filter.toLowerCase()) ||
-        (product.title && product.title.toLowerCase().includes(filter.toLowerCase()))
+        product.category.toLowerCase() === filter.toLowerCase()
       );
     
     return matchesSearch && matchesFilters;

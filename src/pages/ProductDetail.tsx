@@ -112,22 +112,22 @@ const ProductDetail = () => {
               </div>
             )}
             
-            {!purchaseFormVisible ? (
-              <div className="flex gap-4">
-                <button onClick={handleBuyClick} className="btn-black py-3 px-10">
-                  Buy
-                </button>
-                <button 
-                  onClick={handleMessageClick} 
-                  className="bg-oldie-gray text-white rounded-full p-3 flex items-center justify-center"
-                  aria-label="Message seller"
-                  title="Chat with seller"
-                >
-                  <MessageCircle className="w-6 h-6" />
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handlePurchaseSubmit} className="space-y-4">
+            <div className="flex gap-4">
+              <button onClick={handleBuyClick} className="btn-black py-3 px-10">
+                Buy
+              </button>
+              <button 
+                onClick={handleMessageClick} 
+                className="bg-oldie-gray text-white rounded-full p-3 flex items-center justify-center"
+                aria-label="Message seller"
+                title="Chat with seller"
+              >
+                <MessageCircle className="w-6 h-6" />
+              </button>
+            </div>
+            
+            {purchaseFormVisible && (
+              <form onSubmit={handlePurchaseSubmit} className="space-y-4 mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block mb-1">Location</label>

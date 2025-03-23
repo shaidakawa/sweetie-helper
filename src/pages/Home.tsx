@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
@@ -33,33 +32,9 @@ const Home = () => {
           </h1>
           <p className="text-2xl mb-4 italic">Sutainable fashion, timelesss style.</p>
           <p className="text-xl mb-8">Shop pre-loved, look great, and waste lesss!</p>
-          
-          <div className="flex justify-center">
-            <div className="relative max-w-md w-full">
-              <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                <Search className="w-5 h-5 text-gray-400" />
-              </div>
-              <input 
-                type="text" 
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className="pl-10 pr-4 py-3 w-full glass-input shadow-md" 
-                placeholder="Search for items..."
-              />
-              <div className="absolute inset-y-0 right-0 flex items-center pr-1">
-                <button 
-                  className="h-full px-4 bg-oldie-black text-white rounded-r-sm shadow-md hover:shadow-lg transition-shadow"
-                  onClick={handleSearch}
-                >
-                  Search
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
         
-        {/* Product images moved below the search bar */}
+        {/* Product images */}
         <div className="absolute inset-x-0 bottom-0 flex items-center justify-center">
           <div className="container px-4 flex items-end justify-between">
             <div className="w-1/3 flex items-center justify-end">
