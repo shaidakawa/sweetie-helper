@@ -19,6 +19,7 @@ import AddItem from "./pages/AddItem";
 import NotFound from "./pages/NotFound";
 import Search from "./pages/Search";
 import Messages from "./pages/Messages";
+import Account from "./pages/Account";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminUsers from "./pages/admin/AdminUsers";
@@ -48,6 +49,11 @@ const App = () => (
               <Route path="/signup" element={<SignUp />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/add-item" element={<AddItem />} />
+              <Route path="/account" element={
+                <ProtectedRoute>
+                  <Account />
+                </ProtectedRoute>
+              } />
               <Route path="*" element={<NotFound />} />
             </Route>
 
