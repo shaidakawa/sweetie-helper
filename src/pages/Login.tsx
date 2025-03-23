@@ -49,9 +49,9 @@ const Login = () => {
   };
 
   return (
-    <div className="animate-slide-in py-10">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row min-h-[80vh]">
+    <div className="animate-slide-in">
+      <div className="container mx-auto">
+        <div className="flex flex-col md:flex-row min-h-[calc(100vh-10rem)]">
           <div className="w-full md:w-1/2 flex flex-col justify-center p-8">
             <h1 className="text-5xl font-playfair font-bold mb-12">Log In</h1>
             
@@ -63,7 +63,7 @@ const Login = () => {
                   name="username"
                   value={formData.username}
                   onChange={handleInputChange}
-                  className="glass-input"
+                  className="glass-input shadow-md"
                   required
                 />
               </div>
@@ -75,7 +75,7 @@ const Login = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="glass-input"
+                  className="glass-input shadow-md"
                   required
                 />
               </div>
@@ -87,7 +87,7 @@ const Login = () => {
               </div>
               
               <div>
-                <button type="submit" className="btn-black w-full py-3">
+                <button type="submit" className="btn-black w-full py-3 shadow-md hover:shadow-lg transition-shadow">
                   Log In
                 </button>
               </div>
@@ -100,14 +100,12 @@ const Login = () => {
             </p>
           </div>
           
-          <div className="hidden md:block w-1/2">
-            <div className="h-full">
-              <img 
-                src="/lovable-uploads/6db6afbc-70d9-40b6-84cd-96e02122b8c5.png" 
-                alt="Clothes rack" 
-                className="w-full h-full object-cover"
-              />
-            </div>
+          <div className="hidden md:block md:w-1/2 h-[calc(100vh-10rem)]">
+            <img 
+              src="/lovable-uploads/6db6afbc-70d9-40b6-84cd-96e02122b8c5.png" 
+              alt="Clothes rack" 
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </div>

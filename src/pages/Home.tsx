@@ -1,11 +1,10 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 import CategorySlider from '../components/CategorySlider';
 import ProductCard from '../components/ProductCard';
 import { products } from '../data/products';
-import { Button } from "@/components/ui/button";
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState(products.slice(0, 3));
@@ -45,21 +44,12 @@ const Home = () => {
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                className="pl-10 pr-4 py-3 w-full glass-input" 
+                className="pl-10 pr-4 py-3 w-full glass-input shadow-md" 
                 placeholder="Search for items..."
               />
-              <div className="absolute inset-y-0 right-0 flex items-center gap-2 pr-1">
-                <Link to="/search" className="h-full">
-                  <Button 
-                    variant="outline"
-                    size="sm"
-                    className="h-full flex items-center gap-1 mr-1"
-                  >
-                    <Filter className="w-4 h-4" />
-                  </Button>
-                </Link>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-1">
                 <button 
-                  className="h-full px-4 bg-oldie-black text-white rounded-r-sm"
+                  className="h-full px-4 bg-oldie-black text-white rounded-r-sm shadow-md hover:shadow-lg transition-shadow"
                   onClick={handleSearch}
                 >
                   Search
@@ -91,7 +81,7 @@ const Home = () => {
           <h2 className="text-4xl font-playfair font-bold mb-12 text-center">Categories</h2>
           <CategorySlider />
           <div className="flex justify-center mt-8">
-            <Link to="/categories" className="btn-black">
+            <Link to="/categories" className="btn-black shadow-md hover:shadow-lg transition-shadow">
               Shop All
             </Link>
           </div>
@@ -115,7 +105,7 @@ const Home = () => {
             ))}
           </div>
           <div className="flex justify-center mt-12">
-            <Link to="/all-items" className="btn-black">
+            <Link to="/all-items" className="btn-black shadow-md hover:shadow-lg transition-shadow">
               View All Items
             </Link>
           </div>
