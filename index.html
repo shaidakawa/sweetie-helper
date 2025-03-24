@@ -1,26 +1,112 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>sweetie-helper</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+    <title>ReWear - Sustainable Fashion</title>
+    <meta name="description" content="Sustainable fashion, timeless style. Shop pre-loved, look great, and waste less!" />
+    <meta name="author" content="ReWear" />
 
-    <meta property="og:title" content="Lovable Generated Project" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
   </head>
 
   <body>
-    <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="logo">ReWear</div>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="categories.html" class="nav-link">Categories</a></li>
+          <li><a href="all-items.html" class="nav-link">All Items</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="search.html" class="nav-link">Search</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>ReWear. ReLove. ReStyle</h1>
+        <p class="tagline">Sustainable fashion, timeless style.</p>
+        <p class="subtext">Shop pre-loved, look great, and waste less!</p>
+      </div>
+      
+      <div class="hero-images">
+        <div class="hero-image left">
+          <img src="/lovable-uploads/14135fb0-35e2-4127-9013-74bd241d6182.png" alt="Vintage shoes">
+        </div>
+        <div class="hero-image center">
+          <img src="/lovable-uploads/4fba6377-92cb-4d75-aef5-f835ee67b750.png" alt="Vintage dress">
+        </div>
+        <div class="hero-image right">
+          <img src="/lovable-uploads/8a0eda7d-131b-4967-b704-43f6627119b5.png" alt="Vintage bag">
+        </div>
+      </div>
+    </section>
+    
+    <!-- Categories Section -->
+    <section class="categories">
+      <div class="container">
+        <h2>Categories</h2>
+        <div class="category-slider" id="categorySlider">
+          <!-- Categories will be added here with JavaScript -->
+        </div>
+        <div class="center-button">
+          <a href="categories.html" class="btn-black">Shop All</a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Featured Products Section -->
+    <section class="featured-products">
+      <div class="container">
+        <h2>Featured Items</h2>
+        <div class="products-grid" id="featuredProducts">
+          <!-- Featured products will be added here with JavaScript -->
+        </div>
+        <div class="center-button">
+          <a href="all-items.html" class="btn-black">View All Items</a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>ReWear</h3>
+            <p>Sustainable fashion, timeless style.</p>
+          </div>
+          <div class="footer-section">
+            <h3>Links</h3>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="categories.html">Categories</a></li>
+              <li><a href="all-items.html">All Items</a></li>
+              <li><a href="about.html">About</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Contact</h3>
+            <p>Email: contact@rewear.com</p>
+            <p>Phone: (123) 456-7890</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2023 ReWear. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
