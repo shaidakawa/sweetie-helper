@@ -9,7 +9,12 @@ const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState(products.slice(0, 3));
   
   return (
-    <div className="animate-slide-in">
+    <div 
+      className="animate-slide-in"
+      style={{
+        background: "radial-gradient(100.93% 55.95% at 50.02% 44.05%, rgba(201, 201, 199, 0.3) 0%, rgba(99, 99, 98, 0.5) 100%)"
+      }}
+    >
       {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center overflow-hidden pb-20 pt-10">
         <div className="container mx-auto px-4 relative z-10 text-center mb-20">
