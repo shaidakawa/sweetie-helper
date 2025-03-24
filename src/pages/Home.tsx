@@ -20,13 +20,13 @@ const Home = () => {
           <p className="text-xl mb-8">Shop pre-loved, look great, and waste lesss!</p>
         </div>
         
-        {/* Product images - positioned below text content */}
-        <div className="container px-4 flex items-end justify-between mt-10">
+        {/* Product images - positioned BELOW text content with clear separation */}
+        <div className="container px-4 flex items-end justify-between mt-16">
           <div className="w-1/3 flex items-center justify-end">
             {/* Left image - vintage shoes */}
             <img 
               src="/lovable-uploads/14135fb0-35e2-4127-9013-74bd241d6182.png" 
-              alt="Product" 
+              alt="Vintage shoes" 
               className="h-64 object-contain" 
             />
           </div>
@@ -34,7 +34,7 @@ const Home = () => {
             {/* Center image - vintage dress */}
             <img 
               src="/lovable-uploads/4fba6377-92cb-4d75-aef5-f835ee67b750.png" 
-              alt="Product" 
+              alt="Vintage dress" 
               className="h-72 object-contain" 
             />
           </div>
@@ -42,7 +42,7 @@ const Home = () => {
             {/* Right image - vintage bag */}
             <img 
               src="/lovable-uploads/8a0eda7d-131b-4967-b704-43f6627119b5.png" 
-              alt="Product" 
+              alt="Vintage bag" 
               className="h-64 object-contain" 
             />
           </div>
