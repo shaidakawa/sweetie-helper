@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search - ReWear</title>
+    <meta name="description" content="Search for sustainable fashion at ReWear" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      .search-container {
+        margin: 2rem 0;
+      }
+      
+      .search-input {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.2rem;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 0.25rem;
+        background-color: rgba(255,255,255,0.7);
+        backdrop-filter: blur(5px);
+      }
+      
+      .filter-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+      }
+      
+      .filter-chip {
+        background-color: rgba(255,255,255,0.3);
+        backdrop-filter: blur(5px);
+        border-radius: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+      }
+      
+      .filter-chip button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-left: 0.5rem;
+        font-size: 1.25rem;
+        line-height: 1;
+      }
+      
+      .clear-filters {
+        background: none;
+        border: none;
+        text-decoration: underline;
+        cursor: pointer;
+        color: rgba(0,0,0,0.6);
+        font-size: 0.875rem;
+      }
+      
+      .clear-filters:hover {
+        color: rgba(0,0,0,0.8);
+      }
+      
+      .no-results {
+        text-align: center;
+        padding: 4rem 0;
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="logo">ReWear</div>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="categories.html" class="nav-link">Categories</a></li>
+          <li><a href="all-items.html" class="nav-link">All Items</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="search.html" class="nav-link">Search</a></li>
+        </ul>
+      </div>
+    </nav>
+    
+    <div class="container animate-slide-in">
+      <h1 class="text-5xl font-playfair font-bold mb-8 mt-8">Search Items</h1>
+      
+      <div class="search-container">
+        <input 
+          type="text" 
+          id="searchInput"
+          class="search-input"
+          placeholder="Search for items..."
+        />
+      </div>
+      
+      <div class="filter-chips" id="filterChips">
+        <!-- Filter chips will be added here with JavaScript -->
+      </div>
+      
+      <div class="products-grid" id="searchResults">
+        <!-- Search results will be displayed here -->
+      </div>
+      
+      <div id="noResults" class="no-results" style="display: none;">
+        <p>No items found matching your search.</p>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>ReWear</h3>
+            <p>Sustainable fashion, timeless style.</p>
+          </div>
+          <div class="footer-section">
+            <h3>Links</h3>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="categories.html">Categories</a></li>
+              <li><a href="all-items.html">All Items</a></li>
+              <li><a href="about.html">About</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Contact</h3>
+            <p>Email: contact@rewear.com</p>
+            <p>Phone: (123) 456-7890</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2023 ReWear. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const noResults = document.getElementById('noResults');
+        const filterChips = document.getElementById('filterChips');
+        
+        let selectedFilters = [];
+        const filterCategories = [
+          'High Heels', 'Sandals', 'Sneakers', 'Jackets', 'Coats', 
+          'Rings', 'Bracelets', 'Necklaces', 'Earrings', 'Watches', 
+          'Bags', 'Tote Bags', 'Dresses'
+        ];
+        
+        // Initialize search
+        updateResults();
+        
+        // Search input event listener
+        searchInput.addEventListener('input', updateResults);
+        
+        function updateResults() {
+          const term = searchInput.value;
+          
+          // Get filtered products
+          let filteredProducts = searchProducts(term);
+          
+          // Apply category filters if any
+          if (selectedFilters.length > 0) {
+            filteredProducts = filteredProducts.filter(product => 
+              selectedFilters.some(filter => 
+                product.category.toLowerCase() === filter.toLowerCase()
+              )
+            );
+          }
+          
+          // Clear current results
+          searchResults.innerHTML = '';
+          
+          // Show no results message if needed
+          if (filteredProducts.length === 0) {
+            noResults.style.display = 'block';
+          } else {
+            noResults.style.display = 'none';
+            
+            // Add products to results
+            filteredProducts.forEach(product => {
+              const productCard = document.createElement('div');
+              productCard.className = 'product-card';
+              
+              productCard.innerHTML = `
+                <div class="product-image">
+                  <img src="${product.image}" alt="${product.title}">
+                </div>
+                <div class="product-content">
+                  <h3>${product.title}</h3>
+                  <div class="product-category">${product.category}</div>
+                  <div class="product-price">$${product.price.toFixed(2)}</div>
+                </div>
+              `;
+              
+              // Add event listener to navigate to product detail page
+              productCard.addEventListener('click', () => {
+                window.location.href = `product-detail.html?id=${product.id}`;
+              });
+              
+              searchResults.appendChild(productCard);
+            });
+          }
+          
+          // Update filter chips
+          updateFilterChips();
+        }
+        
+        function updateFilterChips() {
+          filterChips.innerHTML = '';
+          
+          if (selectedFilters.length > 0) {
+            selectedFilters.forEach(filter => {
+              const chip = document.createElement('div');
+              chip.className = 'filter-chip';
+              chip.innerHTML = `
+                ${filter}
+                <button data-filter="${filter}">×</button>
+              `;
+              
+              // Add event listener to remove filter
+              chip.querySelector('button').addEventListener('click', function() {
+                const filterToRemove = this.getAttribute('data-filter');
+                selectedFilters = selectedFilters.filter(f => f !== filterToRemove);
+                updateResults();
+              });
+              
+              filterChips.appendChild(chip);
+            });
+            
+            // Add clear all button
+            const clearButton = document.createElement('button');
+            clearButton.className = 'clear-filters';
+            clearButton.textContent = 'Clear all';
+            clearButton.addEventListener('click', () => {
+              selectedFilters = [];
+              updateResults();
+            });
+            
+            filterChips.appendChild(clearButton);
+          }
+        }
+        
+        // Add some demo filters (in a real app, this would be a proper UI)
+        // For demonstration, let's add a few filter buttons at the bottom
+        const filtersContainer = document.createElement('div');
+        filtersContainer.className = 'filter-options';
+        filtersContainer.innerHTML = '<h3 style="margin: 2rem 0 1rem;">Filter by Category:</h3>';
+        
+        const filterButtonsContainer = document.createElement('div');
+        filterButtonsContainer.style.display = 'flex';
+        filterButtonsContainer.style.flexWrap = 'wrap';
+        filterButtonsContainer.style.gap = '0.5rem';
+        filterButtonsContainer.style.marginBottom = '2rem';
+        
+        filterCategories.forEach(category => {
+          const button = document.createElement('button');
+          button.className = 'btn-outline';
+          button.textContent = category;
+          button.addEventListener('click', () => {
+            if (selectedFilters.includes(category)) {
+              selectedFilters = selectedFilters.filter(f => f !== category);
+            } else {
+              selectedFilters.push(category);
+            }
+            updateResults();
+          });
+          
+          filterButtonsContainer.appendChild(button);
+        });
+        
+        filtersContainer.appendChild(filterButtonsContainer);
+        document.querySelector('.search-container').after(filtersContainer);
+      });
+    </script>
+  </body>
+</html>
