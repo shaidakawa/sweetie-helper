@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Items - ReWear</title>
+    <meta name="description" content="Browse all pre-loved fashion items." />
+    <meta name="author" content="ReWear" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      /* All Items Page Specific Styles */
+      .all-items-page {
+        padding-top: 8rem;
+        padding-bottom: 5rem;
+      }
+      
+      .filters {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+      
+      @media (min-width: 768px) {
+        .filters {
+          flex-direction: row;
+        }
+        
+        .search-filter {
+          flex: 2;
+        }
+        
+        .category-filter {
+          flex: 1;
+        }
+      }
+      
+      .filter-input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0.25rem;
+        background-color: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+      }
+      
+      .filter-input:focus {
+        outline: none;
+        border-color: rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+      }
+      
+      .no-items {
+        text-align: center;
+        padding: 4rem;
+        font-size: 1.25rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="navbar">
+      <div class="container">
+        <div class="nav-logo">
+          <a href="index.html" class="logo">OLDIE</a>
+        </div>
+        <nav class="nav-links">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="categories.html" class="nav-link">Categories</a>
+        </nav>
+        <div class="nav-actions">
+          <a href="search.html" class="nav-icon"><img src="/icons/search.svg" alt="Search"></a>
+          <a href="add-item.html" class="nav-icon"><img src="/icons/plus.svg" alt="Add Item"></a>
+          <a href="messages.html" class="nav-icon"><img src="/icons/message.svg" alt="Messages"></a>
+          <a href="login.html" class="nav-icon"><img src="/icons/user.svg" alt="Account"></a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="all-items-page">
+        <div class="container">
+          <h1 class="text-5xl font-playfair font-bold mb-8 mt-8">All Items</h1>
+          
+          <div class="filters">
+            <div class="search-filter">
+              <input 
+                type="text" 
+                id="itemSearchInput"
+                placeholder="Search by name, brand or category..." 
+                class="filter-input"
+              />
+            </div>
+            
+            <div class="category-filter">
+              <select id="categoryFilter" class="filter-input">
+                <option value="">All Categories</option>
+                <!-- Categories will be loaded with JavaScript -->
+              </select>
+            </div>
+          </div>
+          
+          <div id="allItemsContainer" class="products-grid">
+            <!-- Products will be loaded with JavaScript -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-column">
+            <a href="index.html" class="logo">OLDIE</a>
+            <div class="social-icons">
+              <a href="#" class="social-icon">FB</a>
+              <a href="#" class="social-icon">IN</a>
+              <a href="#" class="social-icon">YT</a>
+              <a href="#" class="social-icon">IG</a>
+            </div>
+          </div>
+          
+          <div class="footer-column">
+            <h3 class="footer-title">Categories</h3>
+            <ul class="footer-links">
+              <li><a href="categories.html?category=accessories">Accessories</a></li>
+              <li><a href="categories.html?category=shoes">Shoes</a></li>
+              <li><a href="categories.html?category=bags">Bags</a></li>
+              <li><a href="categories.html?category=kurdish-dresses">Kurdish Dresses</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3 class="footer-title">Tops</h3>
+            <ul class="footer-links">
+              <li><a href="categories.html?category=tops">Tops</a></li>
+              <li><a href="categories.html?category=trousers">Trousers</a></li>
+              <li><a href="categories.html?category=jackets">Jackets</a></li>
+              <li><a href="categories.html?category=dresses">Dresses</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3 class="footer-title">Kurdish Dresses</h3>
+            <ul class="footer-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('itemSearchInput');
+        const categorySelect = document.getElementById('categoryFilter');
+        const productsContainer = document.getElementById('allItemsContainer');
+        
+        // Populate category select options
+        const categories = [...new Set(products.map(product => product.category))];
+        categories.forEach(category => {
+          const option = document.createElement('option');
+          option.value = category;
+          option.textContent = category;
+          categorySelect.appendChild(option);
+        });
+        
+        // Handle search input and category filtering
+        function filterProducts() {
+          const searchTerm = searchInput.value.toLowerCase();
+          const categoryFilter = categorySelect.value;
+          
+          const filteredProducts = products.filter(product => {
+            const matchesSearch = product.title.toLowerCase().includes(searchTerm) ||
+                                  (product.brand && product.brand.toLowerCase().includes(searchTerm)) ||
+                                  product.category.toLowerCase().includes(searchTerm);
+                                  
+            const matchesCategory = categoryFilter === '' || product.category === categoryFilter;
+            
+            return matchesSearch && matchesCategory;
+          });
+          
+          displayProducts(filteredProducts);
+        }
+        
+        // Display products in the container
+        function displayProducts(productsToDisplay) {
+          productsContainer.innerHTML = '';
+          
+          if (productsToDisplay.length === 0) {
+            productsContainer.innerHTML = '<div class="no-items">No items found matching your search.</div>';
+            return;
+          }
+          
+          productsToDisplay.forEach(product => {
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            
+            productCard.innerHTML = `
+              <div class="product-image">
+                <img src="${product.image}" alt="${product.title}">
+              </div>
+              <div class="product-content">
+                <div class="product-category">${product.category}</div>
+                <h3>${product.title}</h3>
+                <div class="product-price">$${product.price.toFixed(2)}</div>
+              </div>
+            `;
+            
+            // Add event listener to navigate to product detail page
+            productCard.addEventListener('click', () => {
+              window.location.href = `product-detail.html?id=${product.id}`;
+            });
+            
+            productsContainer.appendChild(productCard);
+          });
+        }
+        
+        // Event listeners for filtering
+        searchInput.addEventListener('input', filterProducts);
+        categorySelect.addEventListener('change', filterProducts);
+        
+        // Initial display of all products
+        displayProducts(products);
+      });
+    </script>
+  </body>
+</html>
