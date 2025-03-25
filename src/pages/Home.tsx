@@ -1,156 +1,91 @@
 
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import CategorySlider from '../components/CategorySlider';
+import ProductCard from '../components/ProductCard';
 import { products } from '../data/products';
 
-const categoryImages = [
-  {
-    id: '1',
-    title: 'Accessories',
-    image: '/lovable-uploads/08e778bf-4ec8-4d76-b502-2c5a8cd34813.png',
-    link: '/categories/accessories'
-  },
-  {
-    id: '2',
-    title: 'Dress',
-    image: '/lovable-uploads/d0eca0ac-b671-433f-a088-a643c37ff819.png',
-    link: '/categories/dress'
-  },
-  {
-    id: '3',
-    title: 'Kurdish Dresses',
-    image: '/lovable-uploads/6db6afbc-70d9-40b6-84cd-96e02122b8c5.png',
-    link: '/categories/kurdish-dresses'
-  }
-];
-
 const Home = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [featuredProducts, setFeaturedProducts] = useState(products.slice(0, 3));
   
-  const prevCategory = () => {
-    setCurrentIndex(prev => 
-      prev === 0 ? categoryImages.length - 1 : prev - 1
-    );
-  };
-  
-  const nextCategory = () => {
-    setCurrentIndex(prev => 
-      prev === categoryImages.length - 1 ? 0 : prev + 1
-    );
-  };
-
   return (
-    <div className="bg-gray-300 min-h-screen">
+    <div 
+      className="animate-slide-in"
+      style={{
+        background: "radial-gradient(100.93% 55.95% at 50.02% 44.05%, rgba(201, 201, 199, 0.3) 0%, rgba(99, 99, 98, 0.5) 100%)"
+      }}
+    >
       {/* Hero Section */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-playfair font-bold mb-6 tracking-wide leading-tight italic">
+      <section className="relative flex flex-col items-center justify-center overflow-hidden pb-20 pt-10">
+        <div className="container mx-auto px-4 relative z-10 text-center mb-20">
+          <h1 className="text-5xl md:text-7xl font-playfair font-bold mb-6 tracking-wide leading-tight">
             ReWear. ReLove. ReStyle
           </h1>
-          <p className="text-xl mb-4 italic">Sutainable fashion, timelesss style.</p>
-          <p className="text-xl mb-8">Shop pre-loved, look great, and waste less!</p>
-          
-          <div className="relative max-w-md mx-auto mt-8">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full py-2 px-4 pl-10 pr-8 rounded-full bg-white/80 border-none focus:outline-none"
-            />
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
-              <Search className="h-5 w-5 text-gray-500" />
-            </div>
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-              <button className="h-5 w-5 text-gray-500">
-                <span className="sr-only">Filter</span>
-                ≡
-              </button>
-            </div>
-          </div>
+          <p className="text-2xl mb-4 italic">Sutainable fashion, timelesss style.</p>
+          <p className="text-xl mb-8">Shop pre-loved, look great, and waste lesss!</p>
         </div>
         
-        {/* Featured products display */}
-        <div className="container mx-auto mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="col-span-2 row-span-2">
+        {/* Product images - positioned BELOW text content with clear separation */}
+        <div className="container px-4 flex items-end justify-between mt-16">
+          <div className="w-1/3 flex items-center justify-end">
+            {/* Left image - vintage shoes */}
             <img 
-              src="/lovable-uploads/50ac75b1-383d-40ee-a46b-f2b9179d8d71.png"
-              alt="Denim jacket" 
-              className="w-full h-full object-cover"
+              src="/lovable-uploads/14135fb0-35e2-4127-9013-74bd241d6182.png" 
+              alt="Vintage shoes" 
+              className="h-64 object-contain" 
             />
           </div>
-          <div>
+          <div className="w-1/3 flex items-center justify-center">
+            {/* Center image - vintage dress */}
             <img 
-              src="/lovable-uploads/08e778bf-4ec8-4d76-b502-2c5a8cd34813.png"
-              alt="High heels" 
-              className="w-full h-full object-cover"
+              src="/lovable-uploads/4fba6377-92cb-4d75-aef5-f835ee67b750.png" 
+              alt="Vintage dress" 
+              className="h-72 object-contain" 
             />
           </div>
-          <div>
+          <div className="w-1/3 flex items-center justify-start">
+            {/* Right image - vintage bag */}
             <img 
-              src="/lovable-uploads/d0eca0ac-b671-433f-a088-a643c37ff819.png"
-              alt="Boots" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="col-span-2">
-            <img 
-              src="/lovable-uploads/6db6afbc-70d9-40b6-84cd-96e02122b8c5.png"
-              alt="Tote bag" 
-              className="w-full h-full object-cover"
+              src="/lovable-uploads/8a0eda7d-131b-4967-b704-43f6627119b5.png" 
+              alt="Vintage bag" 
+              className="h-64 object-contain" 
             />
           </div>
         </div>
       </section>
       
       {/* Categories Section */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto">
+      <section className="py-16">
+        <div className="container mx-auto px-4">
           <h2 className="text-4xl font-playfair font-bold mb-12 text-center">Categories</h2>
-          
-          <div className="relative">
-            <button 
-              onClick={prevCategory}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-70 rounded-full p-2"
-              aria-label="Previous category"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
-            
-            <div className="flex justify-center">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
-                {categoryImages.map((category, index) => (
-                  <Link 
-                    key={category.id} 
-                    to={category.link}
-                    className={`block ${index === currentIndex ? 'opacity-100' : 'opacity-100 md:opacity-70'}`}
-                  >
-                    <div className="overflow-hidden">
-                      <img 
-                        src={category.image} 
-                        alt={category.title} 
-                        className="w-full h-48 object-cover"
-                      />
-                    </div>
-                    <div className="text-center mt-2">
-                      <h3 className="text-xl font-medium">{category.title}</h3>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-            
-            <button 
-              onClick={nextCategory}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-70 rounded-full p-2"
-              aria-label="Next category"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
-          </div>
-          
-          <div className="text-center mt-8">
-            <Link to="/categories" className="inline-block px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors">
+          <CategorySlider />
+          <div className="flex justify-center mt-8">
+            <Link to="/categories" className="btn-black shadow-md hover:shadow-lg transition-shadow">
               Shop All
+            </Link>
+          </div>
+        </div>
+      </section>
+      
+      {/* Featured Products */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-playfair font-bold mb-12 text-center">Featured Items</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredProducts.map(product => (
+              <ProductCard 
+                key={product.id}
+                id={product.id}
+                title={product.title}
+                price={product.price}
+                image={product.image}
+                category={product.category}
+              />
+            ))}
+          </div>
+          <div className="flex justify-center mt-12">
+            <Link to="/all-items" className="btn-black shadow-md hover:shadow-lg transition-shadow">
+              View All Items
             </Link>
           </div>
         </div>

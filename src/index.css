@@ -76,40 +76,97 @@
   }
 
   body {
-    @apply text-foreground font-cormorant;
-    background-color: #d1d1d1;
+    @apply text-oldie-darkgray font-cormorant;
+    background: radial-gradient(100.93% 55.95% at 50.02% 44.05%, rgba(201, 201, 199, 0.3) 0%, rgba(99, 99, 98, 0.5) 100%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-playfair;
   }
+
+  input, textarea, select {
+    @apply bg-white/70 backdrop-blur-sm border-none rounded-sm focus:ring-0 focus:outline-none;
+  }
+
+  button {
+    @apply transition-all duration-300;
+  }
 }
 
-@layer components {
-  .animate-slide-in {
-    animation: slideIn 0.5s ease-out forwards;
-  }
+.product-card {
+  @apply relative overflow-hidden rounded-md transition-transform duration-300 shadow-md;
+}
 
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+.product-card:hover {
+  @apply transform shadow-lg;
+}
 
-  .btn-black {
-    @apply bg-black text-white px-6 py-2 hover:bg-gray-800 transition-colors;
-  }
+.product-card img {
+  @apply w-full h-auto object-cover transition-transform duration-500;
+}
 
-  .btn-outline {
-    @apply bg-transparent border border-black/20 text-black px-6 py-2 hover:bg-black/5 transition-colors;
-  }
+.product-card:hover img {
+  @apply scale-105;
+}
 
-  .glass-card {
-    @apply bg-white/70 backdrop-blur-sm rounded-md overflow-hidden transition-all duration-300 shadow-md hover:shadow-lg;
-  }
+.category-slider {
+  @apply flex items-center overflow-x-hidden relative;
+}
+
+.category-card {
+  @apply bg-white/70 backdrop-blur-sm rounded-md overflow-hidden transition-all duration-300 shadow-md;
+}
+
+.category-card:hover {
+  @apply shadow-lg transform scale-[1.02];
+}
+
+.nav-link {
+  @apply relative text-oldie-black text-xl font-cormorant font-semibold opacity-80 transition-opacity duration-300 px-4;
+}
+
+.nav-link:after {
+  content: '';
+  @apply absolute left-0 bottom-0 w-0 h-[1px] bg-oldie-black transition-all duration-300;
+}
+
+.nav-link:hover {
+  @apply opacity-100;
+}
+
+.nav-link:hover:after {
+  @apply w-full;
+}
+
+.page-transition-enter {
+  @apply opacity-0;
+}
+
+.page-transition-enter-active {
+  @apply opacity-100 transition-opacity duration-300;
+}
+
+.page-transition-exit {
+  @apply opacity-100;
+}
+
+.page-transition-exit-active {
+  @apply opacity-0 transition-opacity duration-300;
+}
+
+.btn-black {
+  @apply bg-oldie-black text-white px-6 py-2 rounded-sm hover:bg-oldie-black/90 transition-all shadow-md hover:shadow-lg;
+}
+
+.btn-outline {
+  @apply bg-transparent border border-oldie-black/20 text-oldie-black px-6 py-2 rounded-sm hover:bg-oldie-black/5 transition-all shadow-md hover:shadow-lg;
+}
+
+.glass-input {
+  @apply bg-white/70 backdrop-blur-sm border-none rounded-sm px-4 py-3 w-full shadow-sm;
+}
+
+.glass-card {
+  @apply bg-white/70 backdrop-blur-sm rounded-md overflow-hidden transition-all duration-300 shadow-md hover:shadow-lg;
 }
