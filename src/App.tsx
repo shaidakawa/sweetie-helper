@@ -9,6 +9,7 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Categories from "./pages/Categories";
+import CategoryPage from "./pages/CategoryPage";
 import CategoryDetail from "./pages/CategoryDetail";
 import ProductDetail from "./pages/ProductDetail";
 import AllItems from "./pages/AllItems";
@@ -40,7 +41,7 @@ const App = () => (
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/categories" element={<Categories />} />
-              <Route path="/categories/:category" element={<CategoryDetail />} />
+              <Route path="/categories/:category" element={<CategoryPage />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/all-items" element={<AllItems />} />
               <Route path="/search" element={<Search />} />
