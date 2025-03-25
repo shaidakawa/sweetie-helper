@@ -1,12 +1,15 @@
-
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize category slider
-  initCategorySlider();
+  // This initialization code will only run for any remaining HTML pages
+  const categorySlider = document.getElementById('categorySlider');
+  const featuredProducts = document.getElementById('featuredProducts');
   
-  // Initialize featured products
-  initFeaturedProducts();
-
-  // Add any additional initialization here
+  if (categorySlider) {
+    initCategorySlider();
+  }
+  
+  if (featuredProducts) {
+    initFeaturedProducts();
+  }
 });
 
 function initCategorySlider() {

@@ -1,4 +1,3 @@
-
 // Products data
 const products = [
   {
@@ -90,3 +89,12 @@ const categories = [
     description: "Jackets, coats, and more"
   }
 ];
+
+// Export data for React components
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { products, categories };
+} else {
+  // Keep as global variables for HTML pages
+  window.products = products;
+  window.categories = categories;
+}
