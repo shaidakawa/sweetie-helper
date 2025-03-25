@@ -1,12 +1,12 @@
 
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import CategorySlider from '../components/CategorySlider';
 import ProductCard from '../components/ProductCard';
 import { products } from '../data/products';
 
 const Home = () => {
-  const [featuredProducts, setFeaturedProducts] = useState(products.slice(0, 3));
+  const [featuredProducts] = useState(products.slice(0, 3));
   
   return (
     <div 
@@ -21,8 +21,8 @@ const Home = () => {
           <h1 className="text-5xl md:text-7xl font-playfair font-bold mb-6 tracking-wide leading-tight">
             ReWear. ReLove. ReStyle
           </h1>
-          <p className="text-2xl mb-4 italic">Sutainable fashion, timelesss style.</p>
-          <p className="text-xl mb-8">Shop pre-loved, look great, and waste lesss!</p>
+          <p className="text-2xl mb-4 italic">Sustainable fashion, timeless style.</p>
+          <p className="text-xl mb-8">Shop pre-loved, look great, and waste less!</p>
         </div>
         
         {/* Product images - positioned BELOW text content with clear separation */}
