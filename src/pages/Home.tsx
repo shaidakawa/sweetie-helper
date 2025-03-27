@@ -25,14 +25,14 @@ const Home = () => {
           <p className="text-xl mb-8">Shop pre-loved, look great, and waste lesss!</p>
         </div>
         
-        {/* Product images - positioned higher with larger size */}
+        {/* Product images - positioned higher with larger size and shadows */}
         <div className="container px-4 flex items-end justify-between mt-10">
           <div className="w-1/3 flex items-center justify-end">
             {/* Left image - vintage shoes */}
             <img 
               src="/lovable-uploads/14135fb0-35e2-4127-9013-74bd241d6182.png" 
               alt="Vintage shoes" 
-              className="h-72 object-contain" 
+              className="h-80 object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
             />
           </div>
           <div className="w-1/3 flex items-center justify-center">
@@ -40,7 +40,7 @@ const Home = () => {
             <img 
               src="/lovable-uploads/4fba6377-92cb-4d75-aef5-f835ee67b750.png" 
               alt="Vintage dress" 
-              className="h-80 object-contain" 
+              className="h-96 object-contain drop-shadow-[0_8px_15px_rgba(0,0,0,0.3)]" 
             />
           </div>
           <div className="w-1/3 flex items-center justify-start">
@@ -48,7 +48,7 @@ const Home = () => {
             <img 
               src="/lovable-uploads/8a0eda7d-131b-4967-b704-43f6627119b5.png" 
               alt="Vintage bag" 
-              className="h-72 object-contain" 
+              className="h-80 object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
             />
           </div>
         </div>

@@ -9,7 +9,7 @@ interface CategoryCardProps {
 
 const CategoryCard = ({ title, image, link }: CategoryCardProps) => {
   return (
-    <Link to={link} className="category-card shadow-md hover:shadow-lg transition-all">
+    <Link to={link} className="category-card shadow-[0_5px_15px_rgba(0,0,0,0.15)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)] transition-all">
       <div className="overflow-hidden">
         <img 
           src={image} 
