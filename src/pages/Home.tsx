@@ -21,66 +21,35 @@ const Home = () => {
           <h1 className="text-5xl md:text-7xl font-playfair font-bold mb-6 tracking-wide leading-tight">
             ReWear. ReLove. ReStyle
           </h1>
-          <p className="text-2xl mb-4 italic">Sustainable fashion, timeless style.</p>
-          <p className="text-xl mb-8">Shop pre-loved, look great, and waste less!</p>
+          <p className="text-2xl mb-4 italic">Sutainable fashion, timelesss style.</p>
+          <p className="text-xl mb-8">Shop pre-loved, look great, and waste lesss!</p>
         </div>
         
-        {/* Product images - styled with soft shadows and transitions */}
-        <div className="container px-4 flex flex-wrap md:flex-nowrap items-end justify-between gap-4 mt-10">
-          <div className="w-full md:w-1/4 flex items-center justify-center">
-            {/* Tote bag with cherry blossoms */}
-            <div className="relative group">
-              <div className="absolute inset-0 bg-pink-100 rounded-lg blur opacity-30 group-hover:opacity-40 transition-opacity duration-300"></div>
-              <div className="relative bg-white/50 backdrop-blur-sm p-4 rounded-lg shadow-lg transform transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-xl overflow-hidden">
-                <img 
-                  src="/lovable-uploads/ddfb8c83-9afa-44de-820b-84e328b33679.png" 
-                  alt="Tote bag with cherry blossoms" 
-                  className="h-64 object-contain" 
-                />
-              </div>
-            </div>
+        {/* Product images - positioned higher with larger size and shadows */}
+        <div className="container px-4 flex items-end justify-between mt-10">
+          <div className="w-1/3 flex items-center justify-end">
+            {/* Left image - vintage shoes */}
+            <img 
+              src="/lovable-uploads/14135fb0-35e2-4127-9013-74bd241d6182.png" 
+              alt="Vintage shoes" 
+              className="h-80 object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+            />
           </div>
-          
-          <div className="w-full md:w-1/4 flex items-center justify-center">
-            {/* Black leather boots */}
-            <div className="relative group mt-8">
-              <div className="absolute inset-0 bg-gray-100 rounded-lg blur opacity-30 group-hover:opacity-40 transition-opacity duration-300"></div>
-              <div className="relative bg-white/50 backdrop-blur-sm p-4 rounded-lg shadow-lg transform transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-xl overflow-hidden">
-                <img 
-                  src="/lovable-uploads/bc8fbe6b-d114-412c-8586-3398e019dba4.png" 
-                  alt="Black leather boots" 
-                  className="h-64 object-contain" 
-                />
-              </div>
-            </div>
+          <div className="w-1/3 flex items-center justify-center">
+            {/* Center image - vintage dress */}
+            <img 
+              src="/lovable-uploads/4fba6377-92cb-4d75-aef5-f835ee67b750.png" 
+              alt="Vintage dress" 
+              className="h-96 object-contain drop-shadow-[0_8px_15px_rgba(0,0,0,0.3)]" 
+            />
           </div>
-          
-          <div className="w-full md:w-1/4 flex items-center justify-center">
-            {/* Denim jacket */}
-            <div className="relative group">
-              <div className="absolute inset-0 bg-blue-100 rounded-lg blur opacity-30 group-hover:opacity-40 transition-opacity duration-300"></div>
-              <div className="relative bg-white/50 backdrop-blur-sm p-4 rounded-lg shadow-lg transform transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-xl overflow-hidden">
-                <img 
-                  src="/lovable-uploads/33283ddb-0efa-47cc-addf-eea8f376512e.png" 
-                  alt="Denim jacket" 
-                  className="h-64 object-contain" 
-                />
-              </div>
-            </div>
-          </div>
-          
-          <div className="w-full md:w-1/4 flex items-center justify-center">
-            {/* Black stiletto heels */}
-            <div className="relative group mt-12">
-              <div className="absolute inset-0 bg-gray-100 rounded-lg blur opacity-30 group-hover:opacity-40 transition-opacity duration-300"></div>
-              <div className="relative bg-white/50 backdrop-blur-sm p-4 rounded-lg shadow-lg transform transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-xl overflow-hidden">
-                <img 
-                  src="/lovable-uploads/0ddf888a-b07f-4c1d-b007-f2f8762a24f9.png" 
-                  alt="Black stiletto heels" 
-                  className="h-64 object-contain" 
-                />
-              </div>
-            </div>
+          <div className="w-1/3 flex items-center justify-start">
+            {/* Right image - vintage bag */}
+            <img 
+              src="/lovable-uploads/8a0eda7d-131b-4967-b704-43f6627119b5.png" 
+              alt="Vintage bag" 
+              className="h-80 object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+            />
           </div>
         </div>
       </section>
