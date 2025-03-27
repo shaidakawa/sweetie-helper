@@ -14,7 +14,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Slider } from "@/components/ui/slider";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
@@ -28,22 +28,14 @@ const FILTER_CATEGORIES = [
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [filterType, setFilterType] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
   const [filterColor, setFilterColor] = useState('');
   const [filterSize, setFilterSize] = useState('');
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   
   const colors = [...new Set(products.map(product => product.color).filter(Boolean))];
   const sizes = [...new Set(products.map(product => product.size).filter(Boolean))];
-  const types = [...new Set(products.map(product => product.brand).filter(Boolean))];
-  
-  const minPrice = Math.min(...products.map(product => product.price));
-  const maxPrice = Math.max(...products.map(product => product.price));
-  
-  useEffect(() => {
-    setPriceRange([minPrice, maxPrice]);
-  }, [minPrice, maxPrice]);
+  const categories = [...new Set(products.map(product => product.category).filter(Boolean))];
   
   const toggleFilter = (filter: string) => {
     if (selectedFilters.includes(filter)) {
@@ -68,12 +60,11 @@ const Search = () => {
         product.category.toLowerCase() === filter.toLowerCase()
       );
     
-    const matchesType = filterType === '' || (product.brand && product.brand === filterType);
+    const matchesCategory = filterCategory === '' || product.category === filterCategory;
     const matchesColor = filterColor === '' || (product.color && product.color === filterColor);
     const matchesSize = filterSize === '' || (product.size && product.size === filterSize);
-    const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
     
-    return matchesSearch && matchesFilters && matchesType && matchesColor && matchesSize && matchesPrice;
+    return matchesSearch && matchesFilters && matchesCategory && matchesColor && matchesSize;
   }).sort((a, b) => {
     if (sortDirection === 'asc') {
       return a.price - b.price;
@@ -84,10 +75,9 @@ const Search = () => {
 
   const clearFilters = () => {
     setSelectedFilters([]);
-    setFilterType('');
+    setFilterCategory('');
     setFilterColor('');
     setFilterSize('');
-    setPriceRange([minPrice, maxPrice]);
     setSortDirection('asc');
   };
 
@@ -122,105 +112,89 @@ const Search = () => {
                 <DrawerHeader>
                   <DrawerTitle>Advanced Filters</DrawerTitle>
                   <DrawerDescription>
-                    Filter products by category, type, size, color, and price
+                    Filter products by category, size, and color
                   </DrawerDescription>
                 </DrawerHeader>
                 
-                <div className="p-4 space-y-6">
-                  <div>
-                    <h4 className="font-medium mb-2">Sort by Price</h4>
-                    <RadioGroup 
-                      value={sortDirection} 
-                      onValueChange={(value) => setSortDirection(value as 'asc' | 'desc')}
-                      className="flex gap-4"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="asc" id="price-asc" />
-                        <Label htmlFor="price-asc">Low to High</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="desc" id="price-desc" />
-                        <Label htmlFor="price-desc">High to Low</Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-medium mb-2">Filter By Category</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      {FILTER_CATEGORIES.map((filter) => (
-                        <Button
-                          key={filter}
-                          variant={selectedFilters.includes(filter) ? "default" : "outline"}
-                          onClick={() => toggleFilter(filter)}
-                          className="justify-start"
-                        >
-                          {filter}
-                        </Button>
-                      ))}
+                <ScrollArea className="h-[60vh] px-4">
+                  <div className="space-y-6 pr-4">
+                    <div>
+                      <h4 className="font-medium mb-2">Sort by Price</h4>
+                      <RadioGroup 
+                        value={sortDirection} 
+                        onValueChange={(value) => setSortDirection(value as 'asc' | 'desc')}
+                        className="flex gap-4"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="asc" id="price-asc" />
+                          <Label htmlFor="price-asc">Low to High</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="desc" id="price-desc" />
+                          <Label htmlFor="price-desc">High to Low</Label>
+                        </div>
+                      </RadioGroup>
                     </div>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-medium mb-2">Type/Brand</h4>
-                    <select 
-                      value={filterType}
-                      onChange={(e) => setFilterType(e.target.value)}
-                      className="w-full rounded-md border border-input p-2"
-                    >
-                      <option value="">All Types</option>
-                      {types.map(type => type && (
-                        <option key={type} value={type}>{type}</option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-medium mb-2">Size</h4>
-                    <select 
-                      value={filterSize}
-                      onChange={(e) => setFilterSize(e.target.value)}
-                      className="w-full rounded-md border border-input p-2"
-                    >
-                      <option value="">All Sizes</option>
-                      {sizes.map(size => size && (
-                        <option key={size} value={size}>{size}</option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-medium mb-2">Color</h4>
-                    <select 
-                      value={filterColor}
-                      onChange={(e) => setFilterColor(e.target.value)}
-                      className="w-full rounded-md border border-input p-2"
-                    >
-                      <option value="">All Colors</option>
-                      {colors.map(color => color && (
-                        <option key={color} value={color}>{color}</option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-medium mb-2">Price Range</h4>
-                    <div className="pt-4">
-                      <Slider
-                        defaultValue={[minPrice, maxPrice]}
-                        value={priceRange}
-                        max={maxPrice}
-                        min={minPrice}
-                        step={1}
-                        onValueChange={(value) => setPriceRange(value as [number, number])}
-                      />
-                      <div className="flex justify-between mt-2 text-sm">
-                        <div>${priceRange[0].toFixed(2)}</div>
-                        <div>${priceRange[1].toFixed(2)}</div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-2">Filter By Categories</h4>
+                      <div className="grid grid-cols-2 gap-3">
+                        {FILTER_CATEGORIES.map((filter) => (
+                          <Button
+                            key={filter}
+                            variant={selectedFilters.includes(filter) ? "default" : "outline"}
+                            onClick={() => toggleFilter(filter)}
+                            className="justify-start"
+                          >
+                            {filter}
+                          </Button>
+                        ))}
                       </div>
                     </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-2">Category</h4>
+                      <select 
+                        value={filterCategory}
+                        onChange={(e) => setFilterCategory(e.target.value)}
+                        className="w-full rounded-md border border-input p-2"
+                      >
+                        <option value="">All Categories</option>
+                        {categories.map(category => category && (
+                          <option key={category} value={category}>{category}</option>
+                        ))}
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-2">Size</h4>
+                      <select 
+                        value={filterSize}
+                        onChange={(e) => setFilterSize(e.target.value)}
+                        className="w-full rounded-md border border-input p-2"
+                      >
+                        <option value="">All Sizes</option>
+                        {sizes.map(size => size && (
+                          <option key={size} value={size}>{size}</option>
+                        ))}
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-2">Color</h4>
+                      <select 
+                        value={filterColor}
+                        onChange={(e) => setFilterColor(e.target.value)}
+                        className="w-full rounded-md border border-input p-2"
+                      >
+                        <option value="">All Colors</option>
+                        {colors.map(color => color && (
+                          <option key={color} value={color}>{color}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
+                </ScrollArea>
                 
                 <DrawerFooter>
                   <Button 
@@ -239,8 +213,8 @@ const Search = () => {
         </div>
         
         {/* Filter chips */}
-        {(selectedFilters.length > 0 || filterType || filterColor || filterSize || 
-          priceRange[0] > minPrice || priceRange[1] < maxPrice || sortDirection === 'desc') && (
+        {(selectedFilters.length > 0 || filterCategory || filterColor || filterSize || 
+          sortDirection === 'desc') && (
           <div className="flex flex-wrap gap-2 mb-4">
             {selectedFilters.map(filter => (
               <div key={filter} className="bg-white/30 backdrop-blur-sm rounded-full px-3 py-1 text-sm flex items-center shadow-sm">
@@ -254,11 +228,11 @@ const Search = () => {
               </div>
             ))}
             
-            {filterType && (
+            {filterCategory && (
               <div className="bg-white/30 backdrop-blur-sm rounded-full px-3 py-1 text-sm flex items-center shadow-sm">
-                Type: {filterType}
+                Category: {filterCategory}
                 <button 
-                  onClick={() => setFilterType('')}
+                  onClick={() => setFilterCategory('')}
                   className="ml-2 text-gray-500 hover:text-gray-700"
                 >
                   ×
@@ -283,18 +257,6 @@ const Search = () => {
                 Size: {filterSize}
                 <button 
                   onClick={() => setFilterSize('')}
-                  className="ml-2 text-gray-500 hover:text-gray-700"
-                >
-                  ×
-                </button>
-              </div>
-            )}
-            
-            {(priceRange[0] > minPrice || priceRange[1] < maxPrice) && (
-              <div className="bg-white/30 backdrop-blur-sm rounded-full px-3 py-1 text-sm flex items-center shadow-sm">
-                Price: ${priceRange[0].toFixed(2)} - ${priceRange[1].toFixed(2)}
-                <button 
-                  onClick={() => setPriceRange([minPrice, maxPrice])}
                   className="ml-2 text-gray-500 hover:text-gray-700"
                 >
                   ×
