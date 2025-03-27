@@ -3,11 +3,16 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from '@/components/ui/use-toast';
-import { User, LogOut, Settings } from 'lucide-react';
+import { User, LogOut, Settings, UserCog } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const Account = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   
   const handleLogout = () => {
     logout();
@@ -16,6 +21,14 @@ const Account = () => {
       description: "You have been logged out of your account.",
     });
     navigate('/');
+  };
+
+  const handleSaveSettings = () => {
+    toast({
+      title: "Settings saved",
+      description: "Your account settings have been updated successfully.",
+    });
+    setIsSettingsOpen(false);
   };
 
   if (!user) {
@@ -63,9 +76,39 @@ const Account = () => {
                   <h2 className="text-xl font-playfair font-semibold">Account Settings</h2>
                 </div>
                 <p className="text-gray-600 mt-2">Manage your account settings and preferences</p>
-                <button className="btn-outline w-full mt-4 shadow-md">
-                  Manage Settings
-                </button>
+                
+                <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+                  <DialogTrigger asChild>
+                    <button className="btn-outline w-full mt-4 shadow-md">
+                      Manage Settings
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle className="text-xl font-playfair">Account Settings</DialogTitle>
+                      <DialogDescription>
+                        Update your personal information and account preferences
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName">First Name</Label>
+                        <Input id="firstName" defaultValue={user.firstName} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Last Name</Label>
+                        <Input id="lastName" defaultValue={user.lastName} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input id="email" type="email" defaultValue={user.email} />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button type="submit" onClick={handleSaveSettings}>Save changes</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
               
               <div className="glass-card p-6 shadow-md hover:shadow-lg">

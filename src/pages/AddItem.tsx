@@ -58,6 +58,9 @@ const AddItem = () => {
     navigate('/');
   };
 
+  // Custom input class for our enhanced inputs with shadows and rounded borders
+  const inputClass = "glass-input shadow-md rounded-md focus:shadow-lg transition-shadow";
+
   return (
     <div className="animate-slide-in py-10">
       <div className="bg-oldie-gray py-6 mb-6">
@@ -70,7 +73,7 @@ const AddItem = () => {
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
           <div className="mb-8">
             <label className="block text-xl mb-2">Add Item Image</label>
-            <div className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md p-6 cursor-pointer" onClick={() => document.getElementById('itemImage')?.click()}>
+            <div className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md p-6 cursor-pointer shadow-md hover:shadow-lg transition-shadow" onClick={() => document.getElementById('itemImage')?.click()}>
               {image ? (
                 <img src={image} alt="Item preview" className="max-h-60 object-contain" />
               ) : (
@@ -97,7 +100,7 @@ const AddItem = () => {
                 name="location"
                 value={formData.location}
                 onChange={handleInputChange}
-                className="glass-input"
+                className={inputClass}
                 required
               />
             </div>
@@ -108,7 +111,7 @@ const AddItem = () => {
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                className="glass-input"
+                className={inputClass}
                 required
               >
                 <option value="">Select a category</option>
@@ -132,7 +135,7 @@ const AddItem = () => {
                 name="color"
                 value={formData.color}
                 onChange={handleInputChange}
-                className="glass-input"
+                className={inputClass}
                 required
               />
             </div>
@@ -144,7 +147,7 @@ const AddItem = () => {
                 name="brand"
                 value={formData.brand}
                 onChange={handleInputChange}
-                className="glass-input"
+                className={inputClass}
               />
             </div>
           </div>
@@ -157,7 +160,7 @@ const AddItem = () => {
                 name="size"
                 value={formData.size}
                 onChange={handleInputChange}
-                className="glass-input"
+                className={inputClass}
               />
             </div>
             
@@ -168,7 +171,7 @@ const AddItem = () => {
                 name="price"
                 value={formData.price}
                 onChange={handleInputChange}
-                className="glass-input"
+                className={inputClass}
                 required
                 min="0"
                 step="0.01"
@@ -183,7 +186,7 @@ const AddItem = () => {
               name="fibId"
               value={formData.fibId}
               onChange={handleInputChange}
-              className="glass-input"
+              className={inputClass}
               required
             />
           </div>
@@ -194,7 +197,7 @@ const AddItem = () => {
               name="description"
               value={formData.description}
               onChange={handleInputChange}
-              className="glass-input min-h-[150px]"
+              className={`${inputClass} min-h-[150px]`}
               required
             />
           </div>
