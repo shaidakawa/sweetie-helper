@@ -56,17 +56,21 @@ const categories = [
 
 const Categories = () => {
   return (
-    <div className="animate-slide-in py-10">
+    <div className="animate-slide-in py-10"
+      style={{
+        background: "radial-gradient(100.93% 55.95% at 50.02% 44.05%, rgba(201, 201, 199, 0.3) 0%, rgba(99, 99, 98, 0.5) 100%)"
+      }}
+    >
       <div className="container mx-auto px-4">
         <h1 className="text-5xl font-playfair font-bold mb-12 mt-8">Categories</h1>
         
         <Tabs defaultValue="all" className="w-full">
           <div className="flex justify-center mb-8">
-            <TabsList className="bg-white/70 backdrop-blur-sm">
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="clothing">Clothing</TabsTrigger>
-              <TabsTrigger value="accessories">Accessories</TabsTrigger>
-              <TabsTrigger value="kurdish">Kurdish</TabsTrigger>
+            <TabsList className="bg-transparent backdrop-blur-sm shadow-[0_5px_15px_rgba(0,0,0,0.2)] rounded-md">
+              <TabsTrigger value="all" className="data-[state=active]:bg-white/50">All</TabsTrigger>
+              <TabsTrigger value="clothing" className="data-[state=active]:bg-white/50">Clothing</TabsTrigger>
+              <TabsTrigger value="accessories" className="data-[state=active]:bg-white/50">Accessories</TabsTrigger>
+              <TabsTrigger value="kurdish" className="data-[state=active]:bg-white/50">Kurdish</TabsTrigger>
             </TabsList>
           </div>
           

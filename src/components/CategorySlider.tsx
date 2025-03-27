@@ -80,7 +80,7 @@ const CategorySlider = () => {
       <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
         <button 
           onClick={prevSlide}
-          className="w-10 h-10 rounded-full bg-[rgba(201,201,199,0.7)] backdrop-blur-sm shadow-md flex items-center justify-center hover:bg-[rgba(201,201,199,0.9)] transition-colors"
+          className="w-10 h-10 rounded-full bg-transparent backdrop-blur-sm shadow-[0_5px_10px_rgba(0,0,0,0.2)] flex items-center justify-center hover:bg-white/10 transition-colors"
           aria-label="Previous slide"
         >
           <ChevronLeft className="w-6 h-6" />
@@ -114,7 +114,7 @@ const CategorySlider = () => {
       <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
         <button 
           onClick={nextSlide}
-          className="w-10 h-10 rounded-full bg-[rgba(201,201,199,0.7)] backdrop-blur-sm shadow-md flex items-center justify-center hover:bg-[rgba(201,201,199,0.9)] transition-colors"
+          className="w-10 h-10 rounded-full bg-transparent backdrop-blur-sm shadow-[0_5px_10px_rgba(0,0,0,0.2)] flex items-center justify-center hover:bg-white/10 transition-colors"
           aria-label="Next slide"
         >
           <ChevronRight className="w-6 h-6" />
