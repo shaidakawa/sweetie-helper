@@ -57,9 +57,9 @@ const Home = () => {
           {/* Right side layout with heels and bag */}
           <div className="col-span-7 lg:col-span-6 grid grid-rows-2 gap-4">
             {/* Top row - Single heel and pair of heels side by side */}
-            <div className="grid grid-cols-2 gap-4 items-center">
+            <div className="grid grid-cols-2 gap-1 items-center">
               {/* Top left - Single high heel with smaller rectangular glassy background */}
-              <div className="bg-white/30 backdrop-blur-[2px] rounded-md p-2 flex justify-center items-center h-[120px] w-[60%] max-w-[90px]">
+              <div className="bg-white/30 backdrop-blur-[2px] rounded-md p-2 flex justify-center items-center h-[120px] w-[50%] max-w-[80px] mr-auto">
                 <img 
                   src="/lovable-uploads/b90bc855-30a5-407b-a04f-1befb2147ddc.png" 
                   alt="Black high heel" 
@@ -68,7 +68,7 @@ const Home = () => {
               </div>
               
               {/* Top right - Pair of boots without background */}
-              <div className="flex justify-center items-center">
+              <div className="flex justify-start items-center ml-0">
                 <img 
                   src="/lovable-uploads/4d8d5bc5-9351-49d3-b9b4-8c7652efafe6.png" 
                   alt="Black leather boots" 
@@ -78,11 +78,11 @@ const Home = () => {
             </div>
             
             {/* Bottom row - Larger tote bag without background */}
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center px-4">
               <img 
                 src="/lovable-uploads/a9e033e7-f164-4931-8d77-65e9c33b4aa8.png" 
                 alt="Tote bag" 
-                className="max-h-[200px] w-auto object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                className="max-h-[240px] w-auto object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
               />
             </div>
           </div>
