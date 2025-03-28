@@ -25,14 +25,14 @@ const Home = () => {
           <p className="text-xl mb-8">Shop pre-loved, look great, and waste lesss!</p>
         </div>
         
-        {/* Product images - positioned higher with larger size and shadows */}
+        {/* Product images - positioned with the left boot smaller and lower */}
         <div className="container px-4 flex items-end justify-between mt-10">
-          <div className="w-1/3 flex items-center justify-end">
+          <div className="w-1/3 flex items-center justify-end pb-12">
             {/* Left image - black boots */}
             <img 
               src="/lovable-uploads/4d8d5bc5-9351-49d3-b9b4-8c7652efafe6.png" 
               alt="Black leather boots" 
-              className="h-80 object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+              className="h-64 object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
             />
           </div>
           <div className="w-1/3 flex items-center justify-center">
