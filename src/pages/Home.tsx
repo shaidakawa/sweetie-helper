@@ -56,10 +56,10 @@ const Home = () => {
           
           {/* Right side layout with heels and bag, adjusted to match reference */}
           <div className="col-span-6 lg:col-span-6 grid grid-rows-2 gap-4">
-            {/* Top row - Single heel and pair of heels side by side */}
-            <div className="grid grid-cols-2 gap-0 items-center mb-4">
+            {/* Top row - Single heel and pair of heels side by side with NO GAP */}
+            <div className="flex items-center mb-4">
               {/* Top left - Single high heel with glassy background */}
-              <div className="bg-white/30 backdrop-blur-[2px] rounded-md p-2 flex justify-center items-center h-[140px] max-w-[120px]">
+              <div className="bg-white/30 backdrop-blur-[2px] rounded-l-md p-2 flex justify-center items-center h-[140px] w-[120px]">
                 <img 
                   src="/lovable-uploads/b90bc855-30a5-407b-a04f-1befb2147ddc.png" 
                   alt="Black high heel" 
@@ -67,8 +67,8 @@ const Home = () => {
                 />
               </div>
               
-              {/* Top right - Pair of boots without background */}
-              <div className="flex justify-start items-center h-[140px]">
+              {/* Top right - Pair of boots without background, RIGHT NEXT to single heel */}
+              <div className="flex justify-center items-center h-[140px] w-[140px]">
                 <img 
                   src="/lovable-uploads/4d8d5bc5-9351-49d3-b9b4-8c7652efafe6.png" 
                   alt="Black leather boots" 
