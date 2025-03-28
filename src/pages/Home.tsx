@@ -41,11 +41,11 @@ const Home = () => {
           </div>
         </div>
         
-        {/* Product images grid layout updated to match the reference design */}
+        {/* Product images completely redesigned to match the reference image */}
         <div className="container px-4 grid grid-cols-12 gap-4">
           {/* Left - Denim jacket (larger) */}
-          <div className="col-span-6 lg:col-span-6 flex items-center">
-            <div className="w-full flex justify-center">
+          <div className="col-span-6 flex items-center justify-center">
+            <div className="w-full h-[400px] flex justify-center items-center">
               <img 
                 src="/lovable-uploads/51486f5d-b0c3-4a0f-a2b6-60645c4a6631.png" 
                 alt="Denim jacket" 
@@ -54,12 +54,12 @@ const Home = () => {
             </div>
           </div>
           
-          {/* Right side layout with heels and bag, adjusted to match reference */}
-          <div className="col-span-6 lg:col-span-6 grid grid-rows-2 gap-4">
-            {/* Top row - Single heel and pair of heels side by side with small space */}
-            <div className="flex items-end mb-4">
-              {/* Top left - Single high heel with glassy background */}
-              <div className="bg-white/30 backdrop-blur-[2px] rounded-l-md p-2 flex justify-center items-center h-[140px] w-[120px]">
+          {/* Right column layout - exact match to reference image */}
+          <div className="col-span-6 flex flex-col space-y-4">
+            {/* Top row - Two shoes side by side */}
+            <div className="flex space-x-4">
+              {/* Left shoe - Single heel in transparent box */}
+              <div className="bg-white/30 backdrop-blur-[2px] rounded-md p-2 flex justify-center items-center h-[160px] w-[160px]">
                 <img 
                   src="/lovable-uploads/b90bc855-30a5-407b-a04f-1befb2147ddc.png" 
                   alt="Black high heel" 
@@ -67,25 +67,22 @@ const Home = () => {
                 />
               </div>
               
-              {/* Increased spacing between heel elements */}
-              <div className="w-[32px]"></div>
-              
-              {/* Top right - Pair of boots without background, made LARGER and aligned with single heel */}
-              <div className="flex justify-center items-end h-[140px] w-[190px]">
+              {/* Right shoe - Boots with no background */}
+              <div className="flex justify-center items-center h-[160px] w-[200px]">
                 <img 
                   src="/lovable-uploads/4d8d5bc5-9351-49d3-b9b4-8c7652efafe6.png" 
                   alt="Black leather boots" 
-                  className="max-h-[180px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                  className="max-h-[140px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
                 />
               </div>
             </div>
             
-            {/* Bottom row - Tote bag WITHOUT background box, WIDER SIZE - extends from below left heel to below right heel */}
-            <div className="flex justify-center items-center">
+            {/* Bottom row - Tote bag with floral background */}
+            <div className="flex justify-center items-center h-[220px] overflow-hidden">
               <img 
-                src="/lovable-uploads/a9e033e7-f164-4931-8d77-65e9c33b4aa8.png" 
+                src="/lovable-uploads/3df48585-b143-4fd2-ba54-4940cdb88064.png" 
                 alt="Tote bag" 
-                className="max-h-[240px] w-[340px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                className="w-full h-full object-cover" 
               />
             </div>
           </div>
