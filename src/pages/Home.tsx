@@ -58,12 +58,12 @@ const Home = () => {
           <div className="col-span-7 lg:col-span-6 grid grid-rows-2 gap-4">
             {/* Top row - Single heel and pair of heels side by side */}
             <div className="grid grid-cols-2 gap-4">
-              {/* Top left - Single high heel with glassy background */}
-              <div className="bg-white/30 backdrop-blur-[2px] rounded-md p-2 flex justify-center items-center">
+              {/* Top left - Single high heel with smaller rectangular glassy background */}
+              <div className="bg-white/30 backdrop-blur-[2px] rounded-md p-2 flex justify-center items-center h-[120px] w-full">
                 <img 
                   src="/lovable-uploads/b90bc855-30a5-407b-a04f-1befb2147ddc.png" 
                   alt="Black high heel" 
-                  className="max-h-[130px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                  className="max-h-[100px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
                 />
               </div>
               
