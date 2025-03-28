@@ -28,10 +28,10 @@ const Home = () => {
         {/* Product images - positioned higher with larger size and shadows */}
         <div className="container px-4 flex items-end justify-between mt-10">
           <div className="w-1/3 flex items-center justify-end">
-            {/* Left image - vintage shoes */}
+            {/* Left image - black boots */}
             <img 
-              src="/lovable-uploads/14135fb0-35e2-4127-9013-74bd241d6182.png" 
-              alt="Vintage shoes" 
+              src="/lovable-uploads/4d8d5bc5-9351-49d3-b9b4-8c7652efafe6.png" 
+              alt="Black leather boots" 
               className="h-80 object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
             />
           </div>
