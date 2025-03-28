@@ -67,8 +67,8 @@ const Home = () => {
                 />
               </div>
               
-              {/* Small spacing between heel elements */}
-              <div className="w-[8px]"></div>
+              {/* Small spacing between heel elements - DOUBLED from 8px to 16px */}
+              <div className="w-[16px]"></div>
               
               {/* Top right - Pair of boots without background, with small spacing from heel */}
               <div className="flex justify-center items-center h-[140px] w-[140px]">
@@ -80,12 +80,12 @@ const Home = () => {
               </div>
             </div>
             
-            {/* Bottom row - Tote bag with background, larger size */}
-            <div className="bg-white/30 backdrop-blur-[2px] rounded-md p-4 flex justify-center items-center">
+            {/* Bottom row - Tote bag with background, BIGGER SIZE - increased height and padding */}
+            <div className="bg-white/30 backdrop-blur-[2px] rounded-md p-6 flex justify-center items-center">
               <img 
                 src="/lovable-uploads/a9e033e7-f164-4931-8d77-65e9c33b4aa8.png" 
                 alt="Tote bag" 
-                className="max-h-[200px] w-auto object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                className="max-h-[240px] w-auto object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
               />
             </div>
           </div>
