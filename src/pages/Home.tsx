@@ -25,8 +25,17 @@ const Home = () => {
           <p className="text-xl mb-8">Shop pre-loved, look great, and waste lesss!</p>
         </div>
         
-        {/* Product images - positioned with the left boot smaller and lower */}
-        <div className="container px-4 flex items-end justify-between mt-10">
+        {/* Product images layout */}
+        <div className="container px-4 flex items-end justify-between mt-10 relative">
+          {/* High heel image positioned above center */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 -top-20">
+            <img 
+              src="/lovable-uploads/b90bc855-30a5-407b-a04f-1befb2147ddc.png" 
+              alt="Black high heels" 
+              className="h-40 object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+            />
+          </div>
+        
           <div className="w-1/3 flex items-center justify-end pb-12">
             {/* Left image - black boots */}
             <img 
