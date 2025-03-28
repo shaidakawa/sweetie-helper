@@ -57,7 +57,7 @@ const Home = () => {
           {/* Right side layout with heels and bag, adjusted to match reference */}
           <div className="col-span-6 lg:col-span-6 grid grid-rows-2 gap-4">
             {/* Top row - Single heel and pair of heels side by side with small space */}
-            <div className="flex items-center mb-4">
+            <div className="flex items-end mb-4">
               {/* Top left - Single high heel with glassy background */}
               <div className="bg-white/30 backdrop-blur-[2px] rounded-l-md p-2 flex justify-center items-center h-[140px] w-[120px]">
                 <img 
@@ -67,25 +67,25 @@ const Home = () => {
                 />
               </div>
               
-              {/* Increased spacing between heel elements - QUADRUPLED from original 8px to 32px */}
+              {/* Increased spacing between heel elements */}
               <div className="w-[32px]"></div>
               
-              {/* Top right - Pair of boots without background, with small spacing from heel and slightly larger size */}
-              <div className="flex justify-center items-center h-[140px] w-[160px]">
+              {/* Top right - Pair of boots without background, made LARGER and aligned with single heel */}
+              <div className="flex justify-center items-end h-[140px] w-[190px]">
                 <img 
                   src="/lovable-uploads/4d8d5bc5-9351-49d3-b9b4-8c7652efafe6.png" 
                   alt="Black leather boots" 
-                  className="max-h-[160px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                  className="max-h-[180px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
                 />
               </div>
             </div>
             
-            {/* Bottom row - Tote bag WITHOUT background box, WIDER SIZE */}
+            {/* Bottom row - Tote bag WITHOUT background box, WIDER SIZE - extends from below left heel to below right heel */}
             <div className="flex justify-center items-center">
               <img 
                 src="/lovable-uploads/a9e033e7-f164-4931-8d77-65e9c33b4aa8.png" 
                 alt="Tote bag" 
-                className="max-h-[240px] w-[280px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                className="max-h-[240px] w-[340px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
               />
             </div>
           </div>
