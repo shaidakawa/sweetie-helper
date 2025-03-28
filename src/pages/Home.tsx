@@ -36,10 +36,10 @@ const Home = () => {
             />
           </div>
           <div className="w-1/3 flex items-center justify-center">
-            {/* Center image - vintage dress */}
+            {/* Center image - denim jacket (without background) */}
             <img 
-              src="/lovable-uploads/4fba6377-92cb-4d75-aef5-f835ee67b750.png" 
-              alt="Vintage dress" 
+              src="/lovable-uploads/51486f5d-b0c3-4a0f-a2b6-60645c4a6631.png" 
+              alt="Denim jacket" 
               className="h-96 object-contain drop-shadow-[0_8px_15px_rgba(0,0,0,0.3)]" 
             />
           </div>
