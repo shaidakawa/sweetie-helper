@@ -44,10 +44,10 @@ const Home = () => {
             />
           </div>
           <div className="w-1/3 flex items-center justify-start">
-            {/* Right image - vintage bag */}
+            {/* Right image - tote bag */}
             <img 
-              src="/lovable-uploads/8a0eda7d-131b-4967-b704-43f6627119b5.png" 
-              alt="Vintage bag" 
+              src="/lovable-uploads/a9e033e7-f164-4931-8d77-65e9c33b4aa8.png" 
+              alt="Tote bag" 
               className="h-80 object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
             />
           </div>
