@@ -56,7 +56,7 @@ const Home = () => {
           
           {/* Right side layout with heels and bag, adjusted to match reference */}
           <div className="col-span-6 lg:col-span-6 grid grid-rows-2 gap-4">
-            {/* Top row - Single heel and pair of heels side by side with NO GAP */}
+            {/* Top row - Single heel and pair of heels side by side with small space */}
             <div className="flex items-center mb-4">
               {/* Top left - Single high heel with glassy background */}
               <div className="bg-white/30 backdrop-blur-[2px] rounded-l-md p-2 flex justify-center items-center h-[140px] w-[120px]">
@@ -67,7 +67,10 @@ const Home = () => {
                 />
               </div>
               
-              {/* Top right - Pair of boots without background, RIGHT NEXT to single heel */}
+              {/* Small spacing between heel elements */}
+              <div className="w-[8px]"></div>
+              
+              {/* Top right - Pair of boots without background, with small spacing from heel */}
               <div className="flex justify-center items-center h-[140px] w-[140px]">
                 <img 
                   src="/lovable-uploads/4d8d5bc5-9351-49d3-b9b4-8c7652efafe6.png" 
