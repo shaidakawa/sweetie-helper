@@ -67,15 +67,15 @@ const Home = () => {
                 />
               </div>
               
-              {/* Small spacing between heel elements - DOUBLED from 8px to 16px */}
-              <div className="w-[16px]"></div>
+              {/* Increased spacing between heel elements - QUADRUPLED from original 8px to 32px */}
+              <div className="w-[32px]"></div>
               
-              {/* Top right - Pair of boots without background, with small spacing from heel */}
-              <div className="flex justify-center items-center h-[140px] w-[140px]">
+              {/* Top right - Pair of boots without background, with small spacing from heel and slightly larger size */}
+              <div className="flex justify-center items-center h-[140px] w-[160px]">
                 <img 
                   src="/lovable-uploads/4d8d5bc5-9351-49d3-b9b4-8c7652efafe6.png" 
                   alt="Black leather boots" 
-                  className="max-h-[140px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                  className="max-h-[160px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
                 />
               </div>
             </div>
