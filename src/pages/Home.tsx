@@ -57,13 +57,13 @@ const Home = () => {
           {/* Right side layout with heels and bag */}
           <div className="col-span-7 lg:col-span-6 grid grid-rows-2 gap-4">
             {/* Top row - Single heel and pair of heels side by side */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 items-center">
               {/* Top left - Single high heel with smaller rectangular glassy background */}
-              <div className="bg-white/30 backdrop-blur-[2px] rounded-md p-2 flex justify-center items-center h-[120px] w-[80%] max-w-[120px]">
+              <div className="bg-white/30 backdrop-blur-[2px] rounded-md p-2 flex justify-center items-center h-[120px] w-[60%] max-w-[90px]">
                 <img 
                   src="/lovable-uploads/b90bc855-30a5-407b-a04f-1befb2147ddc.png" 
                   alt="Black high heel" 
-                  className="max-h-[90px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                  className="max-h-[100px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
                 />
               </div>
               
@@ -72,7 +72,7 @@ const Home = () => {
                 <img 
                   src="/lovable-uploads/4d8d5bc5-9351-49d3-b9b4-8c7652efafe6.png" 
                   alt="Black leather boots" 
-                  className="max-h-[150px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                  className="max-h-[120px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
                 />
               </div>
             </div>
