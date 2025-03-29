@@ -59,27 +59,27 @@ const Home = () => {
             {/* Top row - Two shoes side by side */}
             <div className="flex space-x-4">
               {/* Left shoe - Single heel without background */}
-              <div className="bg-transparent backdrop-blur-[2px] rounded-md p-2 flex justify-center items-center h-[160px] w-[160px]">
+              <div className="bg-transparent backdrop-blur-[2px] rounded-md p-2 flex justify-center items-center h-[140px] w-[140px]">
                 <img 
                   src="/lovable-uploads/b90bc855-30a5-407b-a04f-1befb2147ddc.png" 
                   alt="Black high heel" 
-                  className="max-h-[120px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                  className="max-h-[110px] object-contain" 
                   style={{ filter: "drop-shadow(0 0 8px rgba(0,0,0,0.1))" }}
                 />
               </div>
               
-              {/* Right shoe - Boots with no background (larger than single heel) */}
-              <div className="flex justify-center items-center h-[160px] w-[200px]">
+              {/* Right shoe - Boots with no background (significantly larger than single heel) */}
+              <div className="flex justify-center items-center h-[160px] w-[220px]">
                 <img 
                   src="/lovable-uploads/4d8d5bc5-9351-49d3-b9b4-8c7652efafe6.png" 
                   alt="Black leather boots" 
-                  className="max-h-[160px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
+                  className="max-h-[180px] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,0.25)]" 
                 />
               </div>
             </div>
             
-            {/* Bottom row - Updated tote bag with floral background */}
-            <div className="flex justify-center items-center h-[220px] overflow-hidden">
+            {/* Bottom row - Updated wider tote bag that spans the entire width */}
+            <div className="flex justify-center items-center h-[220px] overflow-hidden w-full">
               <img 
                 src="/lovable-uploads/a9e033e7-f164-4931-8d77-65e9c33b4aa8.png" 
                 alt="Tote bag" 
