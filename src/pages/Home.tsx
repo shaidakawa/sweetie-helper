@@ -45,11 +45,11 @@ const Home = () => {
         <div className="container px-4 grid grid-cols-12 gap-0">
           {/* Left - Denim jacket (much larger) */}
           <div className="col-span-7 flex items-center justify-center">
-            <div className="w-full h-[600px] flex justify-center items-center">
+            <div className="w-full h-[650px] flex justify-center items-center">
               <img 
                 src="/lovable-uploads/51486f5d-b0c3-4a0f-a2b6-60645c4a6631.png" 
                 alt="Denim jacket" 
-                className="object-contain max-h-[600px] drop-shadow-[0_8px_15px_rgba(0,0,0,0.3)]" 
+                className="object-contain max-h-[650px] drop-shadow-[0_8px_15px_rgba(0,0,0,0.3)]" 
               />
             </div>
           </div>
@@ -58,8 +58,8 @@ const Home = () => {
           <div className="col-span-5 flex flex-col space-y-4 pl-0">
             {/* Top row - Two shoes side by side */}
             <div className="flex space-x-4">
-              {/* Left shoe - Single heel without background */}
-              <div className="bg-transparent backdrop-blur-[2px] rounded-md p-2 flex justify-center items-center h-[140px] w-[140px]">
+              {/* Left shoe - Single heel with transparent box and thin border */}
+              <div className="bg-transparent border border-white/10 rounded-md p-2 flex justify-center items-center h-[140px] w-[140px]">
                 <img 
                   src="/lovable-uploads/b90bc855-30a5-407b-a04f-1befb2147ddc.png" 
                   alt="Black high heel" 
@@ -78,8 +78,9 @@ const Home = () => {
               </div>
             </div>
             
-            {/* Bottom row - Updated tote bag with extremely thin white border */}
-            <div className="flex justify-center items-center h-[350px] overflow-hidden w-full bg-white rounded-md border border-white/20 shadow-sm">
+            {/* Bottom row - Tote bag with extremely thin border that works consistently across screen sizes */}
+            <div className="flex justify-center items-center h-[350px] overflow-hidden w-full bg-white rounded-md shadow-sm"
+                style={{ border: "1px solid rgba(255, 255, 255, 0.05)" }}>
               <img 
                 src="/lovable-uploads/3ec1cc74-a602-4e03-8513-13f6ee5ab5bc.png" 
                 alt="Tote bag" 
