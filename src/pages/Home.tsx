@@ -44,18 +44,18 @@ const Home = () => {
         {/* Product images completely redesigned to match the reference image */}
         <div className="container px-4 grid grid-cols-12 gap-4">
           {/* Left - Denim jacket (much larger) */}
-          <div className="col-span-7 flex items-center justify-center">
-            <div className="w-full h-[550px] flex justify-center items-center">
+          <div className="col-span-8 flex items-center justify-center">
+            <div className="w-full h-[600px] flex justify-center items-center">
               <img 
                 src="/lovable-uploads/51486f5d-b0c3-4a0f-a2b6-60645c4a6631.png" 
                 alt="Denim jacket" 
-                className="object-contain max-h-[550px] drop-shadow-[0_8px_15px_rgba(0,0,0,0.3)]" 
+                className="object-contain max-h-[600px] drop-shadow-[0_8px_15px_rgba(0,0,0,0.3)]" 
               />
             </div>
           </div>
           
           {/* Right column layout - reduced width */}
-          <div className="col-span-5 flex flex-col space-y-4">
+          <div className="col-span-4 flex flex-col space-y-4">
             {/* Top row - Two shoes side by side */}
             <div className="flex space-x-4">
               {/* Left shoe - Single heel without background */}
@@ -78,8 +78,8 @@ const Home = () => {
               </div>
             </div>
             
-            {/* Bottom row - Updated tote bag with new image and white border */}
-            <div className="flex justify-center items-center h-[350px] overflow-hidden w-full bg-white p-4 rounded-md border-2 border-white shadow-md">
+            {/* Bottom row - Updated tote bag with very thin white border */}
+            <div className="flex justify-center items-center h-[350px] overflow-hidden w-full bg-white p-1 rounded-md border border-white/70 shadow-md">
               <img 
                 src="/lovable-uploads/3ec1cc74-a602-4e03-8513-13f6ee5ab5bc.png" 
                 alt="Tote bag" 
