@@ -42,9 +42,9 @@ const Home = () => {
         </div>
         
         {/* Product images completely redesigned to match the reference image */}
-        <div className="container px-4 grid grid-cols-12 gap-4">
+        <div className="container px-4 grid grid-cols-12 gap-0">
           {/* Left - Denim jacket (much larger) */}
-          <div className="col-span-8 flex items-center justify-center">
+          <div className="col-span-7 flex items-center justify-center">
             <div className="w-full h-[600px] flex justify-center items-center">
               <img 
                 src="/lovable-uploads/51486f5d-b0c3-4a0f-a2b6-60645c4a6631.png" 
@@ -55,7 +55,7 @@ const Home = () => {
           </div>
           
           {/* Right column layout - reduced width */}
-          <div className="col-span-4 flex flex-col space-y-4">
+          <div className="col-span-5 flex flex-col space-y-4 pl-0">
             {/* Top row - Two shoes side by side */}
             <div className="flex space-x-4">
               {/* Left shoe - Single heel without background */}
@@ -78,8 +78,8 @@ const Home = () => {
               </div>
             </div>
             
-            {/* Bottom row - Updated tote bag with very thin white border */}
-            <div className="flex justify-center items-center h-[350px] overflow-hidden w-full bg-white p-1 rounded-md border border-white/70 shadow-md">
+            {/* Bottom row - Updated tote bag with extremely thin white border */}
+            <div className="flex justify-center items-center h-[350px] overflow-hidden w-full bg-white rounded-md border border-white/20 shadow-sm">
               <img 
                 src="/lovable-uploads/3ec1cc74-a602-4e03-8513-13f6ee5ab5bc.png" 
                 alt="Tote bag" 
