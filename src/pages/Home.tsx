@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import CategorySlider from '../components/CategorySlider';
@@ -78,11 +77,10 @@ const Home = () => {
               </div>
             </div>
             
-            {/* Bottom row - Tote bag with extremely thin border that works consistently across screen sizes */}
-            <div className="flex justify-center items-center h-[350px] overflow-hidden w-full bg-white rounded-md shadow-sm"
-                style={{ border: "1px solid rgba(255, 255, 255, 0.05)" }}>
+            {/* Bottom row - Updated tote bag with the new image and no border */}
+            <div className="flex justify-center items-center h-[350px] overflow-hidden w-full bg-white rounded-md shadow-sm">
               <img 
-                src="/lovable-uploads/3ec1cc74-a602-4e03-8513-13f6ee5ab5bc.png" 
+                src="/lovable-uploads/8a9797fc-5891-4646-be7b-2666853bc05a.png" 
                 alt="Tote bag" 
                 className="w-full h-full object-contain" 
               />
