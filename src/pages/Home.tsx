@@ -45,7 +45,7 @@ const Home = () => {
         <div className="container px-4 grid grid-cols-12 gap-0">
           {/* Left - Denim jacket (height increased to match the combined height of shoes + tote bag) */}
           <div className="col-span-7 flex items-center justify-center">
-            <div className="w-full h-[550px] flex justify-center items-center"> 
+            <div className="w-full h-[650px] flex justify-center items-center"> 
               <img 
                 src="/lovable-uploads/51486f5d-b0c3-4a0f-a2b6-60645c4a6631.png" 
                 alt="Denim jacket" 
@@ -81,7 +81,7 @@ const Home = () => {
             {/* Bottom row - Tote bag with absolutely no border or background */}
             <div className="flex justify-center items-center h-[350px] w-full overflow-hidden">
               <img 
-                src="/lovable-uploads/83b3110b-b6b3-4c2e-b353-be07b0724b39.png" 
+                src="/lovable-uploads/376c042e-10b2-461f-8183-137eaee247fb.png" 
                 alt="Tote bag" 
                 className="w-full h-full object-contain" 
               />
