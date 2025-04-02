@@ -43,13 +43,13 @@ const Home = () => {
         
         {/* Product images completely redesigned to match the reference image */}
         <div className="container px-4 grid grid-cols-12 gap-0">
-          {/* Left - Denim jacket (much larger) */}
+          {/* Left - Denim jacket (height increased to match the combined height of shoes + tote bag) */}
           <div className="col-span-7 flex items-center justify-center">
-            <div className="w-full h-[750px] flex justify-center items-center"> {/* Increased height from 650px to 750px */}
+            <div className="w-full h-[550px] flex justify-center items-center"> 
               <img 
                 src="/lovable-uploads/51486f5d-b0c3-4a0f-a2b6-60645c4a6631.png" 
                 alt="Denim jacket" 
-                className="object-contain max-h-[750px] w-auto max-w-[95%] drop-shadow-[0_8px_15px_rgba(0,0,0,0.3)]" 
+                className="object-contain h-full w-auto max-w-[95%] drop-shadow-[0_8px_15px_rgba(0,0,0,0.3)]" 
               />
             </div>
           </div>
@@ -78,10 +78,10 @@ const Home = () => {
               </div>
             </div>
             
-            {/* Bottom row - Tote bag with absolutely no border and shadow removed */}
-            <div className="flex justify-center items-center h-[350px] overflow-hidden w-full bg-white rounded-md">
+            {/* Bottom row - Tote bag with absolutely no border or background */}
+            <div className="flex justify-center items-center h-[350px] w-full overflow-hidden">
               <img 
-                src="/lovable-uploads/8a9797fc-5891-4646-be7b-2666853bc05a.png" 
+                src="/lovable-uploads/83b3110b-b6b3-4c2e-b353-be07b0724b39.png" 
                 alt="Tote bag" 
                 className="w-full h-full object-contain" 
               />
