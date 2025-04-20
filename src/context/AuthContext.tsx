@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { User, UserProfile } from '@/types';
+import { toast } from '@/components/ui/use-toast';
 
 type AuthContextType = {
   user: User | null;
@@ -13,6 +14,7 @@ type AuthContextType = {
   signup: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  sendVerificationEmail: (email: string, firstName: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -95,6 +97,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .eq('id', data.user.id);
         
       if (profileError) throw profileError;
+
+      // Send verification email
+      try {
+        await sendVerificationEmail(email, firstName);
+      } catch (emailError) {
+        console.error("Failed to send verification email:", emailError);
+        // We'll continue with signup even if email fails
+      }
     }
   };
 
@@ -110,6 +120,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (error) throw error;
   };
 
+  const sendVerificationEmail = async (email: string, firstName: string) => {
+    // Get site URL for verification link
+    const siteUrl = window.location.origin;
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: `${siteUrl}/login`,
+      },
+    });
+
+    if (error) throw error;
+
+    // Call our edge function to send a custom email
+    const verificationLink = `${siteUrl}/login?email=${encodeURIComponent(email)}`;
+    
+    const response = await supabase.functions.invoke('send-verification', {
+      body: { email, firstName, verificationLink },
+    });
+
+    if (response.error) {
+      throw new Error(response.error.message || 'Failed to send verification email');
+    }
+
+    return response.data;
+  };
+
   const isAuthenticated = !!user;
   const isAdmin = user?.role === 'admin';
 
@@ -122,7 +158,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       login, 
       signup,
       logout,
-      resetPassword 
+      resetPassword,
+      sendVerificationEmail
     }}>
       {children}
     </AuthContext.Provider>
