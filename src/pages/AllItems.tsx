@@ -79,20 +79,16 @@ const COLORS = [
 const AllItems = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
-  const [filterType, setFilterType] = useState('');
+  const [filterBrand, setFilterBrand] = useState('');
   const [filterColor, setFilterColor] = useState('');
   const [filterSize, setFilterSize] = useState('');
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   
-  const categories = [...new Set(products.map(product => product.category))];
-  const types = [...new Set(products.map(product => 
-    product.category.toLowerCase() === filterCategory.toLowerCase() ? 
-    product.brand || 'Other' : ''
-  ).filter(Boolean))];
-  
-  const colors = [...new Set(products.map(product => product.color).filter(Boolean))];
-  const sizes = [...new Set(products.map(product => product.size).filter(Boolean))];
+  const availableBrands = [...new Set(products
+    .filter(product => !filterCategory || product.category.toLowerCase() === filterCategory.toLowerCase())
+    .map(product => product.brand)
+    .filter(Boolean))];
   
   const minPrice = Math.min(...products.map(product => product.price));
   const maxPrice = Math.max(...products.map(product => product.price));
@@ -103,16 +99,16 @@ const AllItems = () => {
   
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           (product.brand && product.brand.toLowerCase().includes(searchTerm.toLowerCase()));
-                           
-    const matchesCategory = filterCategory === '' || product.category === filterCategory;
-    const matchesType = filterType === '' || (product.brand && product.brand === filterType);
+                         product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (product.brand && product.brand.toLowerCase().includes(searchTerm.toLowerCase()));
+                         
+    const matchesCategory = filterCategory === '' || product.category.toLowerCase() === filterCategory.toLowerCase();
+    const matchesBrand = filterBrand === '' || product.brand === filterBrand;
     const matchesColor = filterColor === '' || (product.color && product.color === filterColor);
     const matchesSize = filterSize === '' || (product.size && product.size === filterSize);
     const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
     
-    return matchesSearch && matchesCategory && matchesType && matchesColor && matchesSize && matchesPrice;
+    return matchesSearch && matchesCategory && matchesBrand && matchesColor && matchesSize && matchesPrice;
   }).sort((a, b) => {
     if (sortDirection === 'asc') {
       return a.price - b.price;
@@ -123,7 +119,7 @@ const AllItems = () => {
 
   const clearFilters = () => {
     setFilterCategory('');
-    setFilterType('');
+    setFilterBrand('');
     setFilterColor('');
     setFilterSize('');
     setPriceRange([minPrice, maxPrice]);
@@ -151,7 +147,7 @@ const AllItems = () => {
                 value={filterCategory}
                 onChange={(e) => {
                   setFilterCategory(e.target.value);
-                  setFilterType(''); // Reset type when category changes
+                  setFilterBrand(''); // Reset brand when category changes
                 }}
                 className="glass-input w-full"
               >
@@ -191,15 +187,15 @@ const AllItems = () => {
                   
                   {filterCategory && (
                     <div>
-                      <h4 className="font-medium mb-2">Type</h4>
+                      <h4 className="font-medium mb-2">Brand</h4>
                       <select 
-                        value={filterType}
-                        onChange={(e) => setFilterType(e.target.value)}
+                        value={filterBrand}
+                        onChange={(e) => setFilterBrand(e.target.value)}
                         className="w-full rounded-md border border-input p-2"
                       >
-                        <option value="">All Types</option>
-                        {FILTER_CATEGORIES[filterCategory as keyof typeof FILTER_CATEGORIES]?.map(type => (
-                          <option key={type} value={type}>{type}</option>
+                        <option value="">All Brands</option>
+                        {availableBrands.map(brand => (
+                          <option key={brand} value={brand}>{brand}</option>
                         ))}
                       </select>
                     </div>
@@ -264,7 +260,7 @@ const AllItems = () => {
           </div>
         </div>
         
-        {(filterCategory || filterType || filterColor || filterSize || 
+        {(filterCategory || filterBrand || filterColor || filterSize || 
           priceRange[0] > minPrice || priceRange[1] < maxPrice) && (
           <div className="flex flex-wrap gap-2 mb-6">
             {filterCategory && (
@@ -279,11 +275,11 @@ const AllItems = () => {
               </div>
             )}
             
-            {filterType && (
+            {filterBrand && (
               <div className="bg-white/30 backdrop-blur-sm rounded-full px-3 py-1 text-sm flex items-center shadow-sm">
-                Type: {filterType}
+                Brand: {filterBrand}
                 <button 
-                  onClick={() => setFilterType('')}
+                  onClick={() => setFilterBrand('')}
                   className="ml-2 text-gray-500 hover:text-gray-700"
                 >
                   ×
