@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
 import { products } from '../data/products';
@@ -12,6 +11,70 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Check, ChevronDown, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+const FILTER_CATEGORIES = {
+  shoes: [
+    'Sneakers',
+    'Heels',
+    'Sandals',
+    'Boots',
+    'Slippers',
+    'Sports Shoes'
+  ],
+  bags: [
+    'Handbags',
+    'Backpacks',
+    'Crossbody Bags',
+    'Tote Bags',
+    'Shoulder Bags',
+    'Wallets',
+    'Laptop Bags'
+  ],
+  accessories: [
+    'Earrings',
+    'Necklaces',
+    'Bracelets',
+    'Watches',
+    'Sunglasses',
+    'Belts',
+    'Hair Accessories'
+  ],
+  tops: [
+    'T-Shirts',
+    'Blouses',
+    'Shirts',
+    'Sweaters',
+    'Hoodies'
+  ],
+  dresses: [
+    'Casual Dresses',
+    'Party Dresses'
+  ],
+  jackets: [
+    'Denim Jackets',
+    'Leather Jackets',
+    'Blazers',
+    'Puffer Jackets',
+    'Long Coats'
+  ],
+  trousers: [
+    'Jeans',
+    'Leggings',
+    'Wide-leg Pants',
+    'Formal Pants'
+  ]
+};
+
+const SIZES = [
+  '36', '37', '38', '39', '40', '41', '42',
+  'XS', 'S', 'M', 'L', 'XL'
+];
+
+const COLORS = [
+  'Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Purple', 
+  'Pink', 'Orange', 'Brown', 'Gray', 'Beige', 'Navy', 'Burgundy',
+  'Gold', 'Silver', 'Multi'
+];
 
 const AllItems = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -93,8 +156,10 @@ const AllItems = () => {
                 className="glass-input w-full"
               >
                 <option value="">All Categories</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
+                {Object.keys(FILTER_CATEGORIES).map(category => (
+                  <option key={category} value={category} className="capitalize">
+                    {category}
+                  </option>
                 ))}
               </select>
             </div>
@@ -133,7 +198,7 @@ const AllItems = () => {
                         className="w-full rounded-md border border-input p-2"
                       >
                         <option value="">All Types</option>
-                        {types.map(type => (
+                        {FILTER_CATEGORIES[filterCategory as keyof typeof FILTER_CATEGORIES]?.map(type => (
                           <option key={type} value={type}>{type}</option>
                         ))}
                       </select>
@@ -148,7 +213,7 @@ const AllItems = () => {
                       className="w-full rounded-md border border-input p-2"
                     >
                       <option value="">All Sizes</option>
-                      {sizes.map(size => (
+                      {SIZES.map(size => (
                         <option key={size} value={size}>{size}</option>
                       ))}
                     </select>
@@ -162,7 +227,7 @@ const AllItems = () => {
                       className="w-full rounded-md border border-input p-2"
                     >
                       <option value="">All Colors</option>
-                      {colors.map(color => (
+                      {COLORS.map(color => (
                         <option key={color} value={color}>{color}</option>
                       ))}
                     </select>
@@ -199,7 +264,6 @@ const AllItems = () => {
           </div>
         </div>
         
-        {/* Filter chips/tags */}
         {(filterCategory || filterType || filterColor || filterSize || 
           priceRange[0] > minPrice || priceRange[1] < maxPrice) && (
           <div className="flex flex-wrap gap-2 mb-6">
