@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
 import { products } from '../data/products';
@@ -80,6 +81,7 @@ const AllItems = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const [filterBrand, setFilterBrand] = useState('');
+  const [filterType, setFilterType] = useState('');
   const [filterColor, setFilterColor] = useState('');
   const [filterSize, setFilterSize] = useState('');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
@@ -97,6 +99,13 @@ const AllItems = () => {
     setPriceRange([minPrice, maxPrice]);
   }, [minPrice, maxPrice]);
   
+  const getAvailableTypes = () => {
+    if (!filterCategory || !FILTER_CATEGORIES[filterCategory.toLowerCase() as keyof typeof FILTER_CATEGORIES]) {
+      return [];
+    }
+    return FILTER_CATEGORIES[filterCategory.toLowerCase() as keyof typeof FILTER_CATEGORIES];
+  };
+  
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -104,11 +113,16 @@ const AllItems = () => {
                          
     const matchesCategory = filterCategory === '' || product.category.toLowerCase() === filterCategory.toLowerCase();
     const matchesBrand = filterBrand === '' || product.brand === filterBrand;
+    const matchesType = filterType === '' || 
+                        (getAvailableTypes().some(type => 
+                          product.title.toLowerCase().includes(type.toLowerCase()) || 
+                          (product.description && product.description.toLowerCase().includes(type.toLowerCase()))
+                        ));
     const matchesColor = filterColor === '' || (product.color && product.color === filterColor);
     const matchesSize = filterSize === '' || (product.size && product.size === filterSize);
     const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
     
-    return matchesSearch && matchesCategory && matchesBrand && matchesColor && matchesSize && matchesPrice;
+    return matchesSearch && matchesCategory && matchesBrand && matchesType && matchesColor && matchesSize && matchesPrice;
   }).sort((a, b) => {
     if (sortDirection === 'asc') {
       return a.price - b.price;
@@ -120,6 +134,7 @@ const AllItems = () => {
   const clearFilters = () => {
     setFilterCategory('');
     setFilterBrand('');
+    setFilterType('');
     setFilterColor('');
     setFilterSize('');
     setPriceRange([minPrice, maxPrice]);
@@ -148,6 +163,7 @@ const AllItems = () => {
                 onChange={(e) => {
                   setFilterCategory(e.target.value);
                   setFilterBrand(''); // Reset brand when category changes
+                  setFilterType(''); // Reset type when category changes
                 }}
                 className="glass-input w-full"
               >
@@ -186,19 +202,35 @@ const AllItems = () => {
                   </RadioGroup>
                   
                   {filterCategory && (
-                    <div>
-                      <h4 className="font-medium mb-2">Brand</h4>
-                      <select 
-                        value={filterBrand}
-                        onChange={(e) => setFilterBrand(e.target.value)}
-                        className="w-full rounded-md border border-input p-2"
-                      >
-                        <option value="">All Brands</option>
-                        {availableBrands.map(brand => (
-                          <option key={brand} value={brand}>{brand}</option>
-                        ))}
-                      </select>
-                    </div>
+                    <>
+                      <div>
+                        <h4 className="font-medium mb-2">Brand</h4>
+                        <select 
+                          value={filterBrand}
+                          onChange={(e) => setFilterBrand(e.target.value)}
+                          className="w-full rounded-md border border-input p-2"
+                        >
+                          <option value="">All Brands</option>
+                          {availableBrands.map(brand => (
+                            <option key={brand} value={brand}>{brand}</option>
+                          ))}
+                        </select>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium mb-2">Type</h4>
+                        <select 
+                          value={filterType}
+                          onChange={(e) => setFilterType(e.target.value)}
+                          className="w-full rounded-md border border-input p-2"
+                        >
+                          <option value="">All Types</option>
+                          {getAvailableTypes().map(type => (
+                            <option key={type} value={type}>{type}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </>
                   )}
                   
                   <div>
@@ -230,7 +262,7 @@ const AllItems = () => {
                   </div>
                   
                   <div>
-                    <h4 className="font-medium mb-2">Price Range</h4>
+                    <h4 className="font-medium mb-2">Price Range: ${priceRange[0].toFixed(2)} - ${priceRange[1].toFixed(2)}</h4>
                     <div className="pt-4">
                       <Slider
                         defaultValue={[minPrice, maxPrice]}
@@ -260,7 +292,7 @@ const AllItems = () => {
           </div>
         </div>
         
-        {(filterCategory || filterBrand || filterColor || filterSize || 
+        {(filterCategory || filterBrand || filterType || filterColor || filterSize || 
           priceRange[0] > minPrice || priceRange[1] < maxPrice) && (
           <div className="flex flex-wrap gap-2 mb-6">
             {filterCategory && (
@@ -280,6 +312,18 @@ const AllItems = () => {
                 Brand: {filterBrand}
                 <button 
                   onClick={() => setFilterBrand('')}
+                  className="ml-2 text-gray-500 hover:text-gray-700"
+                >
+                  ×
+                </button>
+              </div>
+            )}
+            
+            {filterType && (
+              <div className="bg-white/30 backdrop-blur-sm rounded-full px-3 py-1 text-sm flex items-center shadow-sm">
+                Type: {filterType}
+                <button 
+                  onClick={() => setFilterType('')}
                   className="ml-2 text-gray-500 hover:text-gray-700"
                 >
                   ×

@@ -3,9 +3,12 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '../context/AuthContext';
+import { Navigate } from 'react-router-dom';
 
 const AddItem = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [formData, setFormData] = useState({
     category: '',
     brand: '',
@@ -17,6 +20,16 @@ const AddItem = () => {
     description: ''
   });
   const [image, setImage] = useState<string | null>(null);
+  
+  // Redirect unauthenticated users
+  if (!isAuthenticated) {
+    toast({
+      title: "Authentication required",
+      description: "Please log in to add items for sale.",
+      variant: "destructive"
+    });
+    return <Navigate to="/login" />;
+  }
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

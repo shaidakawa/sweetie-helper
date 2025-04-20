@@ -44,7 +44,11 @@ const App = () => (
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/all-items" element={<AllItems />} />
               <Route path="/search" element={<Search />} />
-              <Route path="/messages" element={<Messages />} />
+              <Route path="/messages" element={
+                <ProtectedRoute>
+                  <Messages />
+                </ProtectedRoute>
+              } />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />

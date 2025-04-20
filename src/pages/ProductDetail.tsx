@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MessageCircle } from 'lucide-react';
@@ -5,6 +6,7 @@ import { products, getRelatedProducts } from '../data/products';
 import { Product } from '../types';
 import ProductCard from '../components/ProductCard';
 import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '../context/AuthContext';
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,6 +14,7 @@ const ProductDetail = () => {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [purchaseFormVisible, setPurchaseFormVisible] = useState(false);
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [purchaseForm, setPurchaseForm] = useState({
     location: '',
     fibId: '',
@@ -40,10 +43,29 @@ const ProductDetail = () => {
   };
   
   const handleBuyClick = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to purchase items.",
+        variant: "destructive"
+      });
+      navigate('/login');
+      return;
+    }
     setPurchaseFormVisible(true);
   };
   
   const handleMessageClick = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to message sellers.",
+        variant: "destructive"
+      });
+      navigate('/login');
+      return;
+    }
+    
     if (product) {
       navigate('/messages');
       toast({
