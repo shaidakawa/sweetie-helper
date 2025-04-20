@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import CategorySlider from '../components/CategorySlider';
@@ -6,12 +7,14 @@ import { products } from '../data/products';
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState(products.slice(0, 3));
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const searchTerm = (e.currentTarget.elements.namedItem('search') as HTMLInputElement).value;
-    navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+    if (searchTerm.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+    }
   };
   
   return (
@@ -35,7 +38,8 @@ const Home = () => {
             <div className="relative">
               <input
                 type="text"
-                name="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search..."
                 className="w-full py-2 px-4 rounded-full bg-white/80 backdrop-blur-sm"
               />

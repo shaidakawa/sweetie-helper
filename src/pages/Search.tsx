@@ -1,6 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Search as SearchIcon, SlidersHorizontal } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { products } from '../data/products';
 import { 
@@ -92,12 +94,22 @@ const COLORS = [
 ];
 
 const Search = () => {
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [filterCategory, setFilterCategory] = useState('');
   const [filterColor, setFilterColor] = useState('');
   const [filterSize, setFilterSize] = useState('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  
+  // Extract search query from URL on initial render
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const queryParam = params.get('q');
+    if (queryParam) {
+      setSearchTerm(queryParam);
+    }
+  }, [location.search]);
   
   const colors = [...new Set(products.map(product => product.color).filter(Boolean))];
   const sizes = [...new Set(products.map(product => product.size).filter(Boolean))];

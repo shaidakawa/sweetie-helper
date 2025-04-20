@@ -39,6 +39,18 @@ const categories = [
     title: 'Tops',
     image: '/lovable-uploads/f8e6b2b4-ec0a-4670-91fe-0993320cc78b.png',
     link: '/categories/tops'
+  },
+  {
+    id: '7',
+    title: 'Trousers',
+    image: '/lovable-uploads/14135fb0-35e2-4127-9013-74bd241d6182.png',
+    link: '/categories/trousers'
+  },
+  {
+    id: '8',
+    title: 'Jackets',
+    image: '/lovable-uploads/6db6afbc-70d9-40b6-84cd-96e02122b8c5.png',
+    link: '/categories/jackets'
   }
 ];
 
