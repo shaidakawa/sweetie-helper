@@ -2,42 +2,34 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
+import { useAuth } from '../context/AuthContext';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    emailOrPhone: '',
-    verificationCode: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
+  const { resetPassword } = useAuth();
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-  
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
-    if (formData.newPassword !== formData.confirmPassword) {
+    try {
+      await resetPassword(email);
       toast({
-        title: "Passwords don't match",
-        description: "Please ensure both passwords match.",
+        title: "Reset link sent",
+        description: "Please check your email for password reset instructions.",
+      });
+      navigate('/login');
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "An error occurred while sending the reset link.",
         variant: "destructive"
       });
-      return;
+    } finally {
+      setIsLoading(false);
     }
-    
-    // Mock password reset (would connect to backend in a real app)
-    toast({
-      title: "Password reset successfully!",
-      description: "You can now log in with your new password.",
-    });
-    navigate('/login');
   };
 
   return (
@@ -45,60 +37,27 @@ const ForgotPassword = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row min-h-[80vh]">
           <div className="w-full md:w-1/2 flex flex-col justify-center p-8">
-            <h1 className="text-5xl font-playfair font-bold mb-12">Forget Password</h1>
+            <h1 className="text-5xl font-playfair font-bold mb-12">Reset Password</h1>
             
             <form onSubmit={handleSubmit} className="space-y-6 max-w-md">
               <div>
-                <label className="block mb-1">Email or PhoneNumber</label>
+                <label className="block mb-1">Email</label>
                 <input
-                  type="text"
-                  name="emailOrPhone"
-                  value={formData.emailOrPhone}
-                  onChange={handleInputChange}
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="glass-input"
                   required
                 />
               </div>
               
               <div>
-                <label className="block mb-1">Verification Code</label>
-                <input
-                  type="text"
-                  name="verificationCode"
-                  value={formData.verificationCode}
-                  onChange={handleInputChange}
-                  className="glass-input"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block mb-1">New Password</label>
-                <input
-                  type="password"
-                  name="newPassword"
-                  value={formData.newPassword}
-                  onChange={handleInputChange}
-                  className="glass-input"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block mb-1">Confirm Password</label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  className="glass-input"
-                  required
-                />
-              </div>
-              
-              <div>
-                <button type="submit" className="btn-black w-full py-3">
-                  Done
+                <button 
+                  type="submit" 
+                  className="btn-black w-full py-3"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Sending...' : 'Send Reset Link'}
                 </button>
               </div>
             </form>

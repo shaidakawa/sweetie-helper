@@ -11,6 +11,7 @@ const Login = () => {
     username: '',
     password: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -20,31 +21,25 @@ const Login = () => {
     }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
-    if (formData.username && formData.password) {
-      // Call the login function from AuthContext
-      login(formData.username, formData.password);
-      
-      // Show login success toast
+    try {
+      await login(formData.username, formData.password);
       toast({
         title: "Logged in successfully!",
         description: "Welcome back to OLDIE.",
       });
-      
-      // Admin login redirect
-      if (formData.username === 'admin@oldie.com' && formData.password === 'admin123') {
-        navigate('/admin/dashboard');
-      } else {
-        navigate('/');
-      }
-    } else {
+      navigate('/');
+    } catch (error) {
       toast({
         title: "Login failed",
-        description: "Please check your credentials and try again.",
+        description: error instanceof Error ? error.message : "Please check your credentials and try again.",
         variant: "destructive"
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,9 +52,9 @@ const Login = () => {
             
             <form onSubmit={handleSubmit} className="space-y-6 max-w-md">
               <div>
-                <label className="block mb-1">Username</label>
+                <label className="block mb-1">Email</label>
                 <input
-                  type="text"
+                  type="email"
                   name="username"
                   value={formData.username}
                   onChange={handleInputChange}
@@ -87,8 +82,12 @@ const Login = () => {
               </div>
               
               <div>
-                <button type="submit" className="btn-black w-full py-3 shadow-md hover:shadow-lg transition-shadow">
-                  Log In
+                <button 
+                  type="submit" 
+                  className="btn-black w-full py-3 shadow-md hover:shadow-lg transition-shadow"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Logging in...' : 'Log In'}
                 </button>
               </div>
             </form>
