@@ -19,9 +19,9 @@ import { Label } from "@/components/ui/label";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from 'lucide-react';
 
-// Organized filter categories by type
 const FILTER_CATEGORIES = {
   shoes: [
+    'All Shoes',
     'Sneakers',
     'Heels',
     'Sandals',
@@ -30,6 +30,7 @@ const FILTER_CATEGORIES = {
     'Sports Shoes'
   ],
   bags: [
+    'All Bags',
     'Handbags',
     'Backpacks',
     'Crossbody Bags',
@@ -39,6 +40,7 @@ const FILTER_CATEGORIES = {
     'Laptop Bags'
   ],
   accessories: [
+    'All Accessories',
     'Earrings',
     'Necklaces',
     'Bracelets',
@@ -48,6 +50,7 @@ const FILTER_CATEGORIES = {
     'Hair Accessories'
   ],
   tops: [
+    'All Tops',
     'T-Shirts',
     'Blouses',
     'Shirts',
@@ -55,10 +58,13 @@ const FILTER_CATEGORIES = {
     'Hoodies'
   ],
   dresses: [
+    'All Dresses',
     'Casual Dresses',
-    'Party Dresses'
+    'Party Dresses',
+    'Kurdish Dress'
   ],
   jackets: [
+    'All Jackets',
     'Denim Jackets',
     'Leather Jackets',
     'Blazers',
@@ -66,6 +72,7 @@ const FILTER_CATEGORIES = {
     'Long Coats'
   ],
   trousers: [
+    'All Trousers',
     'Jeans',
     'Leggings',
     'Wide-leg Pants',
@@ -163,13 +170,13 @@ const Search = () => {
             <DrawerTrigger asChild>
               <Button variant="outline" className="flex items-center gap-2">
                 <SlidersHorizontal className="h-4 w-4" />
-                <span>Advanced Filters</span>
+                <span>Filter</span>
               </Button>
             </DrawerTrigger>
             <DrawerContent>
               <div className="mx-auto w-full max-w-md">
                 <DrawerHeader>
-                  <DrawerTitle>Advanced Filters</DrawerTitle>
+                  <DrawerTitle>Filter</DrawerTitle>
                   <DrawerDescription>
                     Filter products by category, size, and color
                   </DrawerDescription>
@@ -268,7 +275,6 @@ const Search = () => {
         </Drawer>
       </div>
         
-        {/* Filter chips */}
         {(selectedFilters.length > 0 || filterCategory || filterColor || filterSize || 
           sortDirection === 'desc') && (
           <div className="flex flex-wrap gap-2 mb-4">
