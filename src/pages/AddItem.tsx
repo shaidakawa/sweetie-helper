@@ -116,7 +116,7 @@ const AddItem = () => {
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                className="w-full glass-input"
+                className="w-full glass-input text-base py-2"
                 required
               >
                 <option value="">Select a category</option>

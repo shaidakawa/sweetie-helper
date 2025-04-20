@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
 import { products } from '../data/products';
@@ -7,7 +6,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Check, ChevronDown, SlidersHorizontal } from 'lucide-react';
@@ -84,20 +82,12 @@ const AllItems = () => {
   const [filterType, setFilterType] = useState('');
   const [filterColor, setFilterColor] = useState('');
   const [filterSize, setFilterSize] = useState('');
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   
   const availableBrands = [...new Set(products
     .filter(product => !filterCategory || product.category.toLowerCase() === filterCategory.toLowerCase())
     .map(product => product.brand)
     .filter(Boolean))];
-  
-  const minPrice = Math.min(...products.map(product => product.price));
-  const maxPrice = Math.max(...products.map(product => product.price));
-  
-  useEffect(() => {
-    setPriceRange([minPrice, maxPrice]);
-  }, [minPrice, maxPrice]);
   
   const getAvailableTypes = () => {
     if (!filterCategory || !FILTER_CATEGORIES[filterCategory.toLowerCase() as keyof typeof FILTER_CATEGORIES]) {
@@ -120,9 +110,8 @@ const AllItems = () => {
                         ));
     const matchesColor = filterColor === '' || (product.color && product.color === filterColor);
     const matchesSize = filterSize === '' || (product.size && product.size === filterSize);
-    const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
     
-    return matchesSearch && matchesCategory && matchesBrand && matchesType && matchesColor && matchesSize && matchesPrice;
+    return matchesSearch && matchesCategory && matchesBrand && matchesType && matchesColor && matchesSize;
   }).sort((a, b) => {
     if (sortDirection === 'asc') {
       return a.price - b.price;
@@ -137,7 +126,6 @@ const AllItems = () => {
     setFilterType('');
     setFilterColor('');
     setFilterSize('');
-    setPriceRange([minPrice, maxPrice]);
   };
 
   return (
@@ -261,24 +249,6 @@ const AllItems = () => {
                     </select>
                   </div>
                   
-                  <div>
-                    <h4 className="font-medium mb-2">Price Range: ${priceRange[0].toFixed(2)} - ${priceRange[1].toFixed(2)}</h4>
-                    <div className="pt-4">
-                      <Slider
-                        defaultValue={[minPrice, maxPrice]}
-                        value={priceRange}
-                        max={maxPrice}
-                        min={minPrice}
-                        step={1}
-                        onValueChange={(value) => setPriceRange(value as [number, number])}
-                      />
-                      <div className="flex justify-between mt-2 text-sm">
-                        <div>${priceRange[0].toFixed(2)}</div>
-                        <div>${priceRange[1].toFixed(2)}</div>
-                      </div>
-                    </div>
-                  </div>
-                  
                   <Button 
                     onClick={clearFilters} 
                     variant="outline" 
@@ -292,8 +262,7 @@ const AllItems = () => {
           </div>
         </div>
         
-        {(filterCategory || filterBrand || filterType || filterColor || filterSize || 
-          priceRange[0] > minPrice || priceRange[1] < maxPrice) && (
+        {(filterCategory || filterBrand || filterType || filterColor || filterSize) && (
           <div className="flex flex-wrap gap-2 mb-6">
             {filterCategory && (
               <div className="bg-white/30 backdrop-blur-sm rounded-full px-3 py-1 text-sm flex items-center shadow-sm">
@@ -348,18 +317,6 @@ const AllItems = () => {
                 Size: {filterSize}
                 <button 
                   onClick={() => setFilterSize('')}
-                  className="ml-2 text-gray-500 hover:text-gray-700"
-                >
-                  ×
-                </button>
-              </div>
-            )}
-            
-            {(priceRange[0] > minPrice || priceRange[1] < maxPrice) && (
-              <div className="bg-white/30 backdrop-blur-sm rounded-full px-3 py-1 text-sm flex items-center shadow-sm">
-                Price: ${priceRange[0].toFixed(2)} - ${priceRange[1].toFixed(2)}
-                <button 
-                  onClick={() => setPriceRange([minPrice, maxPrice])}
                   className="ml-2 text-gray-500 hover:text-gray-700"
                 >
                   ×
