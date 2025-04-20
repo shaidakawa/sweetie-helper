@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Search as SearchIcon, Filter, SlidersHorizontal } from 'lucide-react';
+import { Search as SearchIcon, SlidersHorizontal } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { products } from '../data/products';
 import { 
@@ -17,12 +16,72 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown } from 'lucide-react';
 
-// Filter categories for products
-const FILTER_CATEGORIES = [
-  'High Heels', 'Sandals', 'Sneakers', 'Jackets', 'Coats', 
-  'Rings', 'Bracelets', 'Necklaces', 'Earrings', 'Watches', 
-  'Bags', 'Tote Bags', 'Kurdish Dress'
+// Organized filter categories by type
+const FILTER_CATEGORIES = {
+  shoes: [
+    'Sneakers',
+    'Heels',
+    'Sandals',
+    'Boots',
+    'Slippers',
+    'Sports Shoes'
+  ],
+  bags: [
+    'Handbags',
+    'Backpacks',
+    'Crossbody Bags',
+    'Tote Bags',
+    'Shoulder Bags',
+    'Wallets',
+    'Laptop Bags'
+  ],
+  accessories: [
+    'Earrings',
+    'Necklaces',
+    'Bracelets',
+    'Watches',
+    'Sunglasses',
+    'Belts',
+    'Hair Accessories'
+  ],
+  tops: [
+    'T-Shirts',
+    'Blouses',
+    'Shirts',
+    'Sweaters',
+    'Hoodies'
+  ],
+  dresses: [
+    'Casual Dresses',
+    'Party Dresses'
+  ],
+  jackets: [
+    'Denim Jackets',
+    'Leather Jackets',
+    'Blazers',
+    'Puffer Jackets',
+    'Long Coats'
+  ],
+  trousers: [
+    'Jeans',
+    'Leggings',
+    'Wide-leg Pants',
+    'Formal Pants'
+  ]
+};
+
+const SIZES = [
+  '36', '37', '38', '39', '40', '41', '42',
+  'XS', 'S', 'M', 'L', 'XL'
+];
+
+const COLORS = [
+  'Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Purple', 
+  'Pink', 'Orange', 'Brown', 'Gray', 'Beige', 'Navy', 'Burgundy',
+  'Gold', 'Silver', 'Multi'
 ];
 
 const Search = () => {
@@ -115,102 +174,99 @@ const Search = () => {
                     Filter products by category, size, and color
                   </DrawerDescription>
                 </DrawerHeader>
-                
-                <ScrollArea className="h-[60vh] px-4">
-                  <div className="space-y-6 pr-4">
-                    <div>
-                      <h4 className="font-medium mb-2">Sort by Price</h4>
-                      <RadioGroup 
-                        value={sortDirection} 
-                        onValueChange={(value) => setSortDirection(value as 'asc' | 'desc')}
-                        className="flex gap-4"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="asc" id="price-asc" />
-                          <Label htmlFor="price-asc">Low to High</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="desc" id="price-desc" />
-                          <Label htmlFor="price-desc">High to Low</Label>
-                        </div>
-                      </RadioGroup>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium mb-2">Filter By Categories</h4>
-                      <div className="grid grid-cols-2 gap-3">
-                        {FILTER_CATEGORIES.map((filter) => (
-                          <Button
-                            key={filter}
-                            variant={selectedFilters.includes(filter) ? "default" : "outline"}
-                            onClick={() => toggleFilter(filter)}
-                            className="justify-start"
-                          >
-                            {filter}
-                          </Button>
-                        ))}
+            
+              <ScrollArea className="h-[60vh] px-4">
+                <div className="space-y-6 pr-4">
+                  <div>
+                    <h4 className="font-medium mb-2">Sort by Price</h4>
+                    <RadioGroup 
+                      value={sortDirection} 
+                      onValueChange={(value) => setSortDirection(value as 'asc' | 'desc')}
+                      className="flex gap-4"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="asc" id="price-asc" />
+                        <Label htmlFor="price-asc">Low to High</Label>
                       </div>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium mb-2">Category</h4>
-                      <select 
-                        value={filterCategory}
-                        onChange={(e) => setFilterCategory(e.target.value)}
-                        className="w-full rounded-md border border-input p-2"
-                      >
-                        <option value="">All Categories</option>
-                        {categories.map(category => category && (
-                          <option key={category} value={category}>{category}</option>
-                        ))}
-                      </select>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium mb-2">Size</h4>
-                      <select 
-                        value={filterSize}
-                        onChange={(e) => setFilterSize(e.target.value)}
-                        className="w-full rounded-md border border-input p-2"
-                      >
-                        <option value="">All Sizes</option>
-                        {sizes.map(size => size && (
-                          <option key={size} value={size}>{size}</option>
-                        ))}
-                      </select>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium mb-2">Color</h4>
-                      <select 
-                        value={filterColor}
-                        onChange={(e) => setFilterColor(e.target.value)}
-                        className="w-full rounded-md border border-input p-2"
-                      >
-                        <option value="">All Colors</option>
-                        {colors.map(color => color && (
-                          <option key={color} value={color}>{color}</option>
-                        ))}
-                      </select>
-                    </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="desc" id="price-desc" />
+                        <Label htmlFor="price-desc">High to Low</Label>
+                      </div>
+                    </RadioGroup>
                   </div>
-                </ScrollArea>
-                
-                <DrawerFooter>
-                  <Button 
-                    onClick={clearFilters}
-                    variant="outline"
-                  >
-                    Clear Filters
-                  </Button>
-                  <DrawerClose asChild>
-                    <Button>Apply Filters</Button>
-                  </DrawerClose>
-                </DrawerFooter>
-              </div>
-            </DrawerContent>
-          </Drawer>
-        </div>
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Filter By Categories</h4>
+                    {Object.entries(FILTER_CATEGORIES).map(([category, items]) => (
+                      <Collapsible key={category} className="border rounded-lg p-2">
+                        <CollapsibleTrigger className="flex w-full justify-between items-center py-2 font-medium capitalize">
+                          {category}
+                          <ChevronDown className="h-4 w-4" />
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="pt-2">
+                          <div className="grid grid-cols-2 gap-2">
+                            {items.map((item) => (
+                              <Button
+                                key={item}
+                                variant={selectedFilters.includes(item) ? "default" : "outline"}
+                                onClick={() => toggleFilter(item)}
+                                className="justify-start text-sm"
+                                size="sm"
+                              >
+                                {item}
+                              </Button>
+                            ))}
+                          </div>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    ))}
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium mb-2">Size</h4>
+                    <select 
+                      value={filterSize}
+                      onChange={(e) => setFilterSize(e.target.value)}
+                      className="w-full rounded-md border border-input p-2"
+                    >
+                      <option value="">All Sizes</option>
+                      {SIZES.map(size => (
+                        <option key={size} value={size}>{size}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium mb-2">Color</h4>
+                    <select 
+                      value={filterColor}
+                      onChange={(e) => setFilterColor(e.target.value)}
+                      className="w-full rounded-md border border-input p-2"
+                    >
+                      <option value="">All Colors</option>
+                      {COLORS.map(color => (
+                        <option key={color} value={color}>{color}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </ScrollArea>
+
+              <DrawerFooter>
+                <Button 
+                  onClick={clearFilters}
+                  variant="outline"
+                >
+                  Clear Filters
+                </Button>
+                <DrawerClose asChild>
+                  <Button>Apply Filters</Button>
+                </DrawerClose>
+              </DrawerFooter>
+            </div>
+          </DrawerContent>
+        </Drawer>
+      </div>
         
         {/* Filter chips */}
         {(selectedFilters.length > 0 || filterCategory || filterColor || filterSize || 
