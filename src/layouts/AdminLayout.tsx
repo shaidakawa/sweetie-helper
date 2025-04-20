@@ -26,7 +26,7 @@ const AdminLayout = () => {
         <div className="p-4">
           <h1 className="text-2xl font-playfair font-bold">OLDIE Admin</h1>
           <p className="text-sm mt-1 text-gray-300">
-            {user?.firstName} {user?.lastName}
+            {user?.firstName || ''} {user?.lastName || ''}
           </p>
         </div>
 

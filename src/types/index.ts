@@ -27,3 +27,11 @@ export interface User {
   lastName?: string;
   role: 'user' | 'admin';
 }
+
+export interface UserProfile {
+  id: string;
+  first_name: string | null;
+  last_name: string | null;
+  created_at: string;
+  updated_at: string;
+}

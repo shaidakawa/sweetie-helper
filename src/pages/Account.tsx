@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from '@/components/ui/use-toast';
-import { User, LogOut, Settings, UserCog } from 'lucide-react';
+import { User as UserIcon, LogOut, Settings } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +42,7 @@ const Account = () => {
         <div className="bg-white/70 backdrop-blur-sm rounded-md shadow-lg p-8">
           <div className="flex items-center mb-8">
             <div className="w-16 h-16 rounded-full bg-oldie-gray flex items-center justify-center shadow-md">
-              <User className="w-8 h-8 text-white" />
+              <UserIcon className="w-8 h-8 text-white" />
             </div>
             <div className="ml-4">
               <h1 className="text-3xl font-playfair font-bold">My Account</h1>
@@ -56,7 +56,7 @@ const Account = () => {
               <div className="space-y-4">
                 <div>
                   <p className="text-gray-500">Name</p>
-                  <p className="font-medium">{user.firstName} {user.lastName}</p>
+                  <p className="font-medium">{user.firstName || ''} {user.lastName || ''}</p>
                 </div>
                 <div>
                   <p className="text-gray-500">Email</p>
@@ -93,11 +93,11 @@ const Account = () => {
                     <div className="space-y-4 py-4">
                       <div className="space-y-2">
                         <Label htmlFor="firstName">First Name</Label>
-                        <Input id="firstName" defaultValue={user.firstName} />
+                        <Input id="firstName" defaultValue={user.firstName || ''} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="lastName">Last Name</Label>
-                        <Input id="lastName" defaultValue={user.lastName} />
+                        <Input id="lastName" defaultValue={user.lastName || ''} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>

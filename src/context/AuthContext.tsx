@@ -1,7 +1,8 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, Session } from '@supabase/supabase-js';
+import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { User, UserProfile } from '@/types';
 
 type AuthContextType = {
   user: User | null;
@@ -20,19 +21,45 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
 
+  // Transform Supabase user to our User type
+  const transformUser = async (supabaseUser: SupabaseUser | null): Promise<User | null> => {
+    if (!supabaseUser) return null;
+    
+    // Get profile data from profiles table
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', supabaseUser.id)
+      .single();
+
+    return {
+      id: supabaseUser.id,
+      email: supabaseUser.email || '',
+      firstName: profile?.first_name || '',
+      lastName: profile?.last_name || '',
+      role: supabaseUser.email === 'admin@oldie.com' ? 'admin' : 'user',
+    };
+  };
+
   useEffect(() => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, currentSession) => {
+      async (event, currentSession) => {
         setSession(currentSession);
-        setUser(currentSession?.user ?? null);
+        
+        // Transform Supabase user to our User type
+        const transformedUser = await transformUser(currentSession?.user ?? null);
+        setUser(transformedUser);
       }
     );
 
     // Check for existing session
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+    supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
       setSession(currentSession);
-      setUser(currentSession?.user ?? null);
+      
+      // Transform Supabase user to our User type
+      const transformedUser = await transformUser(currentSession?.user ?? null);
+      setUser(transformedUser);
     });
 
     return () => subscription.unsubscribe();
@@ -44,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
-    const { error } = await supabase.auth.signUp({
+    const { error, data } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -54,7 +81,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     });
+    
     if (error) throw error;
+    
+    // Update the profile in our profiles table
+    if (data.user) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          first_name: firstName,
+          last_name: lastName
+        })
+        .eq('id', data.user.id);
+        
+      if (profileError) throw profileError;
+    }
   };
 
   const logout = async () => {
@@ -70,7 +111,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const isAuthenticated = !!user;
-  const isAdmin = user?.email === 'admin@oldie.com';
+  const isAdmin = user?.role === 'admin';
 
   return (
     <AuthContext.Provider value={{ 
