@@ -79,7 +79,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
-    // First sign up the user with email confirmation disabled
+    // Sign up the user without requiring email confirmation
+    // The important part is that we're not using Supabase's built-in email confirmation
     const { error, data: signUpData } = await supabase.auth.signUp({
       email,
       password,
@@ -88,9 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           first_name: firstName,
           last_name: lastName
         },
-        emailRedirectTo: `${window.location.origin}/verify-email`,
-        // We don't use the built-in email confirmation
-        // since we're implementing our own verification system
+        // No email redirect, we're handling verification ourselves
       }
     });
     
@@ -112,13 +111,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
       
       // Store the verification code in the database
-      // Fix: Convert Date object to ISO string for the expires_at field
       const { error: verificationError } = await supabase
         .from('email_verifications')
         .insert({
           email,
           code: verificationCode,
-          expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString() // 10 minutes from now, as ISO string
+          expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString() // 10 minutes from now
         });
 
       if (verificationError) throw verificationError;
