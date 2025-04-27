@@ -5,7 +5,6 @@ import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { AlertCircle } from 'lucide-react';
 
 const EmailVerification = () => {
   const [verificationCode, setVerificationCode] = useState('');
@@ -53,23 +52,9 @@ const EmailVerification = () => {
             <h1 className="text-5xl font-playfair font-bold mb-12">Verify Email</h1>
             
             <div className="space-y-6 max-w-md">
-              <div className="bg-amber-50 border border-amber-200 p-4 rounded-md mb-6">
-                <div className="flex items-start">
-                  <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 mr-2" />
-                  <div>
-                    <h3 className="font-medium text-amber-800">Development Mode Notice</h3>
-                    <p className="text-sm text-amber-700 mt-1">
-                      In development mode, verification emails are sent to the developer's verified email address (shaidakawa15@gmail.com) rather than actual user emails.
-                      <br /><br />
-                      The verification code is included in the subject line and body of the email.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
               <p className="mb-4">
                 We've sent a 6-digit verification code to <strong>{email}</strong>. 
-                Please check the developer's email and enter the code below.
+                Please check your email and enter the code below.
               </p>
               
               <div>

@@ -25,17 +25,11 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { email, firstName, verificationCode }: VerificationEmailRequest = await req.json();
 
-    // Log the request details for debugging
     console.log(`Sending verification email to ${email} with code: ${verificationCode}`);
-
-    // For Resend in test mode, use shaidakawa15@gmail.com as the 'to' email
-    // This is a temporary solution until domain verification is complete
-    // In production, you would use the actual user email
-    const recipientEmail = "shaidakawa15@gmail.com"; // The verified email in test mode
     
     const emailResponse = await resend.emails.send({
       from: "Oldie Verification <onboarding@resend.dev>",
-      to: [recipientEmail], // Use the verified email in test mode
+      to: [email],
       subject: `Your Oldie Verification Code: ${verificationCode}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -49,8 +43,6 @@ const handler = async (req: Request): Promise<Response> => {
           
           <p>This code will expire in 10 minutes.</p>
           
-          <p><strong>Important:</strong> In development mode, this email is being sent to the verified test email (${recipientEmail}), but in the database, the code is associated with ${email}.</p>
-          
           <p>If you did not create an account, please ignore this email.</p>
           
           <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid #eee; color: #666; font-size: 12px;">
@@ -63,13 +55,8 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Email sent successfully:", emailResponse);
 
     return new Response(JSON.stringify({ 
-      message: "Verification email processing completed",
-      note: "In development mode, emails are sent to the verified email address only",
-      emailDetails: {
-        to: recipientEmail,
-        code: verificationCode,
-        actualUserEmail: email
-      }
+      message: "Verification email sent successfully",
+      email: email
     }), {
       status: 200,
       headers: {
@@ -82,7 +69,7 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(
       JSON.stringify({ 
         error: error.message,
-        hint: "If using Resend in test mode, make sure to verify your domain at resend.com/domains"
+        hint: "Make sure the Resend API key is configured correctly"
       }),
       {
         status: 500,
