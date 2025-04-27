@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
-    // First, sign up the user
+    // First sign up the user with email confirmation disabled
     const { error, data: signUpData } = await supabase.auth.signUp({
       email,
       password,
@@ -87,7 +87,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         data: {
           first_name: firstName,
           last_name: lastName
-        }
+        },
+        emailRedirectTo: `${window.location.origin}/verify-email`,
+        // Disable the built-in email confirmation
+        emailConfirm: false
       }
     });
     
@@ -128,6 +131,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (response.error) {
         throw new Error(response.error.message || 'Failed to send verification email');
       }
+
+      console.log("Verification email response:", response);
 
       return { email, firstName };
     }
