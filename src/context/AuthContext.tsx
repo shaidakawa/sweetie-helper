@@ -109,12 +109,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
       
       // Store the verification code in the database
+      // Fix: Convert Date object to ISO string for the expires_at field
       const { error: verificationError } = await supabase
         .from('email_verifications')
         .insert({
           email,
           code: verificationCode,
-          expires_at: new Date(Date.now() + 10 * 60 * 1000) // 10 minutes from now
+          expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString() // 10 minutes from now, as ISO string
         });
 
       if (verificationError) throw verificationError;
