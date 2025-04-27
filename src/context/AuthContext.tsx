@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -66,7 +67,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
-    const { error, data } = await supabase.auth.signUp({
+    // First, sign up the user
+    const { error, data: signUpData } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -79,27 +81,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     if (error) throw error;
     
-    if (data.user) {
+    // If sign up was successful, update the profile
+    if (signUpData.user) {
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
           first_name: firstName,
           last_name: lastName
         })
-        .eq('id', data.user.id);
+        .eq('id', signUpData.user.id);
         
       if (profileError) throw profileError;
 
+      // Set up OTP and verification link
       const siteUrl = window.location.origin;
-      const { data, error } = await supabase.auth.signInWithOtp({
+      const { data: otpData, error: otpError } = await supabase.auth.signInWithOtp({
         email,
         options: {
           emailRedirectTo: `${siteUrl}/login`,
         },
       });
 
-      if (error) throw error;
+      if (otpError) throw otpError;
 
+      // Send verification email via our edge function
       const verificationLink = `${siteUrl}/login?email=${encodeURIComponent(email)}`;
       
       const response = await supabase.functions.invoke('send-verification', {
