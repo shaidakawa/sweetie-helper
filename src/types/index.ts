@@ -1,37 +1,53 @@
 
-export interface Product {
+export type User = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: 'user' | 'admin';
+};
+
+export type UserProfile = {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  avatarUrl: string | null;
+  location: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type Product = {
   id: string;
   title: string;
-  price: number;
-  image: string;
-  category: string;
   description?: string;
+  price: number;
+  category: string;
   brand?: string;
   color?: string;
   size?: string;
-  location?: string;
-  date?: string;
-}
+  location: string;
+  images: string[];
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+  isSold: boolean;
+};
 
-export interface Category {
+export type Conversation = {
   id: string;
-  title: string;
-  image: string;
-  link: string;
-}
+  productId: string;
+  sellerId: string;
+  buyerId: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
-export interface User {
+export type Message = {
   id: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  role: 'user' | 'admin';
-}
-
-export interface UserProfile {
-  id: string;
-  first_name: string | null;
-  last_name: string | null;
-  created_at: string;
-  updated_at: string;
-}
+  conversationId: string;
+  senderId: string;
+  content: string;
+  isRead: boolean;
+  createdAt: string;
+};
