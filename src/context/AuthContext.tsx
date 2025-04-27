@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -80,7 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Send verification email via edge function
     const response = await supabase.functions.invoke('send-verification', {
-      body: { email, firstName, verificationCode },
+      body: { email, firstName, verificationCode }
     });
 
     if (response.error) {
@@ -94,7 +93,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Generate a 6-digit reset code
     const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
     
-    // Store the reset code in the database
+    // Store the reset code
     const { error: resetError } = await supabase
       .from('password_resets')
       .insert({
@@ -109,14 +108,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { data: userData } = await supabase
       .from('profiles')
       .select('first_name')
-      .eq('email', email)
+      .eq('id', email)
       .maybeSingle();
 
-    const firstName = userData?.first_name || 'User';
+    const firstName = userData?.first_name || 'there';
 
-    // Send password reset email via our edge function
+    // Send password reset email via edge function
     const response = await supabase.functions.invoke('send-verification', {
-      body: { email, firstName, verificationCode: resetCode, isPasswordReset: true },
+      body: { email, firstName, verificationCode: resetCode, isPasswordReset: true }
     });
 
     if (response.error) {
@@ -199,7 +198,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
       if (profileError) throw profileError;
 
-      // Send the verification code immediately after successful signup
+      // Send verification code immediately after successful signup
       await sendVerificationCode(email, firstName);
 
       return { email, firstName };
