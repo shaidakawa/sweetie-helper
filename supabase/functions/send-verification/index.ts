@@ -14,6 +14,7 @@ interface VerificationEmailRequest {
   email: string;
   firstName: string;
   verificationCode: string;
+  isPasswordReset?: boolean;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -23,19 +24,29 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { email, firstName, verificationCode }: VerificationEmailRequest = await req.json();
+    const { email, firstName, verificationCode, isPasswordReset = false }: VerificationEmailRequest = await req.json();
 
-    console.log(`Sending verification email to ${email} with code: ${verificationCode}`);
+    console.log(`Sending ${isPasswordReset ? 'password reset' : 'verification'} email to ${email} with code: ${verificationCode}`);
+    
+    const subject = isPasswordReset 
+      ? `Your Oldie Password Reset Code: ${verificationCode}`
+      : `Your Oldie Verification Code: ${verificationCode}`;
+    
+    const title = isPasswordReset ? 'Reset Your Password' : 'Welcome to Oldie!';
+    
+    const message = isPasswordReset
+      ? 'You requested to reset your password. Your password reset code is:'
+      : 'Thank you for creating an account with Oldie. Your verification code is:';
     
     const emailResponse = await resend.emails.send({
       from: "Oldie Verification <onboarding@resend.dev>",
       to: [email],
-      subject: `Your Oldie Verification Code: ${verificationCode}`,
+      subject: subject,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #333; margin-bottom: 24px;">Welcome to Oldie!</h1>
+          <h1 style="color: #333; margin-bottom: 24px;">${title}</h1>
           <p>Hello ${firstName || 'there'},</p>
-          <p>Thank you for creating an account with Oldie. Your verification code is:</p>
+          <p>${message}</p>
           
           <div style="margin: 32px 0; text-align: center;">
             <h2 style="background-color: #000; color: white; padding: 12px 24px; display: inline-block; letter-spacing: 5px;">${verificationCode}</h2>
@@ -43,7 +54,9 @@ const handler = async (req: Request): Promise<Response> => {
           
           <p>This code will expire in 10 minutes.</p>
           
-          <p>If you did not create an account, please ignore this email.</p>
+          <p>${isPasswordReset 
+              ? 'If you did not request a password reset, please ignore this email.'
+              : 'If you did not create an account, please ignore this email.'}</p>
           
           <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid #eee; color: #666; font-size: 12px;">
             <p>© ${new Date().getFullYear()} Oldie. All rights reserved.</p>
@@ -55,7 +68,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Email sent successfully:", emailResponse);
 
     return new Response(JSON.stringify({ 
-      message: "Verification email sent successfully",
+      message: `${isPasswordReset ? 'Password reset' : 'Verification'} email sent successfully`,
       email: email
     }), {
       status: 200,
@@ -65,7 +78,7 @@ const handler = async (req: Request): Promise<Response> => {
       },
     });
   } catch (error: any) {
-    console.error("Error sending verification email:", error);
+    console.error("Error sending email:", error);
     return new Response(
       JSON.stringify({ 
         error: error.message,

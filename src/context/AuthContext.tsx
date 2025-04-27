@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -14,6 +15,9 @@ type AuthContextType = {
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   verifyEmail: (email: string, code: string) => Promise<boolean>;
+  sendVerificationCode: (email: string, firstName: string) => Promise<void>;
+  sendPasswordResetCode: (email: string) => Promise<void>;
+  resetPasswordWithCode: (email: string, code: string, newPassword: string) => Promise<boolean>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -60,6 +64,100 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  const sendVerificationCode = async (email: string, firstName: string) => {
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // Store the verification code in the database
+    const { error: verificationError } = await supabase
+      .from('email_verifications')
+      .insert({
+        email,
+        code: verificationCode,
+        expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString() // 10 minutes from now
+      });
+
+    if (verificationError) throw verificationError;
+
+    // Send verification email via edge function
+    const response = await supabase.functions.invoke('send-verification', {
+      body: { email, firstName, verificationCode },
+    });
+
+    if (response.error) {
+      throw new Error(response.error.message || 'Failed to send verification email');
+    }
+
+    console.log("Verification email sent:", response);
+  };
+
+  const sendPasswordResetCode = async (email: string) => {
+    // Generate a 6-digit reset code
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // Store the reset code in the database
+    const { error: resetError } = await supabase
+      .from('password_resets')
+      .insert({
+        email,
+        code: resetCode,
+        expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString() // 10 minutes from now
+      });
+
+    if (resetError) throw resetError;
+
+    // Get user's first name if possible
+    const { data: userData } = await supabase
+      .from('profiles')
+      .select('first_name')
+      .eq('email', email)
+      .maybeSingle();
+
+    const firstName = userData?.first_name || 'User';
+
+    // Send password reset email via our edge function
+    const response = await supabase.functions.invoke('send-verification', {
+      body: { email, firstName, verificationCode: resetCode, isPasswordReset: true },
+    });
+
+    if (response.error) {
+      throw new Error(response.error.message || 'Failed to send password reset email');
+    }
+
+    console.log("Password reset email sent:", response);
+  };
+  
+  const resetPasswordWithCode = async (email: string, code: string, newPassword: string) => {
+    // Verify the code is valid
+    const { data: resetData, error: resetError } = await supabase
+      .from('password_resets')
+      .select('*')
+      .eq('email', email)
+      .eq('code', code)
+      .gt('expires_at', new Date().toISOString())
+      .single();
+
+    if (resetError || !resetData) {
+      throw new Error('Invalid or expired reset code');
+    }
+
+    // Mark the reset code as used
+    const { error: updateError } = await supabase
+      .from('password_resets')
+      .update({ is_used: true })
+      .eq('id', resetData.id);
+
+    if (updateError) throw updateError;
+
+    // Use Supabase's built-in password update
+    const { error: passwordError } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+
+    if (passwordError) throw passwordError;
+
+    return true;
+  };
+  
   const login = async (email: string, password: string) => {
     const { data: verifications } = await supabase
       .from('email_verifications')
@@ -101,27 +199,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
       if (profileError) throw profileError;
 
-      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-      
-      const { error: verificationError } = await supabase
-        .from('email_verifications')
-        .insert({
-          email,
-          code: verificationCode,
-          expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString() // 10 minutes from now
-        });
-
-      if (verificationError) throw verificationError;
-
-      const response = await supabase.functions.invoke('send-verification', {
-        body: { email, firstName, verificationCode },
-      });
-
-      if (response.error) {
-        throw new Error(response.error.message || 'Failed to send verification email');
-      }
-
-      console.log("Verification email response:", response);
+      // Send the verification code immediately after successful signup
+      await sendVerificationCode(email, firstName);
 
       return { email, firstName };
     }
@@ -158,10 +237,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const resetPassword = async (email: string) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-    if (error) throw error;
+    // Use our custom password reset flow
+    await sendPasswordResetCode(email);
   };
 
   const isAuthenticated = !!user;
@@ -177,7 +254,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       signup,
       logout,
       resetPassword,
-      verifyEmail
+      verifyEmail,
+      sendVerificationCode,
+      sendPasswordResetCode,
+      resetPasswordWithCode
     }}>
       {children}
     </AuthContext.Provider>
