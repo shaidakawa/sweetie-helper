@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,11 +22,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
 
-  // Transform Supabase user to our User type
   const transformUser = async (supabaseUser: SupabaseUser | null): Promise<User | null> => {
     if (!supabaseUser) return null;
     
-    // Get profile data from profiles table
     const { data: profile } = await supabase
       .from('profiles')
       .select('*')
@@ -44,22 +41,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, currentSession) => {
         setSession(currentSession);
         
-        // Transform Supabase user to our User type
         const transformedUser = await transformUser(currentSession?.user ?? null);
         setUser(transformedUser);
       }
     );
 
-    // Check for existing session
     supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
       setSession(currentSession);
       
-      // Transform Supabase user to our User type
       const transformedUser = await transformUser(currentSession?.user ?? null);
       setUser(transformedUser);
     });
@@ -86,7 +79,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     if (error) throw error;
     
-    // Update the profile in our profiles table
     if (data.user) {
       const { error: profileError } = await supabase
         .from('profiles')
@@ -98,12 +90,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
       if (profileError) throw profileError;
 
-      // Send verification email
-      try {
-        await sendVerificationEmail(email, firstName);
-      } catch (emailError) {
-        console.error("Failed to send verification email:", emailError);
-        // We'll continue with signup even if email fails
+      const siteUrl = window.location.origin;
+      const { data, error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${siteUrl}/login`,
+        },
+      });
+
+      if (error) throw error;
+
+      const verificationLink = `${siteUrl}/login?email=${encodeURIComponent(email)}`;
+      
+      const response = await supabase.functions.invoke('send-verification', {
+        body: { email, firstName, verificationLink },
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message || 'Failed to send verification email');
       }
     }
   };
@@ -121,7 +125,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const sendVerificationEmail = async (email: string, firstName: string) => {
-    // Get site URL for verification link
     const siteUrl = window.location.origin;
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
@@ -132,7 +135,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     if (error) throw error;
 
-    // Call our edge function to send a custom email
     const verificationLink = `${siteUrl}/login?email=${encodeURIComponent(email)}`;
     
     const response = await supabase.functions.invoke('send-verification', {
