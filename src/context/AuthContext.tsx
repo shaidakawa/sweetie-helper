@@ -89,8 +89,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           last_name: lastName
         },
         emailRedirectTo: `${window.location.origin}/verify-email`,
-        // Disable the built-in email confirmation
-        emailConfirm: false
+        // We don't use the built-in email confirmation
+        // since we're implementing our own verification system
       }
     });
     
