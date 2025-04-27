@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MessageCircle } from 'lucide-react';
@@ -98,7 +99,7 @@ const ProductDetail = () => {
           <div className="w-full md:w-1/2">
             <div className="bg-white rounded-lg overflow-hidden">
               <img 
-                src={product.images[0]} // Use the first image from the images array
+                src={product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg'} 
                 alt={product.title} 
                 className="w-full object-cover"
               />
@@ -122,8 +123,8 @@ const ProductDetail = () => {
               {product.location && (
                 <p><span className="font-medium">Location:</span> {product.location}</p>
               )}
-              {product.date && (
-                <p><span className="font-medium">Date:</span> {product.date}</p>
+              {product.createdAt && (
+                <p><span className="font-medium">Date:</span> {new Date(product.createdAt).toLocaleDateString()}</p>
               )}
             </div>
             
@@ -218,7 +219,7 @@ const ProductDetail = () => {
                   id={product.id}
                   title={product.title}
                   price={product.price}
-                  image={product.images[0]} // Use the first image from the images array
+                  image={product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg'}
                   category={product.category}
                 />
               ))}

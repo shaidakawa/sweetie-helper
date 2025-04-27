@@ -37,7 +37,7 @@ const CategoryDetail = () => {
                 id={product.id}
                 title={product.title}
                 price={product.price}
-                image={product.images[0]} // Use the first image from the images array
+                image={product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg'}
                 category={product.category}
               />
             ))}
