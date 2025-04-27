@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -62,7 +61,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    // Check if email is verified before login
     const { data: verifications } = await supabase
       .from('email_verifications')
       .select('*')
@@ -79,8 +77,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
-    // Sign up the user without requiring email confirmation
-    // The important part is that we're not using Supabase's built-in email confirmation
     const { error, data: signUpData } = await supabase.auth.signUp({
       email,
       password,
@@ -89,13 +85,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           first_name: firstName,
           last_name: lastName
         },
-        // No email redirect, we're handling verification ourselves
       }
     });
     
     if (error) throw error;
     
-    // If sign up was successful, update the profile
     if (signUpData.user) {
       const { error: profileError } = await supabase
         .from('profiles')
@@ -107,10 +101,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
       if (profileError) throw profileError;
 
-      // Generate a 6-digit verification code
       const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
       
-      // Store the verification code in the database
       const { error: verificationError } = await supabase
         .from('email_verifications')
         .insert({
@@ -121,7 +113,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (verificationError) throw verificationError;
 
-      // Send verification email via our edge function
       const response = await supabase.functions.invoke('send-verification', {
         body: { email, firstName, verificationCode },
       });
@@ -139,7 +130,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const verifyEmail = async (email: string, code: string) => {
-    // Check if the verification code is valid and not expired
     const { data: verification, error } = await supabase
       .from('email_verifications')
       .select('*')
@@ -152,7 +142,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       throw new Error('Invalid or expired verification code');
     }
 
-    // Mark the verification as used
     const { error: updateError } = await supabase
       .from('email_verifications')
       .update({ is_used: true })
