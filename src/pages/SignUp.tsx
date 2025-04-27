@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { signup, sendVerificationEmail } = useAuth();
+  const { signup } = useAuth();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -15,7 +15,6 @@ const SignUp = () => {
     confirmPassword: '',
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [verificationSent, setVerificationSent] = useState(false);
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -39,17 +38,20 @@ const SignUp = () => {
     
     setIsLoading(true);
     try {
-      await signup(formData.email, formData.password, formData.firstName, formData.lastName);
-      
-      // Send verification email explicitly
-      await sendVerificationEmail(formData.email, formData.firstName);
-      
-      setVerificationSent(true);
+      const { email, firstName } = await signup(
+        formData.email, 
+        formData.password, 
+        formData.firstName, 
+        formData.lastName
+      );
       
       toast({
-        title: "Account created successfully!",
+        title: "Account created",
         description: "Please check your email to verify your account.",
       });
+      
+      // Navigate to email verification page with email in state
+      navigate('/verify-email', { state: { email, firstName } });
     } catch (error) {
       toast({
         title: "Sign up failed",
@@ -60,47 +62,6 @@ const SignUp = () => {
       setIsLoading(false);
     }
   };
-
-  if (verificationSent) {
-    return (
-      <div className="animate-slide-in">
-        <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row min-h-[calc(100vh-10rem)]">
-            <div className="w-full md:w-1/2 flex flex-col justify-center p-8">
-              <h1 className="text-5xl font-playfair font-bold mb-6">Verification Email Sent</h1>
-              
-              <div className="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-100 mb-8">
-                <p className="mb-4">We've sent a verification email to <strong>{formData.email}</strong>.</p>
-                <p className="mb-4">Please check your inbox and click the verification link to activate your account.</p>
-                <p className="text-sm text-gray-500">If you don't see the email, check your spam folder or try again.</p>
-              </div>
-              
-              <div className="space-y-4">
-                <button 
-                  onClick={() => setVerificationSent(false)}
-                  className="btn-outline-black w-full py-3"
-                >
-                  Back to Sign Up
-                </button>
-                
-                <Link to="/login" className="btn-black w-full py-3 block text-center">
-                  Go to Login
-                </Link>
-              </div>
-            </div>
-            
-            <div className="hidden md:block md:w-1/2 h-[calc(100vh-10rem)]">
-              <img 
-                src="/lovable-uploads/6db6afbc-70d9-40b6-84cd-96e02122b8c5.png" 
-                alt="Clothes rack" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="animate-slide-in">

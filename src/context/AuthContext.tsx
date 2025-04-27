@@ -11,10 +11,10 @@ type AuthContextType = {
   isAuthenticated: boolean;
   isAdmin: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
+  signup: (email: string, password: string, firstName: string, lastName: string) => Promise<{ email: string, firstName: string }>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
-  sendVerificationEmail: (email: string, firstName: string) => Promise<void>;
+  verifyEmail: (email: string, code: string) => Promise<boolean>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -62,6 +62,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
+    // Check if email is verified before login
+    const { data: verifications } = await supabase
+      .from('email_verifications')
+      .select('*')
+      .eq('email', email)
+      .eq('is_used', true)
+      .single();
+
+    if (!verifications) {
+      throw new Error('Please verify your email before logging in');
+    }
+
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
   };
@@ -93,28 +105,58 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
       if (profileError) throw profileError;
 
-      // Set up OTP and verification link
-      const siteUrl = window.location.origin;
-      const { data: otpData, error: otpError } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${siteUrl}/login`,
-        },
-      });
+      // Generate a 6-digit verification code
+      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+      
+      // Store the verification code in the database
+      const { error: verificationError } = await supabase
+        .from('email_verifications')
+        .insert({
+          email,
+          code: verificationCode,
+          expires_at: new Date(Date.now() + 10 * 60 * 1000) // 10 minutes from now
+        });
 
-      if (otpError) throw otpError;
+      if (verificationError) throw verificationError;
 
       // Send verification email via our edge function
-      const verificationLink = `${siteUrl}/login?email=${encodeURIComponent(email)}`;
-      
       const response = await supabase.functions.invoke('send-verification', {
-        body: { email, firstName, verificationLink },
+        body: { email, firstName, verificationCode },
       });
 
       if (response.error) {
         throw new Error(response.error.message || 'Failed to send verification email');
       }
+
+      return { email, firstName };
     }
+
+    throw new Error('Signup failed');
+  };
+
+  const verifyEmail = async (email: string, code: string) => {
+    // Check if the verification code is valid and not expired
+    const { data: verification, error } = await supabase
+      .from('email_verifications')
+      .select('*')
+      .eq('email', email)
+      .eq('code', code)
+      .gt('expires_at', new Date().toISOString())
+      .single();
+
+    if (error || !verification) {
+      throw new Error('Invalid or expired verification code');
+    }
+
+    // Mark the verification as used
+    const { error: updateError } = await supabase
+      .from('email_verifications')
+      .update({ is_used: true })
+      .eq('id', verification.id);
+
+    if (updateError) throw updateError;
+
+    return true;
   };
 
   const logout = async () => {
@@ -127,30 +169,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       redirectTo: `${window.location.origin}/reset-password`,
     });
     if (error) throw error;
-  };
-
-  const sendVerificationEmail = async (email: string, firstName: string) => {
-    const siteUrl = window.location.origin;
-    const { data, error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${siteUrl}/login`,
-      },
-    });
-
-    if (error) throw error;
-
-    const verificationLink = `${siteUrl}/login?email=${encodeURIComponent(email)}`;
-    
-    const response = await supabase.functions.invoke('send-verification', {
-      body: { email, firstName, verificationLink },
-    });
-
-    if (response.error) {
-      throw new Error(response.error.message || 'Failed to send verification email');
-    }
-
-    return response.data;
   };
 
   const isAuthenticated = !!user;
@@ -166,7 +184,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       signup,
       logout,
       resetPassword,
-      sendVerificationEmail
+      verifyEmail
     }}>
       {children}
     </AuthContext.Provider>

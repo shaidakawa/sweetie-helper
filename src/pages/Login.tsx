@@ -12,18 +12,13 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  // Check if user came from email verification
-  const searchParams = new URLSearchParams(location.search);
-  const verifiedEmail = searchParams.get('email');
+  // Check if email is provided from verification or previous route
+  const verifiedEmail = location.state?.email;
   
   useEffect(() => {
-    // If email is provided in URL (from verification)
+    // Pre-fill email if it was passed from verification
     if (verifiedEmail) {
       setEmail(verifiedEmail);
-      toast({
-        title: "Email verified",
-        description: "Your email has been verified. You can now log in.",
-      });
     }
   }, [verifiedEmail]);
   

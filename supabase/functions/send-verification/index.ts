@@ -13,7 +13,7 @@ const corsHeaders = {
 interface VerificationEmailRequest {
   email: string;
   firstName: string;
-  verificationLink: string;
+  verificationCode: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -23,9 +23,9 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { email, firstName, verificationLink }: VerificationEmailRequest = await req.json();
+    const { email, firstName, verificationCode }: VerificationEmailRequest = await req.json();
 
-    console.log(`Sending verification email to ${email} with link: ${verificationLink}`);
+    console.log(`Sending verification email to ${email} with code: ${verificationCode}`);
 
     const emailResponse = await resend.emails.send({
       from: "Oldie Verification <onboarding@resend.dev>",
@@ -35,14 +35,13 @@ const handler = async (req: Request): Promise<Response> => {
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #333; margin-bottom: 24px;">Welcome to Oldie!</h1>
           <p>Hello ${firstName || 'there'},</p>
-          <p>Thank you for creating an account with Oldie. Please verify your email address by clicking the button below:</p>
+          <p>Thank you for creating an account with Oldie. Please verify your email address using the code below:</p>
           
-          <div style="margin: 32px 0;">
-            <a href="${verificationLink}" style="background-color: #000; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">Verify Email Address</a>
+          <div style="margin: 32px 0; text-align: center;">
+            <h2 style="background-color: #000; color: white; padding: 12px 24px; display: inline-block; letter-spacing: 5px;">${verificationCode}</h2>
           </div>
           
-          <p>If you're having trouble with the button above, you can also click on the link below or copy and paste it into your browser:</p>
-          <p><a href="${verificationLink}">${verificationLink}</a></p>
+          <p>This code will expire in 10 minutes.</p>
           
           <p>If you did not create an account, please ignore this email.</p>
           
