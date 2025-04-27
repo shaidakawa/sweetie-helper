@@ -50,7 +50,7 @@ const AdminProducts = () => {
               <tr key={product.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="w-12 h-12 rounded-md overflow-hidden">
-                    <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
+                    <img src={product.images[0]} alt={product.title} className="w-full h-full object-cover" />
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">

@@ -37,14 +37,14 @@ const CategoryDetail = () => {
                 id={product.id}
                 title={product.title}
                 price={product.price}
-                image={product.image}
+                image={product.images[0]} // Use the first image from the images array
                 category={product.category}
               />
             ))}
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-xl mb-4">No products found in this category.</p>
+            <p className="text-xl">No products found in this category.</p>
           </div>
         )}
       </div>

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MessageCircle } from 'lucide-react';
@@ -99,7 +98,7 @@ const ProductDetail = () => {
           <div className="w-full md:w-1/2">
             <div className="bg-white rounded-lg overflow-hidden">
               <img 
-                src={product.image} 
+                src={product.images[0]} // Use the first image from the images array
                 alt={product.title} 
                 className="w-full object-cover"
               />
@@ -219,7 +218,7 @@ const ProductDetail = () => {
                   id={product.id}
                   title={product.title}
                   price={product.price}
-                  image={product.image}
+                  image={product.images[0]} // Use the first image from the images array
                   category={product.category}
                 />
               ))}

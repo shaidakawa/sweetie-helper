@@ -371,7 +371,7 @@ const Search = () => {
                 id={product.id}
                 title={product.title}
                 price={product.price}
-                image={product.image}
+                image={product.images[0]} // Use the first image from the images array
                 category={product.category}
               />
             ))}
