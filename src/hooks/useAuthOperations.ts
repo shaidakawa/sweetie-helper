@@ -22,6 +22,7 @@ export const useAuthOperations = () => {
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
     try {
       // Skip the check for existing users - allowing multiple accounts per email
+      console.log(`Attempting to create account with email: ${email}`);
       
       const { error, data: signUpData } = await supabase.auth.signUp({
         email,
@@ -35,6 +36,7 @@ export const useAuthOperations = () => {
       });
       
       if (error) {
+        console.log(`Error during initial signup: ${error.message}`);
         // Handle other signup errors, but not "User already registered"
         if (error.message.includes('User already registered')) {
           // Generate a unique email by appending a timestamp
@@ -55,9 +57,12 @@ export const useAuthOperations = () => {
             }
           });
           
-          if (retryError) throw retryError;
+          if (retryError) {
+            console.error('Error during retry signup:', retryError);
+            throw retryError;
+          }
           
-          if (retryData.user) {
+          if (retryData?.user) {
             const { error: profileError } = await supabase
               .from('profiles')
               .update({
@@ -73,19 +78,22 @@ export const useAuthOperations = () => {
             try {
               // Send verification code to the original email
               await sendVerificationCode(email, firstName);
+              console.log('Verification code sent for alternate account');
+              return { email, firstName };
             } catch (verificationError) {
               console.error('Verification code error:', verificationError);
               throw new Error('Account created but failed to send verification email. Please contact support.');
             }
-            
-            return { email, firstName };
+          } else {
+            throw new Error('Failed to create alternate account');
           }
         } else {
           throw error;
         }
       }
       
-      if (signUpData.user) {
+      if (signUpData?.user) {
+        console.log('User created successfully, updating profile');
         const { error: profileError } = await supabase
           .from('profiles')
           .update({
@@ -100,27 +108,24 @@ export const useAuthOperations = () => {
         }
 
         try {
+          console.log('Sending verification code');
           await sendVerificationCode(email, firstName);
+          console.log('Verification code sent successfully');
+          return { email, firstName };
         } catch (verificationError) {
           console.error('Verification code error:', verificationError);
           throw new Error('Account created but failed to send verification email. Please contact support.');
         }
         
-        return { email, firstName };
+      } else {
+        console.error('No user data returned from signup');
+        throw new Error('Signup failed: Unable to create user account');
       }
-
-      throw new Error('Signup failed: Unable to create user account');
     } catch (error) {
       console.error('Signup process error:', error);
       
-      // Check for specific error types and provide clearer messages
-      if (error instanceof Error) {
-        // Don't block "User already registered" errors anymore
-        // but handle other specific errors
-        throw error;
-      }
-      
-      throw new Error('An unexpected error occurred during signup');
+      // Re-throw the error to be handled by the calling component
+      throw error;
     }
   };
 

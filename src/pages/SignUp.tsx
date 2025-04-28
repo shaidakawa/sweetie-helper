@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
@@ -37,12 +38,15 @@ const SignUp = () => {
     
     setIsLoading(true);
     try {
+      console.log("Starting signup process...");
       const { email, firstName } = await signup(
         formData.email, 
         formData.password, 
         formData.firstName, 
         formData.lastName
       );
+      
+      console.log("Signup successful, navigating to verification page");
       
       toast({
         title: "Account created",
@@ -58,18 +62,31 @@ const SignUp = () => {
       if (error instanceof Error) {
         errorMessage = error.message;
         
-        // Special case for "User already registered" error - we now handle this in useAuthOperations
         if (error.message.includes('User already registered')) {
           errorMessage = "Creating another account with this email...";
+          // Don't return here - let the process complete as the backend will handle it
+        } else {
+          // For all other errors, we reset isLoading and show the error message
+          setIsLoading(false);
+          toast({
+            title: "Sign up issue",
+            description: errorMessage,
+            variant: "destructive"
+          });
+          return; // Exit early for other errors
         }
       }
       
-      toast({
-        title: "Sign up issue",
-        description: errorMessage,
-        variant: "destructive"
-      });
+      // Only show this toast for "User already registered" flow that continues
+      if (errorMessage.includes("Creating another account")) {
+        toast({
+          title: "Sign up process",
+          description: errorMessage
+        });
+      }
     } finally {
+      // Ensure loading state is always reset if we reach this point
+      // This acts as a safety net in case the try/catch doesn't handle all cases
       setIsLoading(false);
     }
   };

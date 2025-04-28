@@ -2,9 +2,11 @@ import { supabase } from '@/integrations/supabase/client';
 
 export const sendVerificationCode = async (email: string, firstName: string) => {
   try {
+    console.log(`Attempting to send verification code to ${email}`);
+    
     // Check if there's an existing verification code for this email that's still valid
     const now = new Date().toISOString();
-    const { data: existingVerifications } = await supabase
+    const { data: existingVerifications, error: queryError } = await supabase
       .from('email_verifications')
       .select('*')
       .eq('email', email)
@@ -13,8 +15,14 @@ export const sendVerificationCode = async (email: string, firstName: string) => 
       .order('created_at', { ascending: false })
       .limit(1);
     
+    if (queryError) {
+      console.error('Error checking for existing verifications:', queryError);
+      throw new Error(`Failed to check for existing verification codes: ${queryError.message}`);
+    }
+    
     // If there's a recent valid verification code, reuse it
     if (existingVerifications && existingVerifications.length > 0) {
+      console.log('Found existing verification code, reusing it');
       const verificationCode = existingVerifications[0].code;
       
       const response = await supabase.functions.invoke('send-verification', {
@@ -31,6 +39,7 @@ export const sendVerificationCode = async (email: string, firstName: string) => 
     }
     
     // Otherwise create a new verification code
+    console.log('Creating new verification code');
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     
     const { error: verificationError } = await supabase
@@ -46,6 +55,7 @@ export const sendVerificationCode = async (email: string, firstName: string) => 
       throw new Error(`Failed to create verification code: ${verificationError.message}`);
     }
 
+    console.log('Verification code created, sending email');
     const response = await supabase.functions.invoke('send-verification', {
       body: { email, firstName, verificationCode }
     });
