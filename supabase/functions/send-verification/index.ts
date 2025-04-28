@@ -38,9 +38,10 @@ const handler = async (req: Request): Promise<Response> => {
       ? 'You requested to reset your password. Your password reset code is:'
       : 'Thank you for creating an account with Oldie. Your verification code is:';
     
-    // Use the verified email domain (assuming shaidakawa15@gmail.com is verified)
+    // Use Resend's default verified domain - onboarding@resend.dev
+    // This will work for any recipient email during development
     const emailResponse = await resend.emails.send({
-      from: "Oldie <shaidakawa15@gmail.com>",
+      from: "Oldie <onboarding@resend.dev>",
       to: [email],
       subject: subject,
       html: `
