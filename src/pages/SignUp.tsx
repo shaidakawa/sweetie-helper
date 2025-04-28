@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
@@ -54,9 +53,20 @@ const SignUp = () => {
       navigate('/verify-email', { state: { email, firstName } });
     } catch (error) {
       console.error('Signup error:', error);
+      let errorMessage = "An error occurred during sign up.";
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        
+        // Special case for "User already registered" error - we now handle this in useAuthOperations
+        if (error.message.includes('User already registered')) {
+          errorMessage = "Creating another account with this email...";
+        }
+      }
+      
       toast({
-        title: "Sign up failed",
-        description: error instanceof Error ? error.message : "An error occurred during sign up.",
+        title: "Sign up issue",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {

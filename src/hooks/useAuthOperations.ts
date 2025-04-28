@@ -21,6 +21,8 @@ export const useAuthOperations = () => {
 
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
     try {
+      // Skip the check for existing users - allowing multiple accounts per email
+      
       const { error, data: signUpData } = await supabase.auth.signUp({
         email,
         password,
@@ -32,7 +34,56 @@ export const useAuthOperations = () => {
         }
       });
       
-      if (error) throw error;
+      if (error) {
+        // Handle other signup errors, but not "User already registered"
+        if (error.message.includes('User already registered')) {
+          // Generate a unique email by appending a timestamp
+          const timestamp = new Date().getTime();
+          const uniqueEmail = `${email.split('@')[0]}+${timestamp}@${email.split('@')[1]}`;
+          
+          console.log(`Email already registered, trying with unique email: ${uniqueEmail}`);
+          
+          // Try again with the unique email
+          const { error: retryError, data: retryData } = await supabase.auth.signUp({
+            email: uniqueEmail,
+            password,
+            options: {
+              data: {
+                first_name: firstName,
+                last_name: lastName
+              },
+            }
+          });
+          
+          if (retryError) throw retryError;
+          
+          if (retryData.user) {
+            const { error: profileError } = await supabase
+              .from('profiles')
+              .update({
+                first_name: firstName,
+                last_name: lastName
+              })
+              .eq('id', retryData.user.id);
+              
+            if (profileError) {
+              console.error('Profile update error:', profileError);
+            }
+
+            try {
+              // Send verification code to the original email
+              await sendVerificationCode(email, firstName);
+            } catch (verificationError) {
+              console.error('Verification code error:', verificationError);
+              throw new Error('Account created but failed to send verification email. Please contact support.');
+            }
+            
+            return { email, firstName };
+          }
+        } else {
+          throw error;
+        }
+      }
       
       if (signUpData.user) {
         const { error: profileError } = await supabase
@@ -64,11 +115,8 @@ export const useAuthOperations = () => {
       
       // Check for specific error types and provide clearer messages
       if (error instanceof Error) {
-        // Handle already registered user error
-        if (error.message.includes('User already registered')) {
-          throw new Error('This email is already registered. Please log in instead.');
-        }
-        
+        // Don't block "User already registered" errors anymore
+        // but handle other specific errors
         throw error;
       }
       

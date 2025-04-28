@@ -1,8 +1,36 @@
-
 import { supabase } from '@/integrations/supabase/client';
 
 export const sendVerificationCode = async (email: string, firstName: string) => {
   try {
+    // Check if there's an existing verification code for this email that's still valid
+    const now = new Date().toISOString();
+    const { data: existingVerifications } = await supabase
+      .from('email_verifications')
+      .select('*')
+      .eq('email', email)
+      .gt('expires_at', now)
+      .eq('is_used', false)
+      .order('created_at', { ascending: false })
+      .limit(1);
+    
+    // If there's a recent valid verification code, reuse it
+    if (existingVerifications && existingVerifications.length > 0) {
+      const verificationCode = existingVerifications[0].code;
+      
+      const response = await supabase.functions.invoke('send-verification', {
+        body: { email, firstName, verificationCode }
+      });
+      
+      if (response.error) {
+        console.error('Error invoking send-verification function:', response.error);
+        throw new Error(response.error.message || 'Failed to send verification email');
+      }
+      
+      console.log("Reused existing verification code and sent email:", response);
+      return;
+    }
+    
+    // Otherwise create a new verification code
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     
     const { error: verificationError } = await supabase
