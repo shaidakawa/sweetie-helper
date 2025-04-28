@@ -20,35 +20,60 @@ export const useAuthOperations = () => {
   };
 
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
-    const { error, data: signUpData } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          first_name: firstName,
-          last_name: lastName
-        },
-      }
-    });
-    
-    if (error) throw error;
-    
-    if (signUpData.user) {
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          first_name: firstName,
-          last_name: lastName
-        })
-        .eq('id', signUpData.user.id);
+    try {
+      const { error, data: signUpData } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName
+          },
+        }
+      });
+      
+      if (error) throw error;
+      
+      if (signUpData.user) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({
+            first_name: firstName,
+            last_name: lastName
+          })
+          .eq('id', signUpData.user.id);
+          
+        if (profileError) {
+          console.error('Profile update error:', profileError);
+          // Continue even if profile update fails - don't block the signup process
+        }
+
+        try {
+          await sendVerificationCode(email, firstName);
+        } catch (verificationError) {
+          console.error('Verification code error:', verificationError);
+          throw new Error('Account created but failed to send verification email. Please contact support.');
+        }
         
-      if (profileError) throw profileError;
+        return { email, firstName };
+      }
 
-      await sendVerificationCode(email, firstName);
-      return { email, firstName };
+      throw new Error('Signup failed: Unable to create user account');
+    } catch (error) {
+      console.error('Signup process error:', error);
+      
+      // Check for specific error types and provide clearer messages
+      if (error instanceof Error) {
+        // Handle already registered user error
+        if (error.message.includes('User already registered')) {
+          throw new Error('This email is already registered. Please log in instead.');
+        }
+        
+        throw error;
+      }
+      
+      throw new Error('An unexpected error occurred during signup');
     }
-
-    throw new Error('Signup failed');
   };
 
   const verifyEmail = async (email: string, code: string) => {

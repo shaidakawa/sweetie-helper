@@ -53,6 +53,7 @@ const SignUp = () => {
       // Navigate to email verification page with email in state
       navigate('/verify-email', { state: { email, firstName } });
     } catch (error) {
+      console.error('Signup error:', error);
       toast({
         title: "Sign up failed",
         description: error instanceof Error ? error.message : "An error occurred during sign up.",
