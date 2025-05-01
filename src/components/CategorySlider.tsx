@@ -101,7 +101,7 @@ const CategorySlider = () => {
       
       <div 
         ref={sliderRef}
-        className="category-slider"
+        className="category-slider overflow-hidden"
       >
         <div 
           className="flex transition-transform duration-500 ease-out"
@@ -110,8 +110,11 @@ const CategorySlider = () => {
           {categories.map((category) => (
             <div 
               key={category.id}
-              className={`w-full min-w-[${100 / slidesToShow}%] px-4`}
-              style={{ flex: `0 0 ${100 / slidesToShow}%` }}
+              className="px-4"
+              style={{ 
+                flex: `0 0 ${100 / slidesToShow}%`,
+                width: `${100 / slidesToShow}%`
+              }}
             >
               <CategoryCard 
                 title={category.title}
