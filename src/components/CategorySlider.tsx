@@ -7,13 +7,13 @@ const categories = [
   {
     id: '1',
     title: 'Accessories',
-    image: '/lovable-uploads/197998cf-409e-4bc4-b4a8-44efbd64db4a.png',
+    image: '/lovable-uploads/f6f191f4-a404-40c7-9c98-eec4fb538b2b.png',
     link: '/categories/accessories'
   },
   {
     id: '2',
     title: 'Dress',
-    image: '/lovable-uploads/35f2fd4f-a2aa-4fe4-95a8-fe165c7ac7df.png',
+    image: '/lovable-uploads/b9930b3e-e649-4466-9077-cfd1ca45bcc6.png',
     link: '/categories/dress'
   },
   {
@@ -25,31 +25,31 @@ const categories = [
   {
     id: '4',
     title: 'Shoes',
-    image: '/lovable-uploads/4fba6377-92cb-4d75-aef5-f835ee67b750.png',
+    image: '/lovable-uploads/e24ff725-05d9-43ac-b21e-ec873c94542d.png',
     link: '/categories/shoes'
   },
   {
     id: '5',
     title: 'Bags',
-    image: '/lovable-uploads/209ed3f3-b251-45fe-af6f-cbbac1f1ccf3.png',
+    image: '/lovable-uploads/0eacf8eb-cea5-4173-bc5f-92f8676dd6fc.png',
     link: '/categories/bags'
   },
   {
     id: '6',
     title: 'Tops',
-    image: '/lovable-uploads/f8e6b2b4-ec0a-4670-91fe-0993320cc78b.png',
+    image: '/lovable-uploads/58c28cb1-0d1c-4fb9-8866-232874177e34.png',
     link: '/categories/tops'
   },
   {
     id: '7',
     title: 'Trousers',
-    image: '/lovable-uploads/14135fb0-35e2-4127-9013-74bd241d6182.png',
+    image: '/lovable-uploads/3777202a-eaa7-4595-849d-65b8d60f1ce4.png',
     link: '/categories/trousers'
   },
   {
     id: '8',
     title: 'Jackets',
-    image: '/lovable-uploads/6db6afbc-70d9-40b6-84cd-96e02122b8c5.png',
+    image: '/lovable-uploads/0028fadc-b346-4ac0-b49f-7c6118614438.png',
     link: '/categories/jackets'
   }
 ];
