@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import CategoryCard from './CategoryCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -37,7 +36,7 @@ const categories = [
   {
     id: '6',
     title: 'Tops',
-    image: '/lovable-uploads/58c28cb1-0d1c-4fb9-8866-232874177e34.png',
+    image: '/lovable-uploads/cb0032c8-295e-439a-b991-1f55916b2923.png',
     link: '/categories/tops'
   },
   {
