@@ -26,7 +26,7 @@ const About = () => {
             </div>
             
             <div className="w-full md:w-1/2 flex items-center justify-center">
-              <div className="h-auto w-full">
+              <div className="h-600px w-full">
                 <img 
                   src="/lovable-uploads/About.jpg" 
                   alt="Clothes rack with garments" 
