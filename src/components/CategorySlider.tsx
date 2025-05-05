@@ -30,7 +30,7 @@ const categories = [
   {
     id: '5',
     title: 'Bags',
-    image: '/lovable-uploads/public/lovable-uploads/0eacf8eb-cea5-4173-bc5f-92f8676dd6fc-removebg-preview.png',
+    image: '/public/lovable-uploads/0eacf8eb-cea5-4173-bc5f-92f8676dd6fc-removebg-preview.png',
     link: '/categories/bags'
   },
   {
