@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CategoryCard from '../components/CategoryCard';
@@ -7,49 +6,49 @@ const categories = [
   {
     id: '1',
     title: 'Accessories',
-    image: '/lovable-uploads/f6f191f4-a404-40c7-9c98-eec4fb538b2b.png',
+    image: '/placeholder.svg',
     link: '/categories/accessories'
   },
   {
     id: '2',
     title: 'Dress',
-    image: '/lovable-uploads/b9930b3e-e649-4466-9077-cfd1ca45bcc6.png',
+    image: '/placeholder.svg',
     link: '/categories/dress'
   },
   {
     id: '3',
     title: 'Kurdish Dresses',
-    image: '/lovable-uploads/1db5a679-eae7-4639-abcf-dbe2bbe81c15.png',
+    image: '/placeholder.svg',
     link: '/categories/kurdish-dresses'
   },
   {
     id: '4',
     title: 'Shoes',
-    image: '/lovable-uploads/e24ff725-05d9-43ac-b21e-ec873c94542d.png',
+    image: '/placeholder.svg',
     link: '/categories/shoes'
   },
   {
     id: '5',
     title: 'Bags',
-    image: '/lovable-uploads/0eacf8eb-cea5-4173-bc5f-92f8676dd6fc.png',
+    image: '/placeholder.svg',
     link: '/categories/bags'
   },
   {
     id: '6',
     title: 'Tops',
-    image: '/lovable-uploads/fa7dea88-6d29-4367-8be9-2e0ddc47b830.png',
+    image: '/lovable-uploads/ca5118df-1cd3-497b-92b2-4049d3193f47.png',
     link: '/categories/tops'
   },
   {
     id: '7',
     title: 'Trousers',
-    image: '/lovable-uploads/3777202a-eaa7-4595-849d-65b8d60f1ce4.png',
+    image: '/placeholder.svg',
     link: '/categories/trousers'
   },
   {
     id: '8',
     title: 'Jackets',
-    image: '/lovable-uploads/0028fadc-b346-4ac0-b49f-7c6118614438.png',
+    image: '/placeholder.svg',
     link: '/categories/jackets'
   }
 ];
