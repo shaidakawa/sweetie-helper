@@ -6,7 +6,7 @@ const About = () => {
     <div className="animate-slide-in">
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row">
+          <div className="flex flex-col md:flex-row items-stretch">
             <div className="w-full md:w-1/2 md:pr-12 mb-10 md:mb-0">
               <h1 className="text-5xl font-playfair font-bold mb-8">About</h1>
               
