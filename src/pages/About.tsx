@@ -29,7 +29,7 @@ const About = () => {
               <img 
                 src="/lovable-uploads/About.jpg" 
                 alt="Clothes rack with garments" 
-                className="object-contain h-full max-h-full w-auto rounded-md shadow-md"
+                className="object-contain h-full mx-auto w-auto rounded-md shadow-md"
               />
             </div>
           </div>
