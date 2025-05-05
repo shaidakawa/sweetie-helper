@@ -6,7 +6,7 @@ const About = () => {
     <div className="animate-slide-in">
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-stretch">
+          <div className="flex flex-col md:flex-row">
             <div className="w-full md:w-1/2 md:pr-12 mb-10 md:mb-0">
               <h1 className="text-5xl font-playfair font-bold mb-8">About</h1>
               
@@ -25,11 +25,11 @@ const About = () => {
               </div>
             </div>
             
-            <div className="w-full md:w-1/2 flex items-center justify-center">
+            <div className="w-full md:w-1/2 relative">
               <img 
                 src="/lovable-uploads/About.jpg" 
                 alt="Clothes rack with garments" 
-                className="object-contain h-full mx-auto w-auto rounded-md shadow-md"
+                className="w-full h-[600px] object-cover rounded-md shadow-md"
               />
             </div>
           </div>
