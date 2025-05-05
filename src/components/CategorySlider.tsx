@@ -18,7 +18,7 @@ const categories = [
   {
     id: '3',
     title: 'Kurdish Dresses',
-    image: '/lovable-uploads/jli kurde.jpg',
+    image: '/lovable-uploads/jli kurde.jpeg',
     link: '/categories/kurdish-dresses'
   },
   {
@@ -36,7 +36,7 @@ const categories = [
   {
     id: '6',
     title: 'Tops',
-    image: '/lovable-uploads/0028fadc-b346-4ac0-b49f-7c6118614438.jpeg',
+    image: '/lovable-uploads/04c05ae9-15d7-432d-a071-f9cc77f68a2c.jpeg',
     link: '/categories/tops'
   },
   {

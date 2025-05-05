@@ -18,7 +18,7 @@ const CategoryCard = ({ title, image, link }: CategoryCardProps) => {
           <img 
             src={image} 
             alt={title} 
-            className="w-full h-full object-contain transition-transform duration-500 hover:scale-105" 
+            className="max-w-full max-h-full object-contain transition-transform duration-500 hover:scale-105 p-2 bg-white rounded-md" 
             onError={() => {
               console.error(`Failed to load image: ${image}`);
               setImageError(true);
