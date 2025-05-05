@@ -1,14 +1,16 @@
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Session } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
-import { User } from '@/types';
-import { transformUser } from '@/utils/authTransform';
-import { useAuthOperations } from '@/hooks/useAuthOperations';
+import { createContext, useContext, useState, ReactNode } from 'react';
+
+type User = {
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  role: 'user' | 'admin';
+};
 
 type AuthContextType = {
   user: User | null;
-  session: Session | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -21,30 +23,64 @@ type AuthContextType = {
   resetPasswordWithCode: (email: string, code: string, newPassword: string) => Promise<boolean>;
 };
 
+// Create a mock context with placeholder functionality
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const authOperations = useAuthOperations();
-
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, currentSession) => {
-        setSession(currentSession);
-        const transformedUser = await transformUser(currentSession?.user ?? null);
-        setUser(transformedUser);
-      }
-    );
-
-    supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
-      setSession(currentSession);
-      const transformedUser = await transformUser(currentSession?.user ?? null);
-      setUser(transformedUser);
+  
+  // Mock functions that would normally interact with Supabase
+  const login = async (email: string, password: string) => {
+    console.log('Mock login with:', email, password);
+    // In a real app, this would validate credentials with Supabase
+    setUser({
+      id: '123',
+      email: email,
+      firstName: 'Demo',
+      lastName: 'User',
+      role: email.includes('admin') ? 'admin' : 'user'
     });
+  };
 
-    return () => subscription.unsubscribe();
-  }, []);
+  const signup = async (email: string, password: string, firstName: string, lastName: string) => {
+    console.log('Mock signup with:', email, password, firstName, lastName);
+    // In a real app, this would create a user in Supabase
+    setUser({
+      id: '123',
+      email,
+      firstName,
+      lastName,
+      role: 'user'
+    });
+    return { email, firstName };
+  };
+
+  const logout = async () => {
+    console.log('Mock logout');
+    setUser(null);
+  };
+
+  const resetPassword = async (email: string) => {
+    console.log('Mock reset password for:', email);
+  };
+
+  const verifyEmail = async (email: string, code: string) => {
+    console.log('Mock verify email:', email, code);
+    return true;
+  };
+
+  const sendVerificationCode = async (email: string, firstName: string) => {
+    console.log('Mock send verification code to:', email, firstName);
+  };
+
+  const sendPasswordResetCode = async (email: string) => {
+    console.log('Mock send password reset code to:', email);
+  };
+
+  const resetPasswordWithCode = async (email: string, code: string, newPassword: string) => {
+    console.log('Mock reset password with code:', email, code, newPassword);
+    return true;
+  };
 
   const isAuthenticated = !!user;
   const isAdmin = user?.role === 'admin';
@@ -52,20 +88,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider value={{ 
       user, 
-      session,
       isAuthenticated, 
       isAdmin,
-      ...authOperations,
-      sendVerificationCode: async (email: string, firstName: string) => {
-        // Re-export the function from verificationUtils
-        const { sendVerificationCode } = await import('@/utils/verificationUtils');
-        return sendVerificationCode(email, firstName);
-      },
-      sendPasswordResetCode: async (email: string) => {
-        // Re-export the function from verificationUtils
-        const { sendPasswordResetCode } = await import('@/utils/verificationUtils');
-        return sendPasswordResetCode(email);
-      }
+      login,
+      signup,
+      logout,
+      resetPassword,
+      verifyEmail,
+      sendVerificationCode,
+      sendPasswordResetCode,
+      resetPasswordWithCode
     }}>
       {children}
     </AuthContext.Provider>
