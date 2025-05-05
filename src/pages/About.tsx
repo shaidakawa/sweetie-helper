@@ -27,7 +27,7 @@ const About = () => {
             
             <div className="w-full md:w-1/2 relative">
               <img 
-                src="/lovable-uploads/6db6afbc-70d9-40b6-84cd-96e02122b8c5.png" 
+                src="lovable-uploads/About.jpg" 
                 alt="Clothes rack with garments" 
                 className="w-full h-[600px] object-cover rounded-md shadow-md"
               />
