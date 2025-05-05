@@ -30,25 +30,25 @@ const categories = [
   {
     id: '5',
     title: 'Bags',
-    image: '/placeholder.svg',
+    image: '/lovable-uploads/0eacf8eb-cea5-4173-bc5f-92f8676dd6fc.jpeg',
     link: '/categories/bags'
   },
   {
     id: '6',
     title: 'Tops',
-    image: '/lovable-uploads/ca5118df-1cd3-497b-92b2-4049d3193f47.png',
+    image: '/lovable-uploads/ca5118df-1cd3-497b-92b2-4049d3193f47.jpeg',
     link: '/categories/tops'
   },
   {
     id: '7',
     title: 'Trousers',
-    image: '/placeholder.svg',
+    image: '/lovable-uploads/e24ff725-05d9-43ac-b21e-ec873c94542d.jpeg',
     link: '/categories/trousers'
   },
   {
     id: '8',
     title: 'Jackets',
-    image: '/placeholder.svg',
+    image: '/lovable-uploads/0028fadc-b346-4ac0-b49f-7c6118614438.jpeg',
     link: '/categories/jackets'
   }
 ];
