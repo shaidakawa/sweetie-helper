@@ -25,11 +25,11 @@ const About = () => {
               </div>
             </div>
             
-            <div className="w-full md:w-1/2 relative">
+            <div className="w-full md:w-1/2 flex items-center justify-center">
               <img 
-                src="lovable-uploads/About.jpg" 
+                src="/lovable-uploads/About.jpg" 
                 alt="Clothes rack with garments" 
-                className="w-full h-auto object-contain rounded-md shadow-md"
+                className="object-contain h-full max-h-full w-auto rounded-md shadow-md"
               />
             </div>
           </div>
