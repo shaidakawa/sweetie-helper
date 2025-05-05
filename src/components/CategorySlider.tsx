@@ -36,7 +36,7 @@ const categories = [
   {
     id: '6',
     title: 'Tops',
-    image: '/lovable-uploads/ca5118df-1cd3-497b-92b2-4049d3193f47.jpeg',
+    image: '/lovable-uploads/0028fadc-b346-4ac0-b49f-7c6118614438.jpeg',
     link: '/categories/tops'
   },
   {
