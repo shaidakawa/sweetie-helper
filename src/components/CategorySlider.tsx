@@ -6,25 +6,25 @@ const categories = [
   {
     id: '1',
     title: 'Accessories',
-    image: '/placeholder.svg',
+    image: '/f6f191f4-a404-40c7-9c98-eec4fb538b2b.jpeg',
     link: '/categories/accessories'
   },
   {
     id: '2',
     title: 'Dress',
-    image: '/placeholder.svg',
+    image: '/b9930b3e-e649-4466-9077-cfd1ca45bcc6.jpeg',
     link: '/categories/dress'
   },
   {
     id: '3',
     title: 'Kurdish Dresses',
-    image: '/placeholder.svg',
+    image: '/jli kurde.jpg',
     link: '/categories/kurdish-dresses'
   },
   {
     id: '4',
     title: 'Shoes',
-    image: '/placeholder.svg',
+    image: '/3777202a-eaa7-4595-849d-65b8d60f1ce4.jpeg',
     link: '/categories/shoes'
   },
   {
