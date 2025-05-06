@@ -177,12 +177,14 @@ const SignUp = () => {
             </p>
           </div>
           
-          <div className="hidden md:block md:w-1/2 h-[calc(100vh-10rem)]">
-            <img 
-              src="/lovable-uploads/login.jpg" 
-              alt="Clothes rack" 
-              className="w-full h-full object-cover"
-            />
+          <div className="hidden md:block w-1/2">
+            <div className="h-full">
+              <img 
+                src="/lovable-uploads/login.jpg" 
+                alt="Clothes rack" 
+                className="w-full h-full object-cover"
+              />
+              </div>
           </div>
         </div>
       </div>
