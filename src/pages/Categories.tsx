@@ -6,52 +6,53 @@ const categories = [
   {
     id: '1',
     title: 'Accessories',
-    image: '/placeholder.svg',
+    image: '/lovable-uploads/f6f191f4-a404-40c7-9c98-eec4fb538b2b-removebg-preview.png',
     link: '/categories/accessories'
   },
   {
     id: '2',
     title: 'Dress',
-    image: '/placeholder.svg',
+    image: '/lovable-uploads/b9930b3e-e649-4466-9077-cfd1ca45bcc6-removebg-preview.png',
     link: '/categories/dress'
   },
   {
     id: '3',
     title: 'Kurdish Dresses',
-    image: '/placeholder.svg',
+    image: '/lovable-uploads/jli_kurde-removebg-preview.png',
     link: '/categories/kurdish-dresses'
   },
   {
     id: '4',
     title: 'Shoes',
-    image: '/placeholder.svg',
+    image: '/lovable-uploads/3777202a-eaa7-4595-849d-65b8d60f1ce4-removebg-preview.png',
     link: '/categories/shoes'
   },
   {
     id: '5',
     title: 'Bags',
-    image: '/placeholder.svg',
+    image: '/lovable-uploads/0eacf8eb-cea5-4173-bc5f-92f8676dd6fc-removebg-preview.png',
     link: '/categories/bags'
   },
   {
     id: '6',
     title: 'Tops',
-    image: '/lovable-uploads/ca5118df-1cd3-497b-92b2-4049d3193f47.png',
+    image: '/lovable-uploads/04c05ae9-15d7-432d-a071-f9cc77f68a2c-removebg-preview.png',
     link: '/categories/tops'
   },
   {
     id: '7',
     title: 'Trousers',
-    image: '/placeholder.svg',
+    image: '/lovable-uploads/e24ff725-05d9-43ac-b21e-ec873c94542d-removebg-preview.png',
     link: '/categories/trousers'
   },
   {
     id: '8',
     title: 'Jackets',
-    image: '/placeholder.svg',
+    image: '/lovable-uploads/0028fadc-b346-4ac0-b49f-7c6118614438-removebg-preview.png',
     link: '/categories/jackets'
   }
 ];
+
 
 const Categories = () => {
   return (
