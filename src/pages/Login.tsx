@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
@@ -105,7 +106,7 @@ const Login = () => {
           </div>
           
           <div className="hidden md:flex md:w-1/2 items-center justify-center">
-            <div className="w-4/5 h-4/5">
+            <div className="w-3/5 h-3/5">
               <img 
                 src="/lovable-uploads/login.jpg" 
                 alt="Clothes rack" 

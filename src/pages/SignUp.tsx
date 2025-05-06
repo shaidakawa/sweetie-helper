@@ -57,36 +57,13 @@ const SignUp = () => {
       navigate('/verify-email', { state: { email, firstName } });
     } catch (error) {
       console.error('Signup error:', error);
-      let errorMessage = "An error occurred during sign up.";
       
-      if (error instanceof Error) {
-        errorMessage = error.message;
-        
-        if (error.message.includes('User already registered')) {
-          errorMessage = "Creating another account with this email...";
-          // Don't return here - let the process complete as the backend will handle it
-        } else {
-          // For all other errors, we reset isLoading and show the error message
-          setIsLoading(false);
-          toast({
-            title: "Sign up issue",
-            description: errorMessage,
-            variant: "destructive"
-          });
-          return; // Exit early for other errors
-        }
-      }
-      
-      // Only show this toast for "User already registered" flow that continues
-      if (errorMessage.includes("Creating another account")) {
-        toast({
-          title: "Sign up process",
-          description: errorMessage
-        });
-      }
+      toast({
+        title: "Sign up issue",
+        description: error instanceof Error ? error.message : "An error occurred during sign up.",
+        variant: "destructive"
+      });
     } finally {
-      // Ensure loading state is always reset if we reach this point
-      // This acts as a safety net in case the try/catch doesn't handle all cases
       setIsLoading(false);
     }
   };
@@ -178,7 +155,7 @@ const SignUp = () => {
           </div>
           
           <div className="hidden md:flex md:w-1/2 items-center justify-center">
-            <div className="w-4/5 h-4/5">
+            <div className="w-3/5 h-3/5">
               <img 
                 src="/lovable-uploads/login.jpg" 
                 alt="Clothes rack" 
