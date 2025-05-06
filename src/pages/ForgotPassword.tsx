@@ -201,12 +201,12 @@ const ForgotPassword = () => {
             )}
           </div>
           
-          <div className="hidden md:block w-1/2">
-            <div className="h-full">
+          <div className="hidden md:flex md:w-1/2 items-center justify-center">
+            <div className="w-4/5 h-4/5">
               <img 
                 src="/lovable-uploads/login.jpg" 
                 alt="Clothes rack" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-md shadow-md"
               />
             </div>
           </div>

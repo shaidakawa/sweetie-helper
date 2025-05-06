@@ -84,12 +84,14 @@ const EmailVerification = () => {
             </div>
           </div>
           
-          <div className="hidden md:block md:w-1/2 h-[calc(100vh-10rem)]">
-            <img 
-              src="/lovable-uploads/login.jpg" 
-              alt="Clothes rack" 
-              className="w-full h-full object-cover"
-            />
+          <div className="hidden md:flex md:w-1/2 items-center justify-center">
+            <div className="w-4/5 h-4/5">
+              <img 
+                src="/lovable-uploads/login.jpg" 
+                alt="Clothes rack" 
+                className="w-full h-full object-cover rounded-md shadow-md"
+              />
+            </div>
           </div>
         </div>
       </div>

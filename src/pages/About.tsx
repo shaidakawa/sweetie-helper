@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 
 const About = () => {
@@ -26,11 +25,11 @@ const About = () => {
             </div>
             
             <div className="w-full md:w-1/2 flex items-center justify-center">
-              <div className="h-[600px] w-full">
+              <div className="w-full h-full">
                 <img 
                   src="/lovable-uploads/About.jpg" 
                   alt="Clothes rack with garments" 
-                  className="w-full h-[600px] object-contain rounded-md shadow-md"
+                  className="w-full h-full object-cover rounded-md shadow-md"
                 />
               </div>
             </div>
