@@ -91,7 +91,7 @@ const Home = () => {
             {/* Bottom row - Tote bag with absolutely no border or background */}
             <div className="flex justify-center items-center h-[350px] w-full overflow-hidden">
               <img 
-                src="/lovable-uploads/376c042e-10b2-461f-8183-137eaee247fb.png" 
+                src="lovable-uploads/8a9797fc-5891-4646-be7b-2666853bc05a.png" 
                 alt="Tote bag" 
                 className="w-full h-full object-contain" 
               />
