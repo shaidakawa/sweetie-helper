@@ -108,7 +108,7 @@ const Login = () => {
           <div className="hidden md:block w-1/2">
             <div className="h-full">
               <img 
-                src="/lovable-uploads/6db6afbc-70d9-40b6-84cd-96e02122b8c5.png" 
+                src="/lovable-uploads/login.jpg" 
                 alt="Clothes rack" 
                 className="w-full h-full object-cover"
               />

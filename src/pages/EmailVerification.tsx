@@ -86,7 +86,7 @@ const EmailVerification = () => {
           
           <div className="hidden md:block md:w-1/2 h-[calc(100vh-10rem)]">
             <img 
-              src="/lovable-uploads/6db6afbc-70d9-40b6-84cd-96e02122b8c5.png" 
+              src="/lovable-uploads/login.jpg" 
               alt="Clothes rack" 
               className="w-full h-full object-cover"
             />
