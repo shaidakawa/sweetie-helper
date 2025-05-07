@@ -105,34 +105,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     firstName: string,
     lastName: string
   ) => {
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-
-    const code = generateCode();
-
-    // Save user
-    await setDoc(doc(db, "users", cred.user.uid), {
-      email,
-      firstName,
-      lastName,
-      role: "user",
-      verified: false,
-    });
-
-    // Save verification code
-    await addDoc(collection(db, "email_verifications"), {
-      email,
-      code,
-      createdAt: serverTimestamp(),
-      isUsed: false,
-      expiresAt: Date.now() + 15 * 60 * 1000,
-    });
-
-    // Simulate email send
-    console.log(`Verification code sent to ${email}: ${code}`);
-
-    return { email, firstName };
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+  
+      const code = generateCode();
+  
+      await setDoc(doc(db, "users", cred.user.uid), {
+        email,
+        firstName,
+        lastName,
+        role: "user",
+        verified: false,
+      });
+  
+      await addDoc(collection(db, "email_verifications"), {
+        email,
+        code,
+        createdAt: serverTimestamp(),
+        isUsed: false,
+        expiresAt: Date.now() + 15 * 60 * 1000,
+      });
+  
+      console.log(`✅ Verification code sent to ${email}: ${code}`);
+      return { email, firstName };
+    } catch (error) {
+      console.error("Signup Error:", error);
+      throw error;
+    }
   };
-
+  
   // ✅ Email verification
   const verifyEmail = async (email: string, code: string) => {
     const q = query(
