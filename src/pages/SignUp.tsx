@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
@@ -49,10 +50,10 @@ const SignUp = () => {
       
       toast({
         title: "Account created",
-        description: "Please check your email to verify your account.",
+        description: "Please check your email for your verification code.",
       });
       
-      // Navigate to email verification page with email in state
+      // Navigate to email verification page with email and firstName in state
       navigate('/verify-email', { state: { email, firstName } });
     } catch (error) {
       console.error('Signup error:', error);

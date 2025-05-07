@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
@@ -7,12 +8,15 @@ import { Input } from '@/components/ui/input';
 
 const EmailVerification = () => {
   const [verificationCode, setVerificationCode] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { verifyEmail } = useAuth();
+  const { verifyEmail, sendVerificationCode } = useAuth();
 
-  // Extract email from location state
+  // Extract email and firstName from location state
   const email = location.state?.email;
+  const firstName = location.state?.firstName;
 
   if (!email) {
     toast({
@@ -25,21 +29,63 @@ const EmailVerification = () => {
   }
 
   const handleVerification = async () => {
-    try {
-      await verifyEmail(email, verificationCode);
-      
+    if (!verificationCode || verificationCode.length !== 6) {
       toast({
-        title: "Email Verified",
-        description: "Your email has been successfully verified. You can now log in.",
+        title: "Invalid Code",
+        description: "Please enter the 6-digit verification code",
+        variant: "destructive"
       });
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      const success = await verifyEmail(email, verificationCode);
       
-      navigate('/login', { state: { email } });
+      if (success) {
+        toast({
+          title: "Email Verified",
+          description: "Your email has been successfully verified. You can now log in.",
+        });
+        
+        navigate('/login', { state: { email } });
+      } else {
+        toast({
+          title: "Verification Failed",
+          description: "The verification code is invalid or has expired.",
+          variant: "destructive"
+        });
+      }
     } catch (error) {
       toast({
         title: "Verification Failed",
         description: error instanceof Error ? error.message : "Invalid verification code",
         variant: "destructive"
       });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  const handleResendCode = async () => {
+    setIsResending(true);
+    
+    try {
+      await sendVerificationCode(email, firstName || '');
+      
+      toast({
+        title: "Code Sent",
+        description: "A new verification code has been sent to your email.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to send verification code",
+        variant: "destructive"
+      });
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -71,14 +117,23 @@ const EmailVerification = () => {
               <Button 
                 onClick={handleVerification}
                 className="btn-black w-full py-3 shadow-md hover:shadow-lg transition-shadow"
+                disabled={isSubmitting}
               >
-                Verify Email
+                {isSubmitting ? 'Verifying...' : 'Verify Email'}
               </Button>
               
               <div className="text-center">
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 mb-2">
                   Didn't receive the code? Check your spam folder or request a new one.
                 </p>
+                <Button
+                  variant="ghost"
+                  onClick={handleResendCode}
+                  disabled={isResending}
+                  className="text-sm"
+                >
+                  {isResending ? 'Sending...' : 'Resend verification code'}
+                </Button>
               </div>
             </div>
           </div>
