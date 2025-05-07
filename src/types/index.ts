@@ -2,14 +2,9 @@
 export type User = {
   id: string;
   email: string;
-  firstName?: string;
-  lastName?: string;
-  role?: 'user' | 'admin';
-  user_metadata?: {
-    first_name?: string;
-    last_name?: string;
-    role?: 'user' | 'admin';
-  };
+  firstName: string;
+  lastName: string;
+  role: 'user' | 'admin';
 };
 
 export type UserProfile = {

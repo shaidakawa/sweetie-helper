@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
@@ -11,24 +12,27 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
+  // Check if email is provided from verification or previous route
   const verifiedEmail = location.state?.email;
-
+  
   useEffect(() => {
+    // Pre-fill email if it was passed from verification
     if (verifiedEmail) {
       setEmail(verifiedEmail);
     }
   }, [verifiedEmail]);
-
+  
   useEffect(() => {
+    // Redirect if already authenticated
     if (isAuthenticated) {
       navigate('/');
     }
   }, [isAuthenticated, navigate]);
-
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
+    
     try {
       await login(email, password);
       toast({

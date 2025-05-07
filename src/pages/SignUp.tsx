@@ -50,10 +50,10 @@ const SignUp = () => {
       
       toast({
         title: "Account created",
-        description: "Please check your email for your verification code.",
+        description: "Please check your email to verify your account.",
       });
       
-      // Navigate to email verification page with email and firstName in state
+      // Navigate to email verification page with email in state
       navigate('/verify-email', { state: { email, firstName } });
     } catch (error) {
       console.error('Signup error:', error);

@@ -1,8 +1,0 @@
-
-project_id = "gtvykicvruylvjdqouyr"
-
-[functions.send-email]
-verify_jwt = false
-
-[functions.send-email.env]
-RESEND_API_KEY = "re_MhWx8T1W_2osmTJCWfariPtxvyd28cMbj"
