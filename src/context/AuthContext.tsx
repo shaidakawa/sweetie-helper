@@ -11,6 +11,7 @@ import {
   sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
+  User as FirebaseUser,
 } from "firebase/auth";
 import {
   doc,
@@ -27,12 +28,13 @@ import {
 import emailjs from "@emailjs/browser";
 import { auth, db } from "../integrations/firebase";
 
-// Replace these with your actual EmailJS credentials
+// EmailJS config
 const EMAILJS_SERVICE_ID = "service_jr87w77";
-const EMAILJS_TEMPLATE_ID = "template_qadu37n";
-const EMAILJS_PUBLIC_KEY = "NRQYykpDmzLwIT3tJ";
+const EMAILJS_TEMPLATE_ID = "template_nqzaxl8";
+const EMAILJS_PUBLIC_KEY = "O9ofmOxtRxYQGTwtn";
 
-type User = {
+// Local user structure
+export type User = {
   id: string;
   email: string;
   firstName?: string;
@@ -41,8 +43,10 @@ type User = {
   verified: boolean;
 };
 
+// Context type
 type AuthContextType = {
   user: User | null;
+  currentUser: FirebaseUser | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -68,18 +72,20 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        const ref = doc(db, "users", firebaseUser.uid);
+    const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
+      setFirebaseUser(fbUser);
+      if (fbUser) {
+        const ref = doc(db, "users", fbUser.uid);
         const snap = await getDoc(ref);
         if (snap.exists()) {
           const data = snap.data();
           setUser({
-            id: firebaseUser.uid,
-            email: firebaseUser.email!,
+            id: fbUser.uid,
+            email: fbUser.email!,
             firstName: data.firstName,
             lastName: data.lastName,
             role: data.role || "user",
@@ -94,15 +100,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
-  const generateCode = () =>
-    Math.floor(100000 + Math.random() * 900000).toString();
+  const generateCode = () => Math.floor(100000 + Math.random() * 900000).toString();
 
-  const signup = async (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string
-  ) => {
+  const signup = async (email: string, password: string, firstName: string, lastName: string) => {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     const code = generateCode();
 
@@ -125,11 +125,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await emailjs.send(
       EMAILJS_SERVICE_ID,
       EMAILJS_TEMPLATE_ID,
-      {
-        to_name: firstName,
-        email,
-        code,
-      },
+      { to_name: firstName, to_email: email, code },
       EMAILJS_PUBLIC_KEY
     );
 
@@ -148,16 +144,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const docRef = snap.docs[0].ref;
     const data = snap.docs[0].data();
-    if (data.expiresAt < Date.now())
-      throw new Error("Verification code expired");
+    if (data.expiresAt < Date.now()) throw new Error("Verification code expired");
 
     await updateDoc(docRef, { isUsed: true });
 
     const userQuery = query(collection(db, "users"), where("email", "==", email));
     const userSnap = await getDocs(userQuery);
-    if (!userSnap.empty) {
-      await updateDoc(userSnap.docs[0].ref, { verified: true });
-    }
+    if (!userSnap.empty) await updateDoc(userSnap.docs[0].ref, { verified: true });
 
     return true;
   };
@@ -186,21 +179,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await emailjs.send(
       EMAILJS_SERVICE_ID,
       EMAILJS_TEMPLATE_ID,
-      {
-        to_name: firstName,
-        email,
-        code,
-      },
+      { to_name: firstName, to_email: email, code },
       EMAILJS_PUBLIC_KEY
     );
   };
 
-  const sendPasswordResetCode = async (email: string) =>
-    await sendPasswordResetEmail(auth, email);
+  const sendPasswordResetCode = async (email: string) => await sendPasswordResetEmail(auth, email);
 
-  const resetPasswordWithCode = async () => {
-    return true;
-  };
+  const resetPasswordWithCode = async () => true;
 
   const isAuthenticated = !!user;
   const isAdmin = user?.role === "admin";
@@ -209,6 +195,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider
       value={{
         user,
+        currentUser: firebaseUser,
         isAuthenticated,
         isAdmin,
         login,
@@ -228,8 +215,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
+  if (!context) throw new Error("useAuth must be used within an AuthProvider");
   return context;
 };

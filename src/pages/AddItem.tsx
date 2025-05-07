@@ -1,53 +1,46 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
 import { useAuth } from '../context/AuthContext';
-import { Navigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FILTER_CATEGORIES, SIZES, COLORS } from '../data/constants';
-import { db } from '../firebase';
+import { db, storage } from '../integrations/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
-import { storage } from "../firebase";
-
 
 const AddItem = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, currentUser } = useAuth();
+  const { isAuthenticated, user } = useAuth(); // ✅ use "user" instead of "currentUser"
 
-  // Form state
   const [formData, setFormData] = useState({
-    category: '',        // required — pick from dropdown
-    brand: '',           // optional — type any brand name
-    color: '',           // required — pick from or type any color
-    size: '',            // required — select or type size
-    location: '',        // required — type your city (e.g. "Erbil")
-    price: '',           // required — number only
-    fibId: '',           // required — buyer reference ID
-    description: ''      // optional — short description of the item
+    category: '',
+    brand: '',
+    color: '',
+    size: '',
+    location: '',
+    price: '',
+    fibId: '',
+    description: ''
   });
 
-  const [image, setImage] = useState<string | null>(null); // base64 image for preview and upload
+  const [image, setImage] = useState<string | null>(null);
 
-  // Redirect if not authenticated
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user) {
     toast({
       title: "Authentication required",
-      description: "Please log in to add items for sale.",
+      description: "Please log in to add items.",
       variant: "destructive"
     });
     return <Navigate to="/login" />;
   }
 
-  // Handle text input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle image upload
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -57,31 +50,29 @@ const AddItem = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!image) {
       toast({
         title: "Image required",
-        description: "Please upload an image of your item.",
+        description: "Please upload an image.",
         variant: "destructive"
       });
       return;
     }
 
     try {
-      const storage = getStorage();
-      const imageRef = ref(storage, `products/${Date.now()}_${currentUser.uid}`);
+      const imageRef = ref(storage, `products/${Date.now()}_${user.id}`);
       await uploadString(imageRef, image, 'data_url');
       const downloadURL = await getDownloadURL(imageRef);
 
       const itemData = {
         ...formData,
         price: parseFloat(formData.price),
-        userId: currentUser.uid,
+        userId: user.id,
         createdAt: serverTimestamp(),
-        isSold: false, // ensures item remains visible until marked sold
+        isSold: false,
         images: [downloadURL]
       };
 
@@ -89,15 +80,15 @@ const AddItem = () => {
 
       toast({
         title: "Item listed!",
-        description: "Your item was successfully added.",
+        description: "Your item has been added successfully.",
       });
 
-      navigate('/'); // or navigate to "/all-items"
-    } catch (error) {
-      console.error(error);
+      navigate('/');
+    } catch (err) {
+      console.error(err);
       toast({
-        title: "Upload failed",
-        description: "Please try again later.",
+        title: "Error",
+        description: "Failed to upload item. Try again later.",
         variant: "destructive"
       });
     }
@@ -112,11 +103,10 @@ const AddItem = () => {
       </div>
       <div className="container mx-auto px-4">
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
-          {/* Image Upload */}
           <div className="mb-8">
             <Label className="block text-xl mb-2">Add Item Image</Label>
-            <div
-              className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md p-6 cursor-pointer shadow-md hover:shadow-lg transition-shadow"
+            <div 
+              className="flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md p-6 cursor-pointer shadow-md hover:shadow-lg transition-shadow" 
               onClick={() => document.getElementById('itemImage')?.click()}
             >
               {image ? (
@@ -127,18 +117,18 @@ const AddItem = () => {
                   <p className="text-gray-500">Click to upload an image</p>
                 </div>
               )}
-              <input
-                type="file"
-                id="itemImage"
-                accept="image/*"
-                className="hidden"
+              <input 
+                type="file" 
+                id="itemImage" 
+                accept="image/*" 
+                className="hidden" 
                 onChange={handleImageChange}
                 required
               />
             </div>
           </div>
 
-          {/* Form Fields */}
+          {/* Category & Location */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <Label htmlFor="category">Category *</Label>
@@ -172,6 +162,7 @@ const AddItem = () => {
             </div>
           </div>
 
+          {/* Color & Brand */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <Label htmlFor="color">Color *</Label>
@@ -202,6 +193,7 @@ const AddItem = () => {
             </div>
           </div>
 
+          {/* Size & Price */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <Label htmlFor="size">Size *</Label>
@@ -233,6 +225,7 @@ const AddItem = () => {
             </div>
           </div>
 
+          {/* FIB ID */}
           <div className="mb-6">
             <Label htmlFor="fibId">FIB ID *</Label>
             <Input
@@ -246,6 +239,7 @@ const AddItem = () => {
             />
           </div>
 
+          {/* Description */}
           <div className="mb-8">
             <Label htmlFor="description">Description</Label>
             <textarea
