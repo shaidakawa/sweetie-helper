@@ -2,7 +2,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Session, User } from '@supabase/supabase-js';
+import { Session, User as SupabaseUser } from '@supabase/supabase-js';
+import { User } from '@/types';
 
 type AuthContextType = {
   user: User | null;
@@ -32,7 +33,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, newSession) => {
         setSession(newSession);
-        setUser(newSession?.user ?? null);
+        if (newSession?.user) {
+          const userData: User = {
+            id: newSession.user.id,
+            email: newSession.user.email || '',
+            firstName: newSession.user.user_metadata?.first_name,
+            lastName: newSession.user.user_metadata?.last_name,
+            role: newSession.user.user_metadata?.role || 'user'
+          };
+          setUser(userData);
+        } else {
+          setUser(null);
+        }
         setLoading(false);
       }
     );
@@ -40,7 +52,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
-      setUser(currentSession?.user ?? null);
+      if (currentSession?.user) {
+        const userData: User = {
+          id: currentSession.user.id,
+          email: currentSession.user.email || '',
+          firstName: currentSession.user.user_metadata?.first_name,
+          lastName: currentSession.user.user_metadata?.last_name,
+          role: currentSession.user.user_metadata?.role || 'user'
+        };
+        setUser(userData);
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
@@ -278,7 +301,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Check if user is admin
-  const isAdmin = user ? user.user_metadata?.role === 'admin' : false;
+  const isAdmin = user ? user.role === 'admin' : false;
 
   return (
     <AuthContext.Provider value={{
