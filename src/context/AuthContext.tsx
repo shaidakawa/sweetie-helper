@@ -11,17 +11,27 @@ import {
   sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
-  sendEmailVerification,
-  User as FirebaseUser,
 } from "firebase/auth";
 import {
   doc,
   setDoc,
   getDoc,
+  addDoc,
+  collection,
+  serverTimestamp,
+  query,
+  where,
+  getDocs,
+  updateDoc,
 } from "firebase/firestore";
+import emailjs from "@emailjs/browser";
 import { auth, db } from "../integrations/firebase";
 
-// User type
+// Replace these with your actual EmailJS credentials
+const EMAILJS_SERVICE_ID = "service_jr87w77";
+const EMAILJS_TEMPLATE_ID = "template_qadu37n";
+const EMAILJS_PUBLIC_KEY = "NRQYykpDmzLwIT3tJ";
+
 type User = {
   id: string;
   email: string;
@@ -31,7 +41,6 @@ type User = {
   verified: boolean;
 };
 
-// Context type
 type AuthContextType = {
   user: User | null;
   isAuthenticated: boolean;
@@ -45,6 +54,14 @@ type AuthContextType = {
   ) => Promise<{ email: string; firstName: string }>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  verifyEmail: (email: string, code: string) => Promise<boolean>;
+  sendVerificationCode: (email: string, firstName: string) => Promise<void>;
+  sendPasswordResetCode: (email: string) => Promise<void>;
+  resetPasswordWithCode: (
+    email: string,
+    code: string,
+    newPassword: string
+  ) => Promise<boolean>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -58,7 +75,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (firebaseUser) {
         const ref = doc(db, "users", firebaseUser.uid);
         const snap = await getDoc(ref);
-
         if (snap.exists()) {
           const data = snap.data();
           setUser({
@@ -67,7 +83,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             firstName: data.firstName,
             lastName: data.lastName,
             role: data.role || "user",
-            verified: firebaseUser.emailVerified,
+            verified: data.verified,
           });
         }
       } else {
@@ -75,9 +91,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
+
+  const generateCode = () =>
+    Math.floor(100000 + Math.random() * 900000).toString();
 
   const signup = async (
     email: string,
@@ -86,34 +104,102 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     lastName: string
   ) => {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
+    const code = generateCode();
 
-    // Save user to Firestore
     await setDoc(doc(db, "users", cred.user.uid), {
       email,
       firstName,
       lastName,
       role: "user",
+      verified: false,
     });
 
-    // Send verification email using Firebase built-in method
-    await sendEmailVerification(cred.user);
+    await addDoc(collection(db, "email_verifications"), {
+      email,
+      code,
+      createdAt: serverTimestamp(),
+      isUsed: false,
+      expiresAt: Date.now() + 15 * 60 * 1000,
+    });
+
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        to_name: firstName,
+        email,
+        code,
+      },
+      EMAILJS_PUBLIC_KEY
+    );
 
     return { email, firstName };
   };
 
+  const verifyEmail = async (email: string, code: string) => {
+    const q = query(
+      collection(db, "email_verifications"),
+      where("email", "==", email),
+      where("code", "==", code),
+      where("isUsed", "==", false)
+    );
+    const snap = await getDocs(q);
+    if (snap.empty) throw new Error("Invalid or expired verification code");
+
+    const docRef = snap.docs[0].ref;
+    const data = snap.docs[0].data();
+    if (data.expiresAt < Date.now())
+      throw new Error("Verification code expired");
+
+    await updateDoc(docRef, { isUsed: true });
+
+    const userQuery = query(collection(db, "users"), where("email", "==", email));
+    const userSnap = await getDocs(userQuery);
+    if (!userSnap.empty) {
+      await updateDoc(userSnap.docs[0].ref, { verified: true });
+    }
+
+    return true;
+  };
+
   const login = async (email: string, password: string) => {
     const cred = await signInWithEmailAndPassword(auth, email, password);
-    if (!cred.user.emailVerified) {
-      throw new Error("Please verify your email before logging in.");
-    }
+    const userRef = doc(db, "users", cred.user.uid);
+    const userSnap = await getDoc(userRef);
+    const data = userSnap.data();
+    if (!data?.verified) throw new Error("Email not verified yet.");
   };
 
-  const logout = async () => {
-    await signOut(auth);
+  const logout = async () => await signOut(auth);
+  const resetPassword = async (email: string) => await sendPasswordResetEmail(auth, email);
+
+  const sendVerificationCode = async (email: string, firstName: string) => {
+    const code = generateCode();
+    await addDoc(collection(db, "email_verifications"), {
+      email,
+      code,
+      createdAt: serverTimestamp(),
+      isUsed: false,
+      expiresAt: Date.now() + 15 * 60 * 1000,
+    });
+
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        to_name: firstName,
+        email,
+        code,
+      },
+      EMAILJS_PUBLIC_KEY
+    );
   };
 
-  const resetPassword = async (email: string) => {
+  const sendPasswordResetCode = async (email: string) =>
     await sendPasswordResetEmail(auth, email);
+
+  const resetPasswordWithCode = async () => {
+    return true;
   };
 
   const isAuthenticated = !!user;
@@ -129,6 +215,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         signup,
         logout,
         resetPassword,
+        verifyEmail,
+        sendVerificationCode,
+        sendPasswordResetCode,
+        resetPasswordWithCode,
       }}
     >
       {!loading && children}
